@@ -13,6 +13,7 @@ Hi there! I’m Shuyi Chen, a first-year Ph.D. student at Heinz College, Carnegi
 
 ## News<span id="news"></span>
 
+- **09/2024**: Presneted a [poster](https://drive.google.com/file/d/18_Fvo5TzN-9JBES10eb36lN7fDqaJMw4/view?usp=sharing) at NextGenEC 2024.
 - **09/2024**: Awarded with INFORMS Student Scholarship, INFORMS Workshop on Data Science 2024.
 - **09/2024**: Two papers accepted by INFORMS Workshop on Data Science and the Workshop on Data Mining and Design Analysis. Preprints will be up soon, stay tuned!
 - **10/2023**: Our [paper](https://arxiv.org/abs/2306.08210) got accepted by New Frontiers in Graph Learning (GLFrontiers), NeurIPS 2023.
