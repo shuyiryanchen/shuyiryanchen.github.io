@@ -18,5 +18,6 @@ Hi there! I’m Shuyi Chen, a first-year Ph.D. student at Heinz College, Carnegi
 - **10/2023**: Our [paper](https://arxiv.org/abs/2310.14687) got accepted by EMNLP 2023.
 
 ## Conferences and Workshops<span id="conferences-and-workshops"></span>
+- **Shuyi Chen** and Shixiang Zhu. 2024. Counterfactual Fairness through Transforming Data Orthogonal to Bias. Preprint.
 - **Shuyi Chen**, Kaize Ding, and Shixiang Zhu. 2023. Uncertainty-Aware Robust Learning on Noisy Graphs. In New Frontiers in Graph Learning (GLFrontiers), NeurIPS 2023, US.
 - Yihan Cao, **Shuyi Chen**, Ryan Liu, Zhiruo Wang, and Daniel Fried. 2023. API-Assisted Code Generation for Question Answering on Varied Table Structures. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, Singapore.
