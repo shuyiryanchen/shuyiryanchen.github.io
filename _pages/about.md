@@ -14,9 +14,8 @@ You can view my CV [here](https://drive.google.com/file/d/1eswMnsV8OjoacEdcaGIqC
 
 
 ## News<span id="news"></span>
-- **October 2024**: Presenting two papers [[1]](https://arxiv.org/abs/2403.17852) [2] (link coming soon) at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
+- **October 2024**: Two papers [[1]](https://arxiv.org/abs/2403.17852) [2] (link coming soon) accepted for presentation at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
 - **August 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
-- **August 2024**: Two papers accepted by INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
 - **October 2023**: Our [paper](https://arxiv.org/abs/2310.14687) was accepted at EMNLP 2023.
 
 ## Conferences and Workshops<span id="conferences-and-workshops"></span>
