@@ -10,7 +10,7 @@ redirect_from:
 
 Hi there! I’m Shuyi Chen, a first-year Ph.D. student at Heinz College, Carnegie Mellon University, where I'm advised by [Woody Zhu](https://sites.google.com/view/woodyzhu). My research lies at the intersection of **Machine Learning (ML)** and **Operations Research (OR)**, focusing on leveraging statistical methods to solve real-world problems. I hold a Master's degree in Information Systems Management from CMU and a B.B.A in Supply Chain and Logistics Management from the Chinese University of Hong Kong (Shenzhen).
 
-You can view my CV [here](https://drive.google.com/file/d/1eswMnsV8OjoacEdcaGIqCpmHcAN__mmW/view?usp=sharing).
+You can view my CV [here](https://drive.google.com/file/d/1Zi153EMwLMKkb3FSsAsHUtQbsT8A5IWz/view?usp=sharing).
 
 
 ## News<span id="news"></span>
