@@ -14,11 +14,13 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 
 ## News<span id="news"></span>
-- **October 2024**: Two papers [[1]](https://arxiv.org/abs/2403.17852) [2] (link coming soon) accepted for presentation at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
+- **December 2024**: Our paper [Uncertainty-Aware Robust Learning on Noisy Graphs][(https://arxiv.org/abs/2310.14687](https://arxiv.org/abs/2306.08210)) was accepted by ICASSP 2025.
+- **October 2024**: Two working papers [[1]](https://arxiv.org/abs/2403.17852) [2] (link coming soon) accepted for presentation at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
 - **August 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
-- **October 2023**: Our [paper](https://arxiv.org/abs/2310.14687) was accepted at EMNLP 2023.
+- **October 2023**: Our paper [API-Assisted Code Generation for Question Answering on Varied Table Structures](https://arxiv.org/abs/2310.14687) was accepted by EMNLP 2023.
+
 
 ## Conferences and Workshops<span id="conferences-and-workshops"></span>
 - **Shuyi Chen** and Shixiang Zhu. 2024. Counterfactual Fairness through Transforming Data Orthogonal to Bias. Preprint.
-- **Shuyi Chen**, Kaize Ding, and Shixiang Zhu. 2023. Uncertainty-Aware Robust Learning on Noisy Graphs. In New Frontiers in Graph Learning (GLFrontiers), NeurIPS 2023, US.
+- **Shuyi Chen**, Kaize Ding, and Shixiang Zhu. 2023. Uncertainty-Aware Robust Learning on Noisy Graphs. In 2025 IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP 2025), India.
 - Yihan Cao, **Shuyi Chen**, Ryan Liu, Zhiruo Wang, and Daniel Fried. 2023. API-Assisted Code Generation for Question Answering on Varied Table Structures. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, Singapore.
