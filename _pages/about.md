@@ -20,7 +20,8 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 - **October 2023**: Our paper [API-Assisted Code Generation for Question Answering on Varied Table Structures](https://arxiv.org/abs/2310.14687) was accepted by EMNLP 2023.
 
 
-## Conferences and Workshops<span id="conferences-and-workshops"></span>
+## Publications and Preprints<span id="conferences-and-workshops"></span>
+- Prince Zizhuang Wang, Jinhao Liang, **Shuyi Chen**, Ferdinando Fioretto, Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. Preprint. [[arxiv]](https://arxiv.org/abs/2502.05468)
 - **Shuyi Chen** and Shixiang Zhu. 2024. Counterfactual Fairness through Transforming Data Orthogonal to Bias. Preprint. [[arxiv]](https://arxiv.org/abs/2403.17852)
 - **Shuyi Chen**, Kaize Ding, and Shixiang Zhu. 2023. Uncertainty-Aware Robust Learning on Noisy Graphs. In 2025 IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP 2025), India. [[arxiv]](https://arxiv.org/abs/2306.08210)
 - Yihan Cao, **Shuyi Chen**, Ryan Liu, Zhiruo Wang, and Daniel Fried. 2023. API-Assisted Code Generation for Question Answering on Varied Table Structures. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, Singapore. [[arxiv]](https://arxiv.org/abs/2310.14687)
