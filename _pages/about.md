@@ -29,4 +29,4 @@ You can view my CV [here](https://drive.google.com/file/d/1a0El1wystCfgfn-dgD23m
 
 
 ## 🔬 Working Papers <span id="wip"></span>
-- **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Proactive for Reactive: Early Grid Planning for Adaptive Resilience. Preprint. [[arXiv]](https://arxiv.org/abs/2502.18321)
+- **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Proactive for Reactive: Early Grid Planning for Adaptive Resilience.
