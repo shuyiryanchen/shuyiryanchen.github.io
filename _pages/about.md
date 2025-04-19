@@ -12,7 +12,7 @@ Hi there! I’m Shuyi Chen, a first-year Ph.D. student at Heinz College, Carnegi
 
 Outside of research, I’m an film photography enthusiast, a casual boulderer, and a [table tennis](https://usatt.simplycompete.com/userAccount/up/187298?uai=187298&embedded=&max=20) player.
 
-You can view my CV [here](https://drive.google.com/file/d/1a0El1wystCfgfn-dgD23mJgkvLuURIkU/view?usp=sharing).
+You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyNlVODXk-rQ7ylQpcxXj?usp=sharing).
 
 
 ## 📣 News<span id="news"></span>
