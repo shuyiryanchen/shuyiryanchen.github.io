@@ -16,6 +16,7 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 
 ## 📣 News<span id="news"></span>
+- **May 2025**: Our paper [Counterfactual Fairness through Transforming Data Orthogonal to Bias](https://arxiv.org/abs/2403.17852) was accepted by KDD 2025 Research Track.
 - **December 2024**: Our paper [Uncertainty-Aware Robust Learning on Noisy Graphs](https://arxiv.org/abs/2306.08210) was accepted by ICASSP 2025.
 - **October 2024**: Two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) accepted for presentation at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
 - **August 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
