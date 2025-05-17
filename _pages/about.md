@@ -26,7 +26,7 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 ## 📄 Publications<span id="conferences-and-workshops"></span>
 - **Shuyi Chen** and Shixiang Zhu. 2025. Counterfactual Fairness through Transforming Data Orthogonal to Bias. In Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD 2025). [[arXiv]](https://arxiv.org/pdf/2403.17852)
 - **Shuyi Chen**, Kaize Ding, and Shixiang Zhu. 2023. Uncertainty-Aware Robust Learning on Noisy Graphs. In 2025 IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP 2025), India. [[arXiv]](https://arxiv.org/pdf/2306.08210)
-- Yihan Cao, **Shuyi Chen**, Ryan Liu, Zhiruo Wang, and Daniel Fried. 2023. API-Assisted Code Generation for Question Answering on Varied Table Structures. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, Singapore. [[arXiv]](https://arxiv.org/pdf/2310.14687)
+- Yihan Cao, **Shuyi Chen**, Ryan Liu, Zhiruo Wang, and Daniel Fried. 2023. API-Assisted Code Generation for Question Answering on Varied Table Structures. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP 2023), Singapore. [[arXiv]](https://arxiv.org/pdf/2310.14687)
 
 
 ## 🔬 Working Papers and Preprints<span id="wip"></span>
