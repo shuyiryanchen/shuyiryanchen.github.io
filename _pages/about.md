@@ -30,6 +30,6 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 
 ## 🔬 Working Papers and Preprints<span id="wip"></span>
-- **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Adaptive Robust Optimization with Data-Driven Uncertainty for Enhancing Distribution System Resilience. [[arXiv]](https://arxiv.org/pdf/2505.11627) [[Poster]](https://drive.google.com/file/d/1WF2iwiotymcNVmZvlpZG2MITM7gphiq8/view?usp=sharing)
+- **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Adaptive Robust Optimization with Data-Driven Uncertainty for Enhancing Distribution System Resilience. Preprint. [[arXiv]](https://arxiv.org/pdf/2505.11627) [[Poster]](https://drive.google.com/file/d/1WF2iwiotymcNVmZvlpZG2MITM7gphiq8/view?usp=sharing)
 - **Shuyi Chen**, Ferdinando Fioretto, Feng Qiu, and Shixiang Zhu. Global-Decision-Focused Neural ODEs for Proactive Grid Resilience Management. Preprint. [[arXiv]](https://arxiv.org/abs/2502.18321) [[Poster]](https://drive.google.com/file/d/1LOsFhdVyQrI0-SNZwc_hedCdbJpejGpi/view?usp=sharing)
 - Prince Zizhuang Wang, Jinhao Liang, **Shuyi Chen**, Ferdinando Fioretto, and Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. Preprint. [[arXiv]](https://arxiv.org/pdf/2502.05468)
