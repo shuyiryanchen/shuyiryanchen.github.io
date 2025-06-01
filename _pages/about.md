@@ -16,12 +16,9 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 
 ## 📣 News<span id="news"></span>
-- **May 2025**: Our paper [Counterfactual Fairness through Transforming Data Orthogonal to Bias](https://arxiv.org/abs/2403.17852) was accepted by KDD 2025. See you in Toronto!
-- **December 2024**: Our paper [Uncertainty-Aware Robust Learning on Noisy Graphs](https://arxiv.org/abs/2306.08210) was accepted by ICASSP 2025.
-- **October 2024**: Two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) accepted for presentation at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
+- **May 2025**: Attend NSF Workshop on Uncertainty Quantification and Machine Learning for Complex Physical Systems, Chicago. Presented a poster for our [[paper]](https://arxiv.org/pdf/2505.11627).
+- **October 2024**: Presented two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
 - **August 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
-- **October 2023**: Our paper [API-Assisted Code Generation for Question Answering on Varied Table Structures](https://arxiv.org/abs/2310.14687) was accepted by EMNLP 2023.
-
 
 ## 📄 Publications<span id="conferences-and-workshops"></span>
 - **Shuyi Chen** and Shixiang Zhu. 2025. Counterfactual Fairness through Transforming Data Orthogonal to Bias. In Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD 2025). [[arXiv]](https://arxiv.org/pdf/2403.17852) [[code]](https://github.com/ryanmaomaomao/orthogonal_fairness/tree/main)
@@ -33,3 +30,7 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 - **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Adaptive Robust Optimization with Data-Driven Uncertainty for Enhancing Distribution System Resilience. Preprint. [[arXiv]](https://arxiv.org/pdf/2505.11627) [[Poster]](https://drive.google.com/file/d/1WF2iwiotymcNVmZvlpZG2MITM7gphiq8/view?usp=sharing)
 - **Shuyi Chen**, Ferdinando Fioretto, Feng Qiu, and Shixiang Zhu. Global-Decision-Focused Neural ODEs for Proactive Grid Resilience Management. Preprint. [[arXiv]](https://arxiv.org/abs/2502.18321) [[Poster]](https://drive.google.com/file/d/1LOsFhdVyQrI0-SNZwc_hedCdbJpejGpi/view?usp=sharing)
 - Prince Zizhuang Wang, Jinhao Liang, **Shuyi Chen**, Ferdinando Fioretto, and Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. Preprint. [[arXiv]](https://arxiv.org/pdf/2502.05468)
+
+
+## 📖 Past News<span id="news"></span>
+
