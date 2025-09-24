@@ -16,11 +16,11 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 
 ## 📣 News<span id="news"></span>
-- **Oct 2025**: Won the **INFORMS ENRE Best Student Paper Award** with our [[work]](https://arxiv.org/pdf/2505.11627) on robust optimization for power system resilience.
+- **Sept 2025**: Co-chairing the [INFORMS DMDA workshop 2025 Data Challenge](https://sites.google.com/view/dmdaworkshop2025/data-challenge) on high-frequncy outage prediction.
+- **Oct 2025**: Won the **INFORMS ENRE Best Student Paper Award** with our [[work]](https://arxiv.org/pdf/2505.11627) on robust optimization for power system resilience. Grateful to Woody and Ramteen for their guidance!
 - **Aug 2025**: Attened KDD 2025 Toronto and presented our [[work]](https://arxiv.org/pdf/2403.17852) on counterfactual fairness.
 - **May 2025**: Attend NSF Workshop on Uncertainty Quantification and Machine Learning for Complex Physical Systems, Chicago. Presented a poster for our [[paper]](https://arxiv.org/pdf/2505.11627).
-- **October 2024**: Presented two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
-- **August 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
+
 
 ## 📄 Publications<span id="conferences-and-workshops"></span>
 - **Shuyi Chen** and Shixiang Zhu. 2025. Counterfactual Fairness through Transforming Data Orthogonal to Bias. In Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD 2025). [[arXiv]](https://arxiv.org/pdf/2403.17852) [[code]](https://github.com/ryanmaomaomao/orthogonal_fairness/tree/main)
@@ -35,4 +35,5 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 
 ## 📖 Past News<span id="news"></span>
-
+- **October 2024**: Presented two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
+- **August 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
