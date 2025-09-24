@@ -16,8 +16,8 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 
 ## 📣 News<span id="news"></span>
-- **Sept 2025**: Co-chairing the [INFORMS DMDA workshop 2025 Data Challenge](https://sites.google.com/view/dmdaworkshop2025/data-challenge) on high-frequncy outage prediction.
 - **Oct 2025**: Won the **INFORMS ENRE Best Student Paper Award** with our [[work]](https://arxiv.org/pdf/2505.11627) on robust optimization for power system resilience. Grateful to Woody and Ramteen for their guidance!
+- **Sept 2025**: Co-chairing the [INFORMS DMDA workshop 2025 Data Challenge](https://sites.google.com/view/dmdaworkshop2025/data-challenge) on high-frequncy outage prediction.
 - **Aug 2025**: Attened KDD 2025 Toronto and presented our [[work]](https://arxiv.org/pdf/2403.17852) on counterfactual fairness.
 - **May 2025**: Attend NSF Workshop on Uncertainty Quantification and Machine Learning for Complex Physical Systems, Chicago. Presented a poster for our [[paper]](https://arxiv.org/pdf/2505.11627).
 
