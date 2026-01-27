@@ -16,14 +16,14 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 
 ## 📣 News<span id="news"></span>
-- **Oct 2025**: Won the **INFORMS ENRE Best Student Paper Award** with our [[work]](https://arxiv.org/pdf/2505.11627) on robust optimization for power system resilience. Grateful to Woody and Ramteen for their guidance!
+- **Oct 2025**: Won the INFORMS ENRE Best Student Paper Award with our [[work]](https://arxiv.org/pdf/2505.11627) on robust optimization for power system resilience. Grateful to Woody and Ramteen for their guidance!
 - **Sept 2025**: Co-chairing the [INFORMS DMDA workshop 2025 Data Challenge](https://sites.google.com/view/dmdaworkshop2025/data-challenge) on high-frequncy outage prediction.
 - **Aug 2025**: Attened KDD 2025 Toronto and presented our [[work]](https://arxiv.org/pdf/2403.17852) on counterfactual fairness.
 - **May 2025**: Attend NSF Workshop on Uncertainty Quantification and Machine Learning for Complex Physical Systems, Chicago. Presented a poster for our [[paper]](https://arxiv.org/pdf/2505.11627).
 
 
 ## 📄 Publications<span id="conferences-and-workshops"></span>
-- Prince Zizhuang Wang, Jinhao Liang, **Shuyi Chen**, Ferdinando Fioretto, and Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. The Fourteenth International Conference on Learning Representations (ICLR 2026). [[arXiv]](https://arxiv.org/pdf/2502.05468)
+- Prince Zizhuang Wang, **Shuyi Chen**, Jinhao Liang, Ferdinando Fioretto, and Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. The Fourteenth International Conference on Learning Representations (ICLR 2026). [[arXiv]](https://arxiv.org/pdf/2502.05468)
 - **Shuyi Chen**, Ferdinando Fioretto, Feng Qiu, and Shixiang Zhu. Global-Decision-Focused Neural ODEs for Proactive Grid Resilience Management. IEEE Transactions on Smart Grid. [[arXiv]](https://arxiv.org/abs/2502.18321) [[Poster]](https://drive.google.com/file/d/1LOsFhdVyQrI0-SNZwc_hedCdbJpejGpi/view?usp=sharing) [[code]](https://github.com/ryanmaomaomao/Global-Decision-Focused-NeuralODE/blob/main/)
 - **Shuyi Chen** and Shixiang Zhu. 2025. Counterfactual Fairness through Transforming Data Orthogonal to Bias. In Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD 2025). [[arXiv]](https://arxiv.org/pdf/2403.17852) [[code]](https://github.com/ryanmaomaomao/orthogonal_fairness/tree/main)
 - **Shuyi Chen**, Kaize Ding, and Shixiang Zhu. 2023. Uncertainty-Aware Robust Learning on Noisy Graphs. In 2025 IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP 2025), India. [[arXiv]](https://arxiv.org/pdf/2306.08210) [[code]](https://github.com/ryanmaomaomao/drgnn)
