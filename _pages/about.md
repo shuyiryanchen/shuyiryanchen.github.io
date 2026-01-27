@@ -23,6 +23,8 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 
 ## 📄 Publications<span id="conferences-and-workshops"></span>
+- Prince Zizhuang Wang, Jinhao Liang, **Shuyi Chen**, Ferdinando Fioretto, and Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. The Fourteenth International Conference on Learning Representations (ICLR 2026). [[arXiv]](https://arxiv.org/pdf/2502.05468)
+- **Shuyi Chen**, Ferdinando Fioretto, Feng Qiu, and Shixiang Zhu. Global-Decision-Focused Neural ODEs for Proactive Grid Resilience Management. IEEE Transactions on Smart Grid. [[arXiv]](https://arxiv.org/abs/2502.18321) [[Poster]](https://drive.google.com/file/d/1LOsFhdVyQrI0-SNZwc_hedCdbJpejGpi/view?usp=sharing) [[code]](https://github.com/ryanmaomaomao/Global-Decision-Focused-NeuralODE/blob/main/)
 - **Shuyi Chen** and Shixiang Zhu. 2025. Counterfactual Fairness through Transforming Data Orthogonal to Bias. In Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD 2025). [[arXiv]](https://arxiv.org/pdf/2403.17852) [[code]](https://github.com/ryanmaomaomao/orthogonal_fairness/tree/main)
 - **Shuyi Chen**, Kaize Ding, and Shixiang Zhu. 2023. Uncertainty-Aware Robust Learning on Noisy Graphs. In 2025 IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP 2025), India. [[arXiv]](https://arxiv.org/pdf/2306.08210) [[code]](https://github.com/ryanmaomaomao/drgnn)
 - Yihan Cao, **Shuyi Chen**, Ryan Liu, Zhiruo Wang, and Daniel Fried. 2023. API-Assisted Code Generation for Question Answering on Varied Table Structures. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP 2023), Singapore. [[arXiv]](https://arxiv.org/pdf/2310.14687)
@@ -30,8 +32,7 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 ## 🔬 Working Papers and Preprints<span id="wip"></span>
 - **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Enhancing Electricity-System Resilience with Adaptive Robust Optimization and Conformal Uncertainty Characterization. Preprint. [[arXiv]](https://arxiv.org/pdf/2505.11627) [[Poster]](https://drive.google.com/file/d/1WF2iwiotymcNVmZvlpZG2MITM7gphiq8/view?usp=sharing)
-- **Shuyi Chen**, Ferdinando Fioretto, Feng Qiu, and Shixiang Zhu. Global-Decision-Focused Neural ODEs for Proactive Grid Resilience Management. Preprint. [[arXiv]](https://arxiv.org/abs/2502.18321) [[Poster]](https://drive.google.com/file/d/1LOsFhdVyQrI0-SNZwc_hedCdbJpejGpi/view?usp=sharing) [[code]](https://github.com/ryanmaomaomao/Global-Decision-Focused-NeuralODE/blob/main/)
-- Prince Zizhuang Wang, Jinhao Liang, **Shuyi Chen**, Ferdinando Fioretto, and Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. Preprint. [[arXiv]](https://arxiv.org/pdf/2502.05468)
+- **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Large-Scale Resilience Planning for Wildfire-Prone Electricity Systems via Adaptive Robust Optimization.
 
 
 ## 📖 Past News<span id="news"></span>
