@@ -1,0 +1,80 @@
+.sfps-section {
+  margin: 2rem 0;
+}
+
+.sfps-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.sfps-panel {
+  flex: 1 1 320px;
+  min-width: 280px;
+  background: #f9f9f9;
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.sfps-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.sfps-field input,
+.sfps-field select {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.sfps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+}
+
+.sfps-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #1f77b4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.sfps-button:hover {
+  background: #155d8a;
+}
+
+.sfps-status {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.4rem;
+}
+
+.sfps-plot {
+  width: 100%;
+  min-height: 420px;
+}
+
+.sfps-image-wrap {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.sfps-image-wrap img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.4rem;
+  background: #fff;
+}

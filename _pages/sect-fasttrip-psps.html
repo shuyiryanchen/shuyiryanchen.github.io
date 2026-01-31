@@ -1,0 +1,178 @@
+---
+layout: single
+title: "Sect FastTrip PSPS Demo"
+permalink: /sect-fasttrip-psps/
+author_profile: true
+---
+
+{% include base_path %}
+
+<div id="sect-fasttrip-psps" data-base-path="{{ base_path }}">
+  <p>
+    This demo page visualizes results by hyperparameters and lets you preview
+    decision plots. Place your CSVs and PNGs under
+    <code>assets/website_plots/</code> and update
+    <code>assets/website_plots/manifest.json</code>, or upload files manually.
+  </p>
+
+  <section class="sfps-section">
+    <h2>Trend Line (Mean ± Std)</h2>
+    <div class="sfps-row">
+      <div class="sfps-panel">
+        <div class="sfps-field">
+          <label for="csv-file">CSV file</label>
+          <select id="csv-file"></select>
+        </div>
+        <div class="sfps-field">
+          <label for="csv-upload">Upload CSV</label>
+          <input id="csv-upload" type="file" accept=".csv" />
+        </div>
+        <button id="load-csv" class="sfps-button">Load CSV</button>
+        <div id="csv-status" class="sfps-status"></div>
+      </div>
+
+      <div class="sfps-panel">
+        <div class="sfps-field">
+          <label for="x-axis">X axis</label>
+          <select id="x-axis"></select>
+        </div>
+        <div class="sfps-field">
+          <label for="y-metric">Y metric</label>
+          <select id="y-metric"></select>
+        </div>
+        <div id="filter-controls" class="sfps-grid"></div>
+      </div>
+    </div>
+
+    <div id="trend-plot" class="sfps-plot"></div>
+  </section>
+
+  <section class="sfps-section">
+    <h2>Decision Plot Image</h2>
+    <div class="sfps-row">
+      <div class="sfps-panel">
+        <div class="sfps-field">
+          <label for="image-base-path">Image base path</label>
+          <input id="image-base-path" type="text" />
+        </div>
+        <div class="sfps-field">
+          <label for="image-filename">Image filename (optional)</label>
+          <input id="image-filename" type="text" placeholder="leave blank to use pattern" />
+        </div>
+        <div class="sfps-field">
+          <label for="image-pattern">Filename pattern</label>
+          <input id="image-pattern" type="text" />
+          <small>Use tokens like <code>{B_budget}</code></small>
+        </div>
+        <div class="sfps-field">
+          <label for="image-upload">Upload PNG</label>
+          <input id="image-upload" type="file" accept=".png,.jpg,.jpeg" />
+        </div>
+        <button id="update-image" class="sfps-button">Update Image</button>
+        <div id="image-status" class="sfps-status"></div>
+      </div>
+
+      <div class="sfps-panel">
+        <div id="image-params" class="sfps-grid"></div>
+      </div>
+    </div>
+
+    <div class="sfps-image-wrap">
+      <img id="decision-image" alt="Decision plot preview" />
+    </div>
+  </section>
+</div>
+
+<link rel="stylesheet" href="{{ base_path }}/assets/css/sect-fasttrip-psps.css">
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="{{ base_path }}/assets/js/sect-fasttrip-psps.js"></script>
+---
+layout: single
+title: "Sect FastTrip PSPS Demo"
+permalink: /sect-fasttrip-psps/
+author_profile: true
+---
+
+{% include base_path %}
+
+<div id="sect-fasttrip-psps" data-base-path="{{ base_path }}">
+  <p>
+    This demo page visualizes results by hyperparameters and lets you preview
+    decision plots. Place your CSVs and PNGs under
+    <code>assets/website_plots/</code> and update
+    <code>assets/website_plots/manifest.json</code>, or upload files manually.
+  </p>
+
+  <section class="sfps-section">
+    <h2>Trend Line (Mean ± Std)</h2>
+    <div class="sfps-row">
+      <div class="sfps-panel">
+        <div class="sfps-field">
+          <label for="csv-file">CSV file</label>
+          <select id="csv-file"></select>
+        </div>
+        <div class="sfps-field">
+          <label for="csv-upload">Upload CSV</label>
+          <input id="csv-upload" type="file" accept=".csv" />
+        </div>
+        <button id="load-csv" class="sfps-button">Load CSV</button>
+        <div id="csv-status" class="sfps-status"></div>
+      </div>
+
+      <div class="sfps-panel">
+        <div class="sfps-field">
+          <label for="x-axis">X axis</label>
+          <select id="x-axis"></select>
+        </div>
+        <div class="sfps-field">
+          <label for="y-metric">Y metric</label>
+          <select id="y-metric"></select>
+        </div>
+        <div id="filter-controls" class="sfps-grid"></div>
+      </div>
+    </div>
+
+    <div id="trend-plot" class="sfps-plot"></div>
+  </section>
+
+  <section class="sfps-section">
+    <h2>Decision Plot Image</h2>
+    <div class="sfps-row">
+      <div class="sfps-panel">
+        <div class="sfps-field">
+          <label for="image-base-path">Image base path</label>
+          <input id="image-base-path" type="text" />
+        </div>
+        <div class="sfps-field">
+          <label for="image-filename">Image filename (optional)</label>
+          <input id="image-filename" type="text" placeholder="leave blank to use pattern" />
+        </div>
+        <div class="sfps-field">
+          <label for="image-pattern">Filename pattern</label>
+          <input id="image-pattern" type="text" />
+          <small>Use tokens like <code>{B_budget}</code></small>
+        </div>
+        <div class="sfps-field">
+          <label for="image-upload">Upload PNG</label>
+          <input id="image-upload" type="file" accept=".png,.jpg,.jpeg" />
+        </div>
+        <button id="update-image" class="sfps-button">Update Image</button>
+        <div id="image-status" class="sfps-status"></div>
+      </div>
+
+      <div class="sfps-panel">
+        <div id="image-params" class="sfps-grid"></div>
+      </div>
+    </div>
+
+    <div class="sfps-image-wrap">
+      <img id="decision-image" alt="Decision plot preview" />
+    </div>
+  </section>
+</div>
+
+<link rel="stylesheet" href="{{ base_path }}/assets/css/sect-fasttrip-psps.css">
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="{{ base_path }}/assets/js/sect-fasttrip-psps.js"></script>

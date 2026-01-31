@@ -1,0 +1,7 @@
+B_budget,B_budget_multiplier,C_budget,C_budget_multiplier,K_groups,W_cap,W_cap_multiplier,alpha,effective_alpha,gamma_i_multiplier,grouping_method,ignitions,mht_method,true_cost
+404,0.5,323,0.4,7,911016.351977226,0.2,0.1,0.7,0.7,leiden,543,Leiden_MaxRank,120.5
+404,0.5,323,0.4,7,911016.351977226,0.2,0.1,0.7,0.7,leiden,543,Leiden_MaxRank,118.8
+404,0.5,323,0.4,9,911016.351977226,0.2,0.1,0.7,0.7,leiden,543,Leiden_MaxRank,112.1
+404,0.5,323,0.4,9,911016.351977226,0.2,0.1,0.7,0.7,leiden,543,Leiden_MaxRank,113.7
+500,0.5,323,0.4,7,911016.351977226,0.2,0.1,0.7,0.7,leiden,543,Leiden_MaxRank,125.3
+500,0.5,323,0.4,9,911016.351977226,0.2,0.1,0.7,0.7,leiden,543,Leiden_MaxRank,119.6
