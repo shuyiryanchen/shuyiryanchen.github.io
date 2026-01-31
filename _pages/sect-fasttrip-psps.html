@@ -12,7 +12,7 @@ author_profile: true
     This demo page visualizes results by hyperparameters and lets you preview
     decision plots. Place your CSVs and PNGs under
     <code>assets/website_plots/</code> and update
-    <code>assets/website_plots/manifest.json</code>.
+    <code>assets/website_plots/manifest.json</code>, or upload files manually.
   </p>
 
   <section class="sfps-section">
@@ -24,9 +24,10 @@ author_profile: true
           <select id="csv-file"></select>
         </div>
         <div class="sfps-field">
-          <label>CSV selection</label>
-          <small>Choose a file from the manifest.</small>
+          <label for="csv-upload">Upload CSV</label>
+          <input id="csv-upload" type="file" accept=".csv" />
         </div>
+        <button id="load-csv" class="sfps-button">Load CSV</button>
         <div id="csv-status" class="sfps-status"></div>
       </div>
 
@@ -64,9 +65,10 @@ author_profile: true
           <small>Use tokens like <code>{B_budget}</code></small>
         </div>
         <div class="sfps-field">
-          <label>Preview</label>
-          <small>Image updates automatically when selections change.</small>
+          <label for="image-upload">Upload PNG</label>
+          <input id="image-upload" type="file" accept=".png,.jpg,.jpeg" />
         </div>
+        <button id="update-image" class="sfps-button">Update Image</button>
         <div id="image-status" class="sfps-status"></div>
       </div>
 

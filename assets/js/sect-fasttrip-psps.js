@@ -6,6 +6,8 @@
   const manifestUrl = `${basePath}/assets/website_plots/manifest.json`;
 
   const csvSelect = document.getElementById("csv-file");
+  const csvUpload = document.getElementById("csv-upload");
+  const loadCsvButton = document.getElementById("load-csv");
   const csvStatus = document.getElementById("csv-status");
   const xAxisSelect = document.getElementById("x-axis");
   const yMetricSelect = document.getElementById("y-metric");
@@ -15,6 +17,8 @@
   const imageBasePathInput = document.getElementById("image-base-path");
   const imageFilenameInput = document.getElementById("image-filename");
   const imagePatternInput = document.getElementById("image-pattern");
+  const imageUpload = document.getElementById("image-upload");
+  const updateImageButton = document.getElementById("update-image");
   const imageStatus = document.getElementById("image-status");
   const imageParams = document.getElementById("image-params");
   const decisionImage = document.getElementById("decision-image");
@@ -283,11 +287,13 @@
     try {
       setStatus(csvStatus, "Loading CSV...");
       let text = "";
-      if (csvSelect.value) {
+      if (csvUpload.files && csvUpload.files[0]) {
+        text = await csvUpload.files[0].text();
+      } else if (csvSelect.value) {
         const csvUrl = `${basePath}/assets/website_plots/${csvSelect.value}`;
         text = await loadCsvFromUrl(csvUrl);
       } else {
-        setStatus(csvStatus, "Select a CSV from the dropdown.", true);
+        setStatus(csvStatus, "Select or upload a CSV first.", true);
         return;
       }
       const rows = parseCsvText(text);
@@ -327,8 +333,6 @@
       manualInput.type = "text";
       manualInput.placeholder = "manual value (optional)";
       manualInput.dataset.param = param;
-      input.addEventListener("change", renderImage);
-      manualInput.addEventListener("input", renderImage);
 
       wrapper.appendChild(label);
       wrapper.appendChild(input);
@@ -338,6 +342,16 @@
   };
 
   const renderImage = () => {
+    if (imageUpload.files && imageUpload.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        decisionImage.src = event.target.result;
+        setStatus(imageStatus, "Loaded image from upload.");
+      };
+      reader.readAsDataURL(imageUpload.files[0]);
+      return;
+    }
+
     const params = {};
     imageParams.querySelectorAll("select").forEach((select) => {
       params[select.dataset.param] = select.value;
@@ -372,26 +386,24 @@
       if (!response.ok) throw new Error("No manifest.");
       const manifest = await response.json();
       buildCsvSelect(manifest.csvFiles || []);
-      setStatus(csvStatus, "Manifest loaded. Select a CSV from the dropdown.");
+      setStatus(csvStatus, "Manifest loaded. Select a CSV or upload one.");
     } catch (error) {
       buildCsvSelect([]);
       setStatus(
         csvStatus,
-        "No manifest found. Add assets/website_plots/manifest.json.",
+        "No manifest found. Upload a CSV or add assets/website_plots/manifest.json.",
         true
       );
     }
   };
 
-  csvSelect.addEventListener("change", loadCsv);
+  loadCsvButton.addEventListener("click", loadCsv);
   xAxisSelect.addEventListener("change", () => {
     buildFilterControls();
     renderPlot();
   });
   yMetricSelect.addEventListener("change", renderPlot);
-  imageBasePathInput.addEventListener("input", renderImage);
-  imageFilenameInput.addEventListener("input", renderImage);
-  imagePatternInput.addEventListener("input", renderImage);
+  updateImageButton.addEventListener("click", renderImage);
   decisionImage.addEventListener("error", () => {
     setStatus(imageStatus, "Image failed to load. Check the path.", true);
   });
