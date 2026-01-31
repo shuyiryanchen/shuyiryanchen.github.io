@@ -12,6 +12,10 @@ disable_nav: true
   .page__title {
     text-align: center;
   }
+
+  .page__inner-wrap {
+    max-width: 1200px;
+  }
 </style>
 
 <div id="sect-fasttrip-psps" data-base-path="{{ base_path }}">
@@ -35,18 +39,21 @@ disable_nav: true
               <select id="x-axis"></select>
             </div>
           </div>
-          <div>
-            <div class="sfps-field">
-              <label for="y-metric">Y metric</label>
-              <select id="y-metric"></select>
-            </div>
-          </div>
         </div>
         <div id="filter-controls" class="sfps-grid"></div>
       </div>
     </div>
 
-    <div id="trend-plot" class="sfps-plot"></div>
+    <div class="sfps-plot-grid">
+      <div>
+        <h3 class="sfps-plot-title">Optimization Results</h3>
+        <div id="trend-plot-opt" class="sfps-plot"></div>
+      </div>
+      <div>
+        <h3 class="sfps-plot-title">Evaluation</h3>
+        <div id="trend-plot-true" class="sfps-plot"></div>
+      </div>
+    </div>
   </section>
 
   <section class="sfps-section">
@@ -68,11 +75,6 @@ disable_nav: true
               <input id="image-pattern" type="text" />
               <small>Use tokens like <code>{B_budget}</code></small>
             </div>
-            <div class="sfps-field">
-              <label for="image-upload">Upload PNG</label>
-              <input id="image-upload" type="file" accept=".png,.jpg,.jpeg" />
-            </div>
-            <button id="update-image" class="sfps-button">Update Image</button>
             <div id="image-status" class="sfps-status"></div>
           </div>
           <div>

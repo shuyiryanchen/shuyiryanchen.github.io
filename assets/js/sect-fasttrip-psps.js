@@ -6,15 +6,13 @@
   const manifestUrl = `${basePath}/assets/website_plots/manifest.json`;
 
   const xAxisSelect = document.getElementById("x-axis");
-  const yMetricSelect = document.getElementById("y-metric");
   const filterControls = document.getElementById("filter-controls");
-  const trendPlot = document.getElementById("trend-plot");
+  const trendPlotOpt = document.getElementById("trend-plot-opt");
+  const trendPlotTrue = document.getElementById("trend-plot-true");
 
   const imageBasePathInput = document.getElementById("image-base-path");
   const imageFilenameInput = document.getElementById("image-filename");
   const imagePatternInput = document.getElementById("image-pattern");
-  const imageUpload = document.getElementById("image-upload");
-  const updateImageButton = document.getElementById("update-image");
   const imageStatus = document.getElementById("image-status");
   const imageParams = document.getElementById("image-params");
   const decisionImage = document.getElementById("decision-image");
@@ -120,7 +118,6 @@
 
   const buildAxisSelects = () => {
     xAxisSelect.innerHTML = "";
-    yMetricSelect.innerHTML = "";
 
     getDisplayParams().forEach((param) => {
       const option = document.createElement("option");
@@ -129,19 +126,9 @@
       xAxisSelect.appendChild(option);
     });
 
-    numericColumns.forEach((metric) => {
-      const option = document.createElement("option");
-      option.value = metric;
-      option.textContent = metric;
-      yMetricSelect.appendChild(option);
-    });
-
     const displayParams = getDisplayParams();
     if (displayParams.length) {
       xAxisSelect.value = displayParams[0];
-    }
-    if (numericColumns.includes("true_cost")) {
-      yMetricSelect.value = "true_cost";
     }
   };
 
@@ -192,7 +179,6 @@
   const renderPlot = () => {
     if (!dataset.length) return;
     const xAxis = xAxisSelect.value;
-    const yMetric = yMetricSelect.value;
 
     const filters = {};
     filterControls.querySelectorAll("select").forEach((select) => {
@@ -205,70 +191,80 @@
       Object.entries(filters).every(([key, value]) => String(row[key]) === value)
     );
 
-    const grouped = new Map();
-    filteredRows.forEach((row) => {
-      const xValue = row[xAxis];
-      if (xValue === undefined || xValue === null || xValue === "") return;
-      if (!grouped.has(xValue)) grouped.set(xValue, []);
-      grouped.get(xValue).push(row[yMetric]);
-    });
+    const renderMetricPlot = (targetEl, yMetric, yLabel) => {
+      if (!numericColumns.includes(yMetric)) {
+        targetEl.innerHTML = `<div class="sfps-status">${yLabel} unavailable</div>`;
+        return;
+      }
 
-    const xValues = Array.from(grouped.keys());
-    const sortedXValues = xValues.every((val) => !Number.isNaN(Number(val)))
-      ? xValues.sort((a, b) => Number(a) - Number(b))
-      : xValues.sort();
+      const grouped = new Map();
+      filteredRows.forEach((row) => {
+        const xValue = row[xAxis];
+        if (xValue === undefined || xValue === null || xValue === "") return;
+        if (!grouped.has(xValue)) grouped.set(xValue, []);
+        grouped.get(xValue).push(row[yMetric]);
+      });
 
-    const means = [];
-    const uppers = [];
-    const lowers = [];
+      const xValues = Array.from(grouped.keys());
+      const sortedXValues = xValues.every((val) => !Number.isNaN(Number(val)))
+        ? xValues.sort((a, b) => Number(a) - Number(b))
+        : xValues.sort();
 
-    sortedXValues.forEach((xValue) => {
-      const stats = computeStats(grouped.get(xValue));
-      means.push(stats.mean);
-      uppers.push(stats.mean + stats.std);
-      lowers.push(stats.mean - stats.std);
-    });
+      const means = [];
+      const uppers = [];
+      const lowers = [];
 
-    const meanTrace = {
-      x: sortedXValues,
-      y: means,
-      type: "scatter",
-      mode: "lines+markers",
-      name: `${yMetric} mean`,
-      line: { color: "#1f77b4" }
+      sortedXValues.forEach((xValue) => {
+        const stats = computeStats(grouped.get(xValue));
+        means.push(stats.mean);
+        uppers.push(stats.mean + stats.std);
+        lowers.push(stats.mean - stats.std);
+      });
+
+      const meanTrace = {
+        x: sortedXValues,
+        y: means,
+        type: "scatter",
+        mode: "lines+markers",
+        name: `${yLabel} mean`,
+        line: { color: "#1f77b4" }
+      };
+
+      const upperTrace = {
+        x: sortedXValues,
+        y: uppers,
+        type: "scatter",
+        mode: "lines",
+        line: { width: 0 },
+        hoverinfo: "skip",
+        showlegend: false
+      };
+
+      const lowerTrace = {
+        x: sortedXValues,
+        y: lowers,
+        type: "scatter",
+        mode: "lines",
+        fill: "tonexty",
+        fillcolor: "rgba(31, 119, 180, 0.2)",
+        line: { width: 0 },
+        name: "±1 std",
+        hoverinfo: "skip"
+      };
+
+      const layout = {
+        xaxis: { title: getLabel(xAxis) },
+        yaxis: { title: yLabel },
+        margin: { t: 20, r: 20, b: 50, l: 60 }
+      };
+
+      Plotly.newPlot(targetEl, [upperTrace, lowerTrace, meanTrace], layout, {
+        responsive: true
+      });
     };
 
-    const upperTrace = {
-      x: sortedXValues,
-      y: uppers,
-      type: "scatter",
-      mode: "lines",
-      line: { width: 0 },
-      hoverinfo: "skip",
-      showlegend: false
-    };
-
-    const lowerTrace = {
-      x: sortedXValues,
-      y: lowers,
-      type: "scatter",
-      mode: "lines",
-      fill: "tonexty",
-      fillcolor: "rgba(31, 119, 180, 0.2)",
-      line: { width: 0 },
-      name: "±1 std",
-      hoverinfo: "skip"
-    };
-
-    const layout = {
-      xaxis: { title: xAxis },
-      yaxis: { title: yMetric },
-      margin: { t: 20, r: 20, b: 50, l: 60 }
-    };
-
-    Plotly.newPlot(trendPlot, [upperTrace, lowerTrace, meanTrace], layout, {
-      responsive: true
-    });
+    renderMetricPlot(trendPlotOpt, "opt_cost", "Optimization cost");
+    renderMetricPlot(trendPlotTrue, "true_cost", "Evaluation cost");
   };
 
   const handleCsvData = (rows) => {
@@ -285,6 +281,7 @@
     buildFilterControls();
     buildImageControls();
     renderPlot();
+    renderImage();
   };
 
   const loadCsvFromUrl = async (url) => {
@@ -339,25 +336,18 @@
       manualInput.type = "text";
       manualInput.placeholder = "manual value (optional)";
       manualInput.dataset.param = param;
+      manualInput.addEventListener("input", renderImage);
 
       wrapper.appendChild(label);
       wrapper.appendChild(input);
       wrapper.appendChild(manualInput);
       imageParams.appendChild(wrapper);
+
+      input.addEventListener("change", renderImage);
     });
   };
 
   const renderImage = () => {
-    if (imageUpload.files && imageUpload.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        decisionImage.src = event.target.result;
-        setStatus(imageStatus, "Loaded image from upload.");
-      };
-      reader.readAsDataURL(imageUpload.files[0]);
-      return;
-    }
-
     const params = {};
     imageParams.querySelectorAll("select").forEach((select) => {
       params[select.dataset.param] = select.value;
@@ -402,8 +392,9 @@
     buildFilterControls();
     renderPlot();
   });
-  yMetricSelect.addEventListener("change", renderPlot);
-  updateImageButton.addEventListener("click", renderImage);
+  imageBasePathInput.addEventListener("input", renderImage);
+  imageFilenameInput.addEventListener("input", renderImage);
+  imagePatternInput.addEventListener("input", renderImage);
   decisionImage.addEventListener("error", () => {
     setStatus(imageStatus, "Image failed to load. Check the path.", true);
   });

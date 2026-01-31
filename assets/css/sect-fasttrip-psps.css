@@ -30,6 +30,11 @@
   margin-bottom: 0.8rem;
 }
 
+.sfps-field label,
+.sfps-field small {
+  white-space: nowrap;
+}
+
 .sfps-field input,
 .sfps-field select {
   padding: 0.4rem 0.5rem;
@@ -73,6 +78,17 @@
 .sfps-plot {
   width: 100%;
   min-height: 420px;
+}
+
+.sfps-plot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.sfps-plot-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
 }
 
 .sfps-image-wrap {
