@@ -5,8 +5,6 @@
   const basePath = root.dataset.basePath || "";
   const manifestUrl = `${basePath}/assets/website_plots/manifest.json`;
 
-  const csvUpload = document.getElementById("csv-upload");
-  const loadCsvButton = document.getElementById("load-csv");
   const xAxisSelect = document.getElementById("x-axis");
   const yMetricSelect = document.getElementById("y-metric");
   const filterControls = document.getElementById("filter-controls");
@@ -275,10 +273,7 @@
   const loadCsv = async () => {
     try {
       let text = "";
-      if (csvUpload.files && csvUpload.files[0]) {
-        text = await csvUpload.files[0].text();
-        usingDefaultCsv = false;
-      } else if (defaultCsvFile) {
+      if (defaultCsvFile) {
         const csvUrl = `${basePath}/assets/website_plots/${defaultCsvFile}`;
         text = await loadCsvFromUrl(csvUrl);
         usingDefaultCsv = true;
@@ -380,7 +375,6 @@
     }
   };
 
-  loadCsvButton.addEventListener("click", loadCsv);
   xAxisSelect.addEventListener("change", () => {
     buildFilterControls();
     renderPlot();
