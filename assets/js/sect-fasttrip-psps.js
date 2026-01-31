@@ -6,9 +6,13 @@
   const manifestUrl = `${basePath}/assets/website_plots/manifest.json`;
 
   const xAxisSelect = document.getElementById("x-axis");
+  const yAxisLeftSelect = document.getElementById("y-axis-left");
+  const yAxisRightSelect = document.getElementById("y-axis-right");
   const filterControls = document.getElementById("filter-controls");
   const trendPlotOpt = document.getElementById("trend-plot-opt");
   const trendPlotTrue = document.getElementById("trend-plot-true");
+  const plotTitleLeft = document.getElementById("plot-title-left");
+  const plotTitleRight = document.getElementById("plot-title-right");
 
   const imageBasePathInput = document.getElementById("image-base-path");
   const imageFilenameInput = document.getElementById("image-filename");
@@ -49,6 +53,27 @@
     mht_method: "MHT method"
   };
 
+  const yMetricOptions = [
+    { key: "opt_cost", label: "Optimization cost", type: "direct" },
+    { key: "true_cost", label: "Evaluation cost", type: "direct" },
+    { key: "x_size", label: "X size", type: "direct" },
+    { key: "y_size", label: "Y size", type: "direct" },
+    {
+      key: "prevented_fast_trip_pct",
+      label: "Prevented by fast-trip (% of ignitions)",
+      type: "ratio",
+      numerator: "prevented_by_fast_trip_y_total",
+      denominator: "ignitions"
+    },
+    {
+      key: "prevented_psps_pct",
+      label: "Prevented by PSPS (% of ignitions)",
+      type: "ratio",
+      numerator: "prevented_by_psps_z_total",
+      denominator: "ignitions"
+    }
+  ];
+
   let dataset = [];
   let columns = [];
   let numericColumns = [];
@@ -75,6 +100,8 @@
   };
 
   const getLabel = (param) => paramLabels[param] || param;
+  const getMetricLabel = (key) =>
+    (yMetricOptions.find((option) => option.key === key) || {}).label || key;
 
   const getDisplayParams = () => {
     const params = availableParams.length ? availableParams : hyperparams;
@@ -118,6 +145,8 @@
 
   const buildAxisSelects = () => {
     xAxisSelect.innerHTML = "";
+    yAxisLeftSelect.innerHTML = "";
+    yAxisRightSelect.innerHTML = "";
 
     getDisplayParams().forEach((param) => {
       const option = document.createElement("option");
@@ -126,10 +155,25 @@
       xAxisSelect.appendChild(option);
     });
 
+    yMetricOptions.forEach((metric) => {
+      const optionLeft = document.createElement("option");
+      optionLeft.value = metric.key;
+      optionLeft.textContent = metric.label;
+      yAxisLeftSelect.appendChild(optionLeft);
+
+      const optionRight = document.createElement("option");
+      optionRight.value = metric.key;
+      optionRight.textContent = metric.label;
+      yAxisRightSelect.appendChild(optionRight);
+    });
+
     const displayParams = getDisplayParams();
     if (displayParams.length) {
       xAxisSelect.value = displayParams[0];
     }
+
+    yAxisLeftSelect.value = "opt_cost";
+    yAxisRightSelect.value = "true_cost";
   };
 
   const buildFilterControls = () => {
@@ -179,6 +223,8 @@
   const renderPlot = () => {
     if (!dataset.length) return;
     const xAxis = xAxisSelect.value;
+    const leftMetric = yAxisLeftSelect.value;
+    const rightMetric = yAxisRightSelect.value;
 
     const filters = {};
     filterControls.querySelectorAll("select").forEach((select) => {
@@ -191,8 +237,39 @@
       Object.entries(filters).every(([key, value]) => String(row[key]) === value)
     );
 
-    const renderMetricPlot = (targetEl, yMetric, yLabel) => {
-      if (!numericColumns.includes(yMetric)) {
+    const getMetricConfig = (metricKey) =>
+      yMetricOptions.find((metric) => metric.key === metricKey);
+
+    const isMetricAvailable = (metric) => {
+      if (!metric) return false;
+      if (metric.type === "direct") {
+        return numericColumns.includes(metric.key);
+      }
+      if (metric.type === "ratio") {
+        return columns.includes(metric.numerator) && columns.includes(metric.denominator);
+      }
+      return false;
+    };
+
+    const getMetricValue = (row, metric) => {
+      if (metric.type === "direct") {
+        return Number(row[metric.key]);
+      }
+      if (metric.type === "ratio") {
+        const numerator = Number(row[metric.numerator]);
+        const denominator = Number(row[metric.denominator]);
+        if (Number.isNaN(numerator) || Number.isNaN(denominator) || denominator === 0) {
+          return NaN;
+        }
+        return (numerator / denominator) * 100;
+      }
+      return NaN;
+    };
+
+    const renderMetricPlot = (targetEl, metricKey) => {
+      const metric = getMetricConfig(metricKey);
+      const yLabel = getMetricLabel(metricKey);
+      if (!isMetricAvailable(metric)) {
         targetEl.innerHTML = `<div class="sfps-status">${yLabel} unavailable</div>`;
         return;
       }
@@ -202,7 +279,7 @@
         const xValue = row[xAxis];
         if (xValue === undefined || xValue === null || xValue === "") return;
         if (!grouped.has(xValue)) grouped.set(xValue, []);
-        grouped.get(xValue).push(row[yMetric]);
+        grouped.get(xValue).push(getMetricValue(row, metric));
       });
 
       const xValues = Array.from(grouped.keys());
@@ -255,7 +332,14 @@
       const layout = {
         xaxis: { title: getLabel(xAxis) },
         yaxis: { title: yLabel },
-        margin: { t: 20, r: 20, b: 50, l: 60 }
+        margin: { t: 20, r: 20, b: 80, l: 60 },
+        legend: {
+          orientation: "h",
+          x: 0.5,
+          xanchor: "center",
+          y: -0.25,
+          yanchor: "top"
+        }
       };
 
       Plotly.newPlot(targetEl, [upperTrace, lowerTrace, meanTrace], layout, {
@@ -263,8 +347,10 @@
       });
     };
 
-    renderMetricPlot(trendPlotOpt, "opt_cost", "Optimization cost");
-    renderMetricPlot(trendPlotTrue, "true_cost", "Evaluation cost");
+    renderMetricPlot(trendPlotOpt, leftMetric);
+    renderMetricPlot(trendPlotTrue, rightMetric);
+    plotTitleLeft.textContent = getMetricLabel(leftMetric);
+    plotTitleRight.textContent = getMetricLabel(rightMetric);
   };
 
   const handleCsvData = (rows) => {
@@ -392,6 +478,8 @@
     buildFilterControls();
     renderPlot();
   });
+  yAxisLeftSelect.addEventListener("change", renderPlot);
+  yAxisRightSelect.addEventListener("change", renderPlot);
   imageBasePathInput.addEventListener("input", renderImage);
   imageFilenameInput.addEventListener("input", renderImage);
   imagePatternInput.addEventListener("input", renderImage);

@@ -14,7 +14,8 @@ disable_nav: true
   }
 
   .page__inner-wrap {
-    max-width: 1200px;
+    max-width: 1400px;
+    width: 100%;
   }
 </style>
 
@@ -39,6 +40,16 @@ disable_nav: true
               <select id="x-axis"></select>
             </div>
           </div>
+          <div>
+            <div class="sfps-field">
+              <label for="y-axis-left">Left plot Y axis</label>
+              <select id="y-axis-left"></select>
+            </div>
+            <div class="sfps-field">
+              <label for="y-axis-right">Right plot Y axis</label>
+              <select id="y-axis-right"></select>
+            </div>
+          </div>
         </div>
         <div id="filter-controls" class="sfps-grid"></div>
       </div>
@@ -46,11 +57,11 @@ disable_nav: true
 
     <div class="sfps-plot-grid">
       <div>
-        <h3 class="sfps-plot-title">Optimization Results</h3>
+        <h3 class="sfps-plot-title" id="plot-title-left">Optimization Results</h3>
         <div id="trend-plot-opt" class="sfps-plot"></div>
       </div>
       <div>
-        <h3 class="sfps-plot-title">Evaluation</h3>
+        <h3 class="sfps-plot-title" id="plot-title-right">Evaluation</h3>
         <div id="trend-plot-true" class="sfps-plot"></div>
       </div>
     </div>
