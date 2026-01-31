@@ -1,6 +1,5 @@
 {
   "csvFiles": [
-    // "example.csv"
     "iteration_optimization_runs_local_and_group_bounds.csv"
   ],
   "images": []
