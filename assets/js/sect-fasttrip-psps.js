@@ -39,9 +39,9 @@
 
   const paramLabels = {
     B_budget: "Fast-trip budget",
-    B_budget_multiplier: "Fast-trip budget (ratio to all circuits)",
+    B_budget_multiplier: "Fast-trip budget (ratio of circuits)",
     C_budget: "PSPS budget",
-    C_budget_multiplier: "PSPS budget (ratio to all circuits)",
+    C_budget_multiplier: "PSPS budget (ratio of circuits)",
     K_groups: "Number of groups",
     W_cap: "Reliability constraint (absolute)",
     W_cap_multiplier: "Reliability constraint (ratio)",
