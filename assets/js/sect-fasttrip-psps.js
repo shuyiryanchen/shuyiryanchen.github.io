@@ -5,10 +5,8 @@
   const basePath = root.dataset.basePath || "";
   const manifestUrl = `${basePath}/assets/website_plots/manifest.json`;
 
-  const csvSelect = document.getElementById("csv-file");
   const csvUpload = document.getElementById("csv-upload");
   const loadCsvButton = document.getElementById("load-csv");
-  const csvStatus = document.getElementById("csv-status");
   const xAxisSelect = document.getElementById("x-axis");
   const yMetricSelect = document.getElementById("y-metric");
   const filterControls = document.getElementById("filter-controls");
@@ -43,6 +41,10 @@
   let columns = [];
   let numericColumns = [];
   let availableParams = [];
+  let defaultCsvFile = "";
+  let usingDefaultCsv = false;
+
+  const hiddenParamsForDefault = new Set(["W_cap", "C_budget", "ignitions"]);
 
   imageBasePathInput.value = `${basePath}/assets/website_plots`;
   imagePatternInput.value =
@@ -53,6 +55,12 @@
   const setStatus = (el, message, isError = false) => {
     el.textContent = message;
     el.style.color = isError ? "#a40000" : "#555";
+  };
+
+  const getDisplayParams = () => {
+    const params = availableParams.length ? availableParams : hyperparams;
+    if (!usingDefaultCsv) return params;
+    return params.filter((param) => !hiddenParamsForDefault.has(param));
   };
 
   const parseCsvText = (text) => {
@@ -89,25 +97,11 @@
     return list.sort();
   };
 
-  const buildCsvSelect = (csvFiles) => {
-    csvSelect.innerHTML = "";
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = csvFiles.length ? "Select a CSV" : "No CSVs found";
-    csvSelect.appendChild(placeholder);
-    csvFiles.forEach((file) => {
-      const option = document.createElement("option");
-      option.value = file;
-      option.textContent = file;
-      csvSelect.appendChild(option);
-    });
-  };
-
   const buildAxisSelects = () => {
     xAxisSelect.innerHTML = "";
     yMetricSelect.innerHTML = "";
 
-    availableParams.forEach((param) => {
+    getDisplayParams().forEach((param) => {
       const option = document.createElement("option");
       option.value = param;
       option.textContent = param;
@@ -121,8 +115,9 @@
       yMetricSelect.appendChild(option);
     });
 
-    if (availableParams.length) {
-      xAxisSelect.value = availableParams[0];
+    const displayParams = getDisplayParams();
+    if (displayParams.length) {
+      xAxisSelect.value = displayParams[0];
     }
     if (numericColumns.includes("true_cost")) {
       yMetricSelect.value = "true_cost";
@@ -133,7 +128,7 @@
     filterControls.innerHTML = "";
     const xAxis = xAxisSelect.value;
 
-    availableParams
+    getDisplayParams()
       .filter((param) => param !== xAxis)
       .forEach((param) => {
         const wrapper = document.createElement("div");
@@ -262,15 +257,9 @@
     availableParams = hyperparams.filter((param) => columns.includes(param));
 
     if (!numericColumns.length || !availableParams.length) {
-      setStatus(
-        csvStatus,
-        "CSV loaded, but no numeric metrics or hyperparameters detected.",
-        true
-      );
       return;
     }
 
-    setStatus(csvStatus, `CSV loaded with ${rows.length} rows.`);
     buildAxisSelects();
     buildFilterControls();
     buildImageControls();
@@ -285,28 +274,27 @@
 
   const loadCsv = async () => {
     try {
-      setStatus(csvStatus, "Loading CSV...");
       let text = "";
       if (csvUpload.files && csvUpload.files[0]) {
         text = await csvUpload.files[0].text();
-      } else if (csvSelect.value) {
-        const csvUrl = `${basePath}/assets/website_plots/${csvSelect.value}`;
+        usingDefaultCsv = false;
+      } else if (defaultCsvFile) {
+        const csvUrl = `${basePath}/assets/website_plots/${defaultCsvFile}`;
         text = await loadCsvFromUrl(csvUrl);
+        usingDefaultCsv = true;
       } else {
-        setStatus(csvStatus, "Select or upload a CSV first.", true);
         return;
       }
       const rows = parseCsvText(text);
       handleCsvData(rows);
     } catch (error) {
-      setStatus(csvStatus, `CSV error: ${error.message}`, true);
+      usingDefaultCsv = false;
     }
   };
 
   const buildImageControls = () => {
     imageParams.innerHTML = "";
-    const paramsToShow = availableParams.length ? availableParams : hyperparams;
-    paramsToShow.forEach((param) => {
+    getDisplayParams().forEach((param) => {
       const wrapper = document.createElement("div");
       wrapper.className = "sfps-field";
       const label = document.createElement("label");
@@ -385,15 +373,10 @@
       const response = await fetch(manifestUrl);
       if (!response.ok) throw new Error("No manifest.");
       const manifest = await response.json();
-      buildCsvSelect(manifest.csvFiles || []);
-      setStatus(csvStatus, "Manifest loaded. Select a CSV or upload one.");
+      defaultCsvFile = (manifest.csvFiles || [])[0] || "";
+      await loadCsv();
     } catch (error) {
-      buildCsvSelect([]);
-      setStatus(
-        csvStatus,
-        "No manifest found. Upload a CSV or add assets/website_plots/manifest.json.",
-        true
-      );
+      defaultCsvFile = "";
     }
   };
 
