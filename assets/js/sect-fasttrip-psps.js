@@ -42,7 +42,12 @@
   let defaultCsvFile = "";
   let usingDefaultCsv = false;
 
-  const hiddenParamsForDefault = new Set(["W_cap", "C_budget", "ignitions"]);
+  const hiddenParamsForDefault = new Set([
+    "B_budget",
+    "W_cap",
+    "C_budget",
+    "ignitions"
+  ]);
 
   imageBasePathInput.value = `${basePath}/assets/website_plots`;
   imagePatternInput.value =
