@@ -35,6 +35,22 @@
     "mht_method"
   ];
 
+  const paramLabels = {
+    B_budget: "Fast-trip budget",
+    B_budget_multiplier: "Fast-trip budget (ratio to all circuits)",
+    C_budget: "PSPS budget",
+    C_budget_multiplier: "PSPS budget (ratio to all circuits)",
+    K_groups: "Number of groups",
+    W_cap: "Reliability constraint (absolute)",
+    W_cap_multiplier: "Reliability constraint (ratio)",
+    alpha: "Fast-trip parameter alpha",
+    effective_alpha: "Effectiveness of fast-trip",
+    gamma_i_multiplier: "Reliability effect of fast-trip",
+    grouping_method: "Declustering method",
+    ignitions: "Ignitions",
+    mht_method: "MHT method"
+  };
+
   let dataset = [];
   let columns = [];
   let numericColumns = [];
@@ -59,6 +75,8 @@
     el.textContent = message;
     el.style.color = isError ? "#a40000" : "#555";
   };
+
+  const getLabel = (param) => paramLabels[param] || param;
 
   const getDisplayParams = () => {
     const params = availableParams.length ? availableParams : hyperparams;
@@ -107,7 +125,7 @@
     getDisplayParams().forEach((param) => {
       const option = document.createElement("option");
       option.value = param;
-      option.textContent = param;
+      option.textContent = getLabel(param);
       xAxisSelect.appendChild(option);
     });
 
@@ -137,7 +155,7 @@
         const wrapper = document.createElement("div");
         wrapper.className = "sfps-field";
         const label = document.createElement("label");
-        label.textContent = param;
+        label.textContent = getLabel(param);
         label.setAttribute("for", `filter-${param}`);
         const select = document.createElement("select");
         select.id = `filter-${param}`;
@@ -298,7 +316,7 @@
       const wrapper = document.createElement("div");
       wrapper.className = "sfps-field";
       const label = document.createElement("label");
-      label.textContent = param;
+      label.textContent = getLabel(param);
       const input = document.createElement("select");
       input.id = `image-${param}`;
       input.dataset.param = param;

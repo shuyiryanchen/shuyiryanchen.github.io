@@ -2,6 +2,11 @@
   margin: 2rem 0;
 }
 
+.sfps-intro {
+  max-width: 960px;
+  margin: 0 auto 1.5rem;
+}
+
 .sfps-row {
   display: flex;
   flex-wrap: wrap;
