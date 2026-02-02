@@ -566,12 +566,14 @@
 
     const orderedParams = [
       ...preferredOrder.filter((param) => imageParamSet.has(param)),
-      ...Array.from(imageParamSet).filter((param) => !preferredOrder.includes(param))
+      ...Array.from(imageParamSet)
+        .filter((param) => !preferredOrder.includes(param))
+        .sort()
     ];
     const selectControls = [];
     const sliderControls = [];
 
-    const suffixControl = buildSuffixControl();
+    const suffixControl = buildSuffixControl(previousSelection);
     if (suffixControl) {
       selectControls.push(suffixControl);
     }
@@ -600,10 +602,7 @@
         "gamma_i_multiplier",
         "W_cap_multiplier"
       ];
-      if (
-        (requiredSliderParams.includes(param) && sortedValues.length >= 1) ||
-        (allNumeric && sortedValues.length > 1)
-      ) {
+      if (requiredSliderParams.includes(param) || (allNumeric && sortedValues.length > 1)) {
         const preferredValue =
           previousSelection[param] && sortedValues.includes(previousSelection[param])
             ? previousSelection[param]
@@ -672,7 +671,7 @@
     sliderControls.forEach((node) => imageParams.appendChild(node));
   };
 
-  const buildSuffixControl = () => {
+  const buildSuffixControl = (previousSelection) => {
     const filtered = getFilteredImageMeta("suffix");
     const source = filtered.length ? filtered : imageMeta;
     const options = Array.from(
@@ -699,7 +698,11 @@
       select.appendChild(option);
     });
 
-    imageSelection.suffix = options[0].key;
+    const preferredSuffix =
+      previousSelection?.suffix && options.some((option) => option.key === previousSelection.suffix)
+        ? previousSelection.suffix
+        : options[0].key;
+    imageSelection.suffix = preferredSuffix;
     select.value = imageSelection.suffix;
     select.addEventListener("change", () => {
       imageSelection.suffix = select.value;
