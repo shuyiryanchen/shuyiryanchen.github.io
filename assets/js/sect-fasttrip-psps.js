@@ -756,19 +756,22 @@
     setStatus(imageStatus, "", false);
   };
 
-  const refreshImageMeta = async () => {
-    const response = await fetch(manifestUrl);
+  const fetchManifest = async () => {
+    const cacheBustUrl = `${manifestUrl}?t=${Date.now()}`;
+    const response = await fetch(cacheBustUrl, { cache: "no-store" });
     if (!response.ok) throw new Error("No manifest.");
-    const manifest = await response.json();
+    return await response.json();
+  };
+
+  const refreshImageMeta = async () => {
+    const manifest = await fetchManifest();
     const images = manifest.images || manifest.imageFiles || [];
     imageMeta = images.map(parseImageName).filter(Boolean);
   };
 
   const init = async () => {
     try {
-      const response = await fetch(manifestUrl);
-      if (!response.ok) throw new Error("No manifest.");
-      const manifest = await response.json();
+      const manifest = await fetchManifest();
       defaultCsvFile = (manifest.csvFiles || [])[0] || "";
       const images = manifest.images || manifest.imageFiles || [];
       imageMeta = images.map(parseImageName).filter(Boolean);
