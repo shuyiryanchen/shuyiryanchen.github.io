@@ -123,8 +123,8 @@
   };
 
   const initTabs = () => {
-    const tabButtons = Array.from(document.querySelectorAll(".sfps-tab-button"));
-    const tabPanels = Array.from(document.querySelectorAll(".sfps-tab-panel"));
+    const tabButtons = Array.from(root.querySelectorAll(".sfps-tab-button"));
+    const tabPanels = Array.from(root.querySelectorAll(".sfps-tab-panel"));
     if (!tabButtons.length || !tabPanels.length) return;
 
     const setActiveTab = (targetId) => {
@@ -134,7 +134,9 @@
         button.setAttribute("aria-selected", String(isActive));
       });
       tabPanels.forEach((panel) => {
-        panel.classList.toggle("is-active", panel.id === targetId);
+        const isActive = panel.id === targetId;
+        panel.classList.toggle("is-active", isActive);
+        panel.toggleAttribute("hidden", !isActive);
       });
     };
 
@@ -145,6 +147,12 @@
         setActiveTab(targetId);
       });
     });
+
+    const initialButton = tabButtons.find((button) => button.classList.contains("is-active"));
+    const initialTarget = initialButton?.dataset.tab || tabButtons[0].dataset.tab;
+    if (initialTarget) {
+      setActiveTab(initialTarget);
+    }
   };
 
   const parseImageName = (path) => {

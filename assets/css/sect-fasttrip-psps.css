@@ -54,6 +54,10 @@
   display: block;
 }
 
+.sfps-tab-panel[hidden] {
+  display: none;
+}
+
 .sfps-split {
   display: flex;
   gap: 2rem;
