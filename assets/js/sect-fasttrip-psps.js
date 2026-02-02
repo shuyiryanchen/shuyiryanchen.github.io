@@ -554,13 +554,14 @@
     });
 
     const preferredOrder = [
+      "mht_method",
+      "K_groups",
+      "alpha",
       "B_budget_multiplier",
       "C_budget_multiplier",
       "effective_alpha",
       "gamma_i_multiplier",
-      "mht_method",
-      "K_groups",
-      "alpha"
+      "W_cap_multiplier"
     ];
 
     const orderedParams = [
@@ -596,7 +597,8 @@
         "B_budget_multiplier",
         "C_budget_multiplier",
         "effective_alpha",
-        "gamma_i_multiplier"
+        "gamma_i_multiplier",
+        "W_cap_multiplier"
       ];
       if (
         (requiredSliderParams.includes(param) && sortedValues.length >= 1) ||
