@@ -751,6 +751,14 @@
     setStatus(imageStatus, "", false);
   };
 
+  const refreshImageMeta = async () => {
+    const response = await fetch(manifestUrl);
+    if (!response.ok) throw new Error("No manifest.");
+    const manifest = await response.json();
+    const images = manifest.images || manifest.imageFiles || [];
+    imageMeta = images.map(parseImageName).filter(Boolean);
+  };
+
   const init = async () => {
     try {
       const response = await fetch(manifestUrl);
@@ -782,9 +790,14 @@
     buildFilterControls();
     renderPlot();
   });
-  resetPart2Button.addEventListener("click", () => {
+  resetPart2Button.addEventListener("click", async () => {
     imageSelection = { suffix: "" };
     userSelected.clear();
+    try {
+      await refreshImageMeta();
+    } catch (error) {
+      // ignore refresh failures, keep existing options
+    }
     buildImageControls();
     renderImage();
   });
