@@ -608,10 +608,12 @@
         : uniqueValues.sort();
 
       if (requiredSliderParams.has(param) || (allNumeric && sortedValues.length > 1)) {
-        const preferredValue =
-          previousSelection[param] && sortedValues.includes(previousSelection[param])
-            ? previousSelection[param]
-            : sortedValues[0];
+        const keepSelected =
+          previousSelection[param] && sortedValues.includes(previousSelection[param]);
+        const preferredValue = keepSelected ? previousSelection[param] : sortedValues[0];
+        if (!keepSelected) {
+          userSelected.delete(param);
+        }
         const preferredIndex = Math.max(0, sortedValues.indexOf(preferredValue));
         const slider = document.createElement("input");
         slider.type = "range";
@@ -654,10 +656,12 @@
           input.appendChild(option);
         });
 
-        const preferredValue =
-          previousSelection[param] && sortedValues.includes(previousSelection[param])
-            ? previousSelection[param]
-            : sortedValues[0];
+        const keepSelected =
+          previousSelection[param] && sortedValues.includes(previousSelection[param]);
+        const preferredValue = keepSelected ? previousSelection[param] : sortedValues[0];
+        if (!keepSelected) {
+          userSelected.delete(param);
+        }
         input.value = preferredValue;
         input.addEventListener("change", () => {
           imageSelection[param] = input.value;
@@ -703,10 +707,12 @@
       select.appendChild(option);
     });
 
-    const preferredSuffix =
-      previousSelection?.suffix && options.some((option) => option.key === previousSelection.suffix)
-        ? previousSelection.suffix
-        : options[0].key;
+    const keepSuffix =
+      previousSelection?.suffix && options.some((option) => option.key === previousSelection.suffix);
+    const preferredSuffix = keepSuffix ? previousSelection.suffix : options[0].key;
+    if (!keepSuffix) {
+      userSelected.delete("suffix");
+    }
     imageSelection.suffix = preferredSuffix;
     select.value = imageSelection.suffix;
     select.addEventListener("change", () => {
