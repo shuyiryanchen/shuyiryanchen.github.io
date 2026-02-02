@@ -2,6 +2,13 @@
   margin: 2rem 0;
 }
 
+.sfps-two-up {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
 .sfps-intro {
   max-width: 960px;
   margin: 0 auto 1.5rem;
@@ -40,7 +47,7 @@
   padding: 0.4rem 0.5rem;
   border: 1px solid #cfcfcf;
   border-radius: 4px;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
 }
 
 .sfps-grid {
