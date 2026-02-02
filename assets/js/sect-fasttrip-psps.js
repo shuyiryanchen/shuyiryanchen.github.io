@@ -551,10 +551,24 @@
       .filter((value) => value !== undefined && value !== "");
   };
 
+  const getMetaForSelection = (selection, excludeParam) => {
+    return imageMeta.filter((meta) => {
+      if (excludeParam !== "suffix" && selection.suffix) {
+        if (getSuffixKey(meta.suffix) !== selection.suffix) return false;
+      }
+      return Object.entries(selection).every(([key, value]) => {
+        if (key === "suffix" || key === excludeParam) return true;
+        if (value === undefined || value === null || value === "") return true;
+        if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
+        return String(meta.params[key]) === String(value);
+      });
+    });
+  };
+
   const buildImageControls = () => {
     imageParams.innerHTML = "";
     const previousSelection = { ...imageSelection };
-    imageSelection = { suffix: imageSelection.suffix || "" };
+    const workingSelection = { suffix: imageSelection.suffix || "" };
     const excludedImageParams = new Set(["B_budget", "C_budget", "W_cap"]);
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
@@ -588,6 +602,7 @@
     const suffixControl = buildSuffixControl(previousSelection);
     if (suffixControl) {
       selectControls.push(suffixControl);
+      workingSelection.suffix = imageSelection.suffix;
     }
 
     orderedParams.forEach((param) => {
@@ -596,7 +611,9 @@
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      const values = getImageValues(param, imageMeta);
+      const values = getMetaForSelection(workingSelection, param)
+        .map((meta) => meta.params[param])
+        .filter((value) => value !== undefined && value !== "");
 
       const uniqueValues = Array.from(new Set(values));
       if (!uniqueValues.length) return;
@@ -647,6 +664,7 @@
         wrapper.appendChild(valueDisplay);
         sliderControls.push(wrapper);
         imageSelection[param] = preferredValue;
+        workingSelection[param] = preferredValue;
       } else {
         const input = document.createElement("select");
         input.id = `image-${param}`;
@@ -678,6 +696,7 @@
         wrapper.appendChild(input);
         selectControls.push(wrapper);
         imageSelection[param] = preferredValue;
+        workingSelection[param] = preferredValue;
       }
     });
 
