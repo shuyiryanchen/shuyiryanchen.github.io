@@ -49,7 +49,7 @@
     gamma_i_multiplier: "Fast-trip average reliability cost",
     grouping_method: "Declustering method",
     ignitions: "Ignitions",
-    mht_method: "MHT method"
+    mht_method: "Decluster + MHT method"
   };
 
   const yMetricOptions = [
