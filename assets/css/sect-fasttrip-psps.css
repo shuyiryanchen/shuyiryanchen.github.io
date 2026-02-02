@@ -61,40 +61,39 @@
 
 .sfps-field input[type="range"] {
   padding: 0;
-  height: 28px;
+  height: 24px;
   cursor: pointer;
   background: transparent;
   border: none;
   box-shadow: none;
   -webkit-appearance: none;
   appearance: none;
-  background: linear-gradient(#4da3ff, #4da3ff) 0/ var(--value, 0%) 100% no-repeat,
-    #c7c7c7;
+  background: transparent;
 }
 
 .sfps-field input[type="range"]::-webkit-slider-runnable-track {
-  height: 6px;
-  background: #c7c7c7;
+  height: 4px;
+  background: #1f77b4;
   border-radius: 999px;
 }
 
 .sfps-field input[type="range"]::-moz-range-track {
-  height: 6px;
-  background: #c7c7c7;
+  height: 4px;
+  background: #1f77b4;
   border-radius: 999px;
 }
 
 .sfps-field input[type="range"]::-moz-range-progress {
-  height: 6px;
-  background: #4da3ff;
+  height: 4px;
+  background: #1f77b4;
   border-radius: 999px;
 }
 
 .sfps-field input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  background: #4da3ff;
+  width: 14px;
+  height: 14px;
+  background: #1f77b4;
   border-radius: 50%;
   margin-top: -5px;
   cursor: grab;
@@ -105,9 +104,9 @@
 }
 
 .sfps-field input[type="range"]::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  background: #4da3ff;
+  width: 14px;
+  height: 14px;
+  background: #1f77b4;
   border-radius: 50%;
   border: none;
   cursor: grab;
