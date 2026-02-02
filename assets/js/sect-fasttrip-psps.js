@@ -812,7 +812,7 @@
     const sortedMatches = matches.sort((a, b) => (a.row ?? 0) - (b.row ?? 0));
     const selected = sortedMatches[0];
     if (!selected) {
-      setStatus(imageStatus, "No matching plot found for the selected settings.", true);
+      setStatus(imageStatus, "", false);
       decisionImage.removeAttribute("src");
       return;
     }

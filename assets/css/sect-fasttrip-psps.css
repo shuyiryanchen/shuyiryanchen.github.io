@@ -47,7 +47,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .sfps-tab-panel {
@@ -68,16 +68,16 @@
   gap: 2rem;
   align-items: flex-start;
   width: 100%;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .sfps-controls {
-  flex: 0 0 520px;
-  max-width: 520px;
+  flex: 0 0 480px;
+  max-width: 480px;
 }
 
 .sfps-content {
-  flex: 1 1 auto;
+  flex: 2 1 auto;
   min-width: 0;
 }
 
@@ -90,7 +90,7 @@
 }
 
 .sfps-intro {
-  max-width: 960px;
+  max-width: 100%;
   margin: 0 auto 1.5rem;
 }
 
