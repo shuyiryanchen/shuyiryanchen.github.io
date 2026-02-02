@@ -701,7 +701,7 @@
 
     const label = document.createElement("label");
     label.setAttribute("for", "image-suffix");
-    label.textContent = "Layer options";
+    label.textContent = "Layer option";
 
     const select = document.createElement("select");
     select.id = "image-suffix";
@@ -720,6 +720,7 @@
         : defaultOption.key;
     imageSelection.suffix = preferredSuffix;
     select.value = imageSelection.suffix;
+    userSelected.add("suffix");
     select.addEventListener("change", () => {
       imageSelection.suffix = select.value;
       userSelected.add("suffix");
