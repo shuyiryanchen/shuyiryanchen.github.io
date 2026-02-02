@@ -43,7 +43,7 @@
     K_groups: "Number of groups",
     W_cap: "Reliability constraint (absolute)",
     W_cap_multiplier: "Reliability constraint (ratio)",
-    alpha: "Fast-trip parameter alpha",
+    alpha: "Fast-trip effectiveness (reduction ratio)",
     effective_alpha: "Effectiveness of fast-trip",
     gamma_i_multiplier: "Reliability effect of fast-trip",
     grouping_method: "Declustering method",
@@ -470,9 +470,14 @@
       Object.keys(meta.params || {}).forEach((key) => imageParamSet.add(key));
     });
 
+    const excludedImageParams = new Set(["B_budget", "C_budget", "W_cap"]);
     const orderedParams = [
-      ...hyperparams.filter((param) => imageParamSet.has(param)),
-      ...Array.from(imageParamSet).filter((param) => !hyperparams.includes(param))
+      ...hyperparams.filter(
+        (param) => imageParamSet.has(param) && !excludedImageParams.has(param)
+      ),
+      ...Array.from(imageParamSet).filter(
+        (param) => !hyperparams.includes(param) && !excludedImageParams.has(param)
+      )
     ];
 
     orderedParams.forEach((param) => {
@@ -588,6 +593,8 @@
       return Object.entries(imageSelection).every(([key, value]) => {
         if (key === "suffix") return true;
         if (key === "W_cap") return true;
+        if (key === "B_budget") return true;
+        if (key === "C_budget") return true;
         return String(meta.params[key]) === String(value);
       });
     });
