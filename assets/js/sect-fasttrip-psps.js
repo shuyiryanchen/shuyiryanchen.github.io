@@ -53,7 +53,7 @@
   };
 
   const yMetricOptions = [
-    { key: "opt_cost", label: "Optimization cost", type: "direct" },
+    { key: "opt_cost", label: "Worst Case Cost", type: "direct" },
     { key: "true_cost", label: "Evaluation cost", type: "direct" },
     { key: "x_size", label: "X size", type: "direct" },
     { key: "y_size", label: "Y size", type: "direct" },
@@ -515,6 +515,14 @@
     }
   };
 
+  const requiredSliderParams = new Set([
+    "B_budget_multiplier",
+    "C_budget_multiplier",
+    "effective_alpha",
+    "gamma_i_multiplier",
+    "W_cap_multiplier"
+  ]);
+
   const getFilteredImageMeta = (excludeParam) => {
     return imageMeta.filter((meta) => {
       if (excludeParam !== "suffix" && userSelected.has("suffix")) {
@@ -532,7 +540,11 @@
   };
 
   const getImageValues = (param, fallbackMeta) => {
-    const sourceMeta = getFilteredImageMeta(param);
+    const sourceMeta = requiredSliderParams.has(param)
+      ? (userSelected.has("suffix")
+          ? imageMeta.filter((meta) => getSuffixKey(meta.suffix) === imageSelection.suffix)
+          : imageMeta)
+      : getFilteredImageMeta(param);
     const useMeta = sourceMeta.length ? sourceMeta : fallbackMeta;
     return useMeta
       .map((meta) => meta.params[param])
@@ -595,14 +607,7 @@
         ? uniqueValues.sort((a, b) => Number(a) - Number(b))
         : uniqueValues.sort();
 
-      const requiredSliderParams = [
-        "B_budget_multiplier",
-        "C_budget_multiplier",
-        "effective_alpha",
-        "gamma_i_multiplier",
-        "W_cap_multiplier"
-      ];
-      if (requiredSliderParams.includes(param) || (allNumeric && sortedValues.length > 1)) {
+      if (requiredSliderParams.has(param) || (allNumeric && sortedValues.length > 1)) {
         const preferredValue =
           previousSelection[param] && sortedValues.includes(previousSelection[param])
             ? previousSelection[param]
