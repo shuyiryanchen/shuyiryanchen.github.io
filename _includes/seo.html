@@ -7,7 +7,11 @@
 {% assign seo_url = seo_url | default: site.github.url %}
 
 {% if page.title %}
-  {% assign seo_title = site.title | append: " " | append: site.title_separator | append: " " | append: page.title %}
+  {% if page.disable_site_title %}
+    {% assign seo_title = page.title %}
+  {% else %}
+    {% assign seo_title = site.title | append: " " | append: site.title_separator | append: " " | append: page.title %}
+  {% endif %}
 {% endif %}
 
 {% if seo_title %}
