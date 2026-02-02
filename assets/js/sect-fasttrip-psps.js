@@ -539,14 +539,8 @@
     });
   };
 
-  const getImageValues = (param, fallbackMeta) => {
-    const sourceMeta = requiredSliderParams.has(param)
-      ? (userSelected.has("suffix")
-          ? imageMeta.filter((meta) => getSuffixKey(meta.suffix) === imageSelection.suffix)
-          : imageMeta)
-      : getFilteredImageMeta(param);
-    const useMeta = sourceMeta.length ? sourceMeta : fallbackMeta;
-    return useMeta
+  const getImageValues = (param) => {
+    return imageMeta
       .map((meta) => meta.params[param])
       .filter((value) => value !== undefined && value !== "");
   };
@@ -611,9 +605,7 @@
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      const values = getMetaForSelection(workingSelection, param)
-        .map((meta) => meta.params[param])
-        .filter((value) => value !== undefined && value !== "");
+      const values = getImageValues(param);
 
       const uniqueValues = Array.from(new Set(values));
       if (!uniqueValues.length) return;
@@ -657,10 +649,7 @@
           }
           renderImage();
         });
-        slider.addEventListener("change", () => {
-          buildImageControls();
-          renderImage();
-        });
+        slider.addEventListener("change", renderImage);
 
         wrapper.appendChild(label);
         wrapper.appendChild(slider);
@@ -692,7 +681,6 @@
           } else {
             userSelected.add(param);
           }
-          buildImageControls();
           renderImage();
         });
         wrapper.appendChild(label);
