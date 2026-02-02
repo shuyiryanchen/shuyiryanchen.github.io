@@ -45,7 +45,7 @@
     W_cap_multiplier: "Reliability constraint (ratio)",
     alpha: "FWER",
     effective_alpha: "Effectiveness of fast-trip",
-    gamma_i_multiplier: "Reliability effect of fast-trip",
+    gamma_i_multiplier: "Fast-trip average reliability cost",
     grouping_method: "Declustering method",
     ignitions: "Ignitions",
     mht_method: "MHT method"
@@ -404,9 +404,14 @@
         hoverinfo: "skip"
       };
 
+      const yAxisConfig = { title: yLabel };
+      if (metric.type === "ratio") {
+        yAxisConfig.rangemode = "tozero";
+      }
+
       const layout = {
         xaxis: { title: getLabel(xAxis) },
-        yaxis: { title: yLabel },
+        yaxis: yAxisConfig,
         margin: { t: 20, r: 20, b: 80, l: 60 },
         legend: {
           orientation: "h",
