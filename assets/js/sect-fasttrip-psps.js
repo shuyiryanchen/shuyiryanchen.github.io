@@ -90,9 +90,12 @@
 
   imageBasePathInput.value = `${basePath}/assets/website_plots`;
   imagePatternInput.value =
-    "{B_budget}_{B_budget_multiplier}_{C_budget}_{C_budget_multiplier}_{K_groups}_" +
-    "{W_cap}_{W_cap_multiplier}_{alpha}_{effective_alpha}_{gamma_i_multiplier}_" +
-    "{grouping_method}_{ignitions}_{mht_method}.png";
+    "plots/map_row0000_" +
+    "B_budget={B_budget}_B_budget_multiplier={B_budget_multiplier}_" +
+    "C_budget={C_budget}_C_budget_multiplier={C_budget_multiplier}_" +
+    "K_groups={K_groups}_W_cap={W_cap}_W_cap_multiplier={W_cap_multiplier}_" +
+    "alpha={alpha}_effective_alpha={effective_alpha}_" +
+    "gamma_i_multiplier={gamma_i_multiplier}_mht_method={mht_method}_no_inset.png";
 
   const setStatus = (el, message, isError = false) => {
     el.textContent = message;
@@ -400,36 +403,55 @@
       wrapper.className = "sfps-field";
       const label = document.createElement("label");
       label.textContent = getLabel(param);
-      const input = document.createElement("select");
-      input.id = `image-${param}`;
-      input.dataset.param = param;
 
       if (dataset.length && columns.includes(param)) {
-        getUniqueValues(dataset, param).forEach((value) => {
-          const option = document.createElement("option");
-          option.value = value;
-          option.textContent = value;
-          input.appendChild(option);
-        });
-      } else {
-        const option = document.createElement("option");
-        option.value = "";
-        option.textContent = "Enter manually below";
-        input.appendChild(option);
+        const values = getUniqueValues(dataset, param);
+        const allNumeric = values.every((val) => !Number.isNaN(Number(val)));
+
+        if (allNumeric && values.length > 5) {
+          const slider = document.createElement("input");
+          slider.type = "range";
+          slider.min = "0";
+          slider.max = String(values.length - 1);
+          slider.step = "1";
+          slider.value = "0";
+          slider.dataset.param = param;
+          slider.dataset.values = JSON.stringify(values);
+
+          const valueDisplay = document.createElement("div");
+          valueDisplay.className = "sfps-status";
+          valueDisplay.textContent = values[0];
+          valueDisplay.dataset.param = param;
+
+          slider.addEventListener("input", () => {
+            const list = JSON.parse(slider.dataset.values || "[]");
+            const current = list[Number(slider.value)] ?? "";
+            valueDisplay.textContent = current;
+            renderImage();
+          });
+
+          wrapper.appendChild(label);
+          wrapper.appendChild(slider);
+          wrapper.appendChild(valueDisplay);
+          imageParams.appendChild(wrapper);
+        } else {
+          const input = document.createElement("select");
+          input.id = `image-${param}`;
+          input.dataset.param = param;
+
+          values.forEach((value) => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = value;
+            input.appendChild(option);
+          });
+
+          input.addEventListener("change", renderImage);
+          wrapper.appendChild(label);
+          wrapper.appendChild(input);
+          imageParams.appendChild(wrapper);
+        }
       }
-
-      const manualInput = document.createElement("input");
-      manualInput.type = "text";
-      manualInput.placeholder = "manual value (optional)";
-      manualInput.dataset.param = param;
-      manualInput.addEventListener("input", renderImage);
-
-      wrapper.appendChild(label);
-      wrapper.appendChild(input);
-      wrapper.appendChild(manualInput);
-      imageParams.appendChild(wrapper);
-
-      input.addEventListener("change", renderImage);
     });
   };
 
@@ -438,8 +460,9 @@
     imageParams.querySelectorAll("select").forEach((select) => {
       params[select.dataset.param] = select.value;
     });
-    imageParams.querySelectorAll("input[type='text']").forEach((input) => {
-      if (input.value) params[input.dataset.param] = input.value;
+    imageParams.querySelectorAll("input[type='range']").forEach((slider) => {
+      const list = JSON.parse(slider.dataset.values || "[]");
+      params[slider.dataset.param] = list[Number(slider.value)] ?? "";
     });
 
     let filename = imageFilenameInput.value.trim();
