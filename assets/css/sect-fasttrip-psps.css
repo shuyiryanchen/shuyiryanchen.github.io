@@ -37,6 +37,7 @@
 .sfps-tabs {
   display: inline-flex;
   gap: 0.5rem;
+  margin-left: 0.5rem;
   padding: 0.35rem;
   border-radius: 999px;
   background: #f1f1f1;
@@ -291,11 +292,11 @@
 }
 
 .sfps-image-wrap {
-  margin-top: 1rem;
+  margin-top: 0.25rem;
   text-align: left;
-  min-height: 520px;
+  min-height: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .sfps-image-wrap img {
