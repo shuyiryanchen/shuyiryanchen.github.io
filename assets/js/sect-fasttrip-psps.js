@@ -43,7 +43,7 @@
     K_groups: "Number of groups",
     W_cap: "Reliability constraint (absolute)",
     W_cap_multiplier: "Reliability constraint (ratio)",
-    alpha: "Fast-trip effectiveness (reduction ratio)",
+    alpha: "FWER",
     effective_alpha: "Effectiveness of fast-trip",
     gamma_i_multiplier: "Reliability effect of fast-trip",
     grouping_method: "Declustering method",
@@ -465,20 +465,15 @@
 
   const buildImageControls = () => {
     imageParams.innerHTML = "";
-    const imageParamSet = new Set();
-    imageMeta.forEach((meta) => {
-      Object.keys(meta.params || {}).forEach((key) => imageParamSet.add(key));
-    });
-
-    const excludedImageParams = new Set(["B_budget", "C_budget", "W_cap"]);
-    const orderedParams = [
-      ...hyperparams.filter(
-        (param) => imageParamSet.has(param) && !excludedImageParams.has(param)
-      ),
-      ...Array.from(imageParamSet).filter(
-        (param) => !hyperparams.includes(param) && !excludedImageParams.has(param)
-      )
+    imageSelection = { suffix: imageSelection.suffix || "" };
+    const sliderParams = [
+      "B_budget_multiplier",
+      "C_budget_multiplier",
+      "W_cap_multiplier",
+      "effective_alpha"
     ];
+    const dropdownParams = ["mht_method", "K_groups", "alpha"];
+    const orderedParams = [...sliderParams, ...dropdownParams];
 
     orderedParams.forEach((param) => {
       const wrapper = document.createElement("div");
@@ -499,7 +494,7 @@
         ? uniqueValues.sort((a, b) => Number(a) - Number(b))
         : uniqueValues.sort();
 
-      if (allNumeric && sortedValues.length > 5) {
+      if (sliderParams.includes(param) && allNumeric && sortedValues.length > 1) {
         const slider = document.createElement("input");
         slider.type = "range";
         slider.min = "0";
