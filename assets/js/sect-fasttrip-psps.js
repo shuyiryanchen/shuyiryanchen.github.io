@@ -43,7 +43,7 @@
     C_budget_multiplier: "Sect. budget (ratio of circuits)",
     K_groups: "Number of groups",
     W_cap: "Reliability constraint (absolute)",
-    W_cap_multiplier: "Reliability constraint (ratio)",
+    W_cap_multiplier: "Reliability constraint (ratio of pop.)",
     alpha: "FWER",
     effective_alpha: "Effectiveness of fast-trip",
     gamma_i_multiplier: "Fast-trip average reliability cost",
