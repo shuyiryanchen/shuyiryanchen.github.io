@@ -1,12 +1,21 @@
-.sfps-section {
-  margin: 2rem 0;
+.sfps-page {
+  font-size: 0.92rem;
 }
 
-.sfps-two-up {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 2rem;
-  align-items: start;
+.sfps-page .page__title {
+  font-size: 1.6rem;
+}
+
+.sfps-page .sfps-section h2 {
+  font-size: 1.2rem;
+}
+
+.sfps-page .sfps-plot-title {
+  font-size: 1rem;
+}
+
+.sfps-section {
+  margin: 2rem 0;
 }
 
 .sfps-intro {
@@ -47,7 +56,7 @@
   padding: 0.4rem 0.5rem;
   border: 1px solid #cfcfcf;
   border-radius: 4px;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
 }
 
 .sfps-grid {
