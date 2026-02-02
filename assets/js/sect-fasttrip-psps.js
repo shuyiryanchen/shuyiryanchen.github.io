@@ -14,9 +14,7 @@
   const plotTitleLeft = document.getElementById("plot-title-left");
   const plotTitleRight = document.getElementById("plot-title-right");
 
-  const imageBasePathInput = document.getElementById("image-base-path");
-  const imageFilenameInput = document.getElementById("image-filename");
-  const imagePatternInput = document.getElementById("image-pattern");
+  const imageSuffixControl = document.getElementById("image-suffix-control");
   const imageStatus = document.getElementById("image-status");
   const imageParams = document.getElementById("image-params");
   const decisionImage = document.getElementById("decision-image");
@@ -80,6 +78,11 @@
   let availableParams = [];
   let defaultCsvFile = "";
   let usingDefaultCsv = false;
+  let imageMeta = [];
+  let imageSuffixOptions = [];
+  let imageSelection = {
+    suffix: ""
+  };
 
   const hiddenParamsForDefault = new Set([
     "B_budget",
@@ -88,14 +91,7 @@
     "ignitions"
   ]);
 
-  imageBasePathInput.value = `${basePath}/assets/website_plots`;
-  imagePatternInput.value =
-    "plots/map_row0000_" +
-    "B_budget={B_budget}_B_budget_multiplier={B_budget_multiplier}_" +
-    "C_budget={C_budget}_C_budget_multiplier={C_budget_multiplier}_" +
-    "K_groups={K_groups}_W_cap={W_cap}_W_cap_multiplier={W_cap_multiplier}_" +
-    "alpha={alpha}_effective_alpha={effective_alpha}_" +
-    "gamma_i_multiplier={gamma_i_multiplier}_mht_method={mht_method}_no_inset.png";
+  const imageBasePath = `${basePath}/assets/website_plots/`;
 
   const setStatus = (el, message, isError = false) => {
     el.textContent = message;
@@ -118,6 +114,73 @@
       throw new Error(result.errors[0].message);
     }
     return result.data;
+  };
+
+  const parseImageName = (path) => {
+    if (!path) return null;
+    const filename = path.split("/").pop() || "";
+    const withoutExt = filename.replace(/\.(png|jpg|jpeg)$/i, "");
+    let base = withoutExt;
+
+    const suffixes = {
+      hftd: base.includes("_with_hftd"),
+      inset: base.includes("_with_inset")
+    };
+
+    base = base.replace(/_with_hftd/g, "").replace(/_with_inset/g, "");
+
+    const mhtMarker = "_mht_method=";
+    const mhtIndex = base.lastIndexOf(mhtMarker);
+    if (mhtIndex === -1) return null;
+
+    const prefix = base.slice(0, mhtIndex);
+    const mhtMethod = base.slice(mhtIndex + mhtMarker.length);
+
+    const rowMatch = prefix.match(/^map_row(\d+)_/);
+    if (!rowMatch) return null;
+    const row = Number(rowMatch[1]);
+    const remainder = prefix.slice(rowMatch[0].length);
+
+    const params = {};
+    remainder.split("_").forEach((part) => {
+      const [key, value] = part.split("=");
+      if (!key || value === undefined) return;
+      params[key] = value;
+    });
+
+    return {
+      path,
+      row: Number.isNaN(row) ? null : row,
+      params: {
+        ...params,
+        mht_method: mhtMethod
+      },
+      suffix: {
+        hftd: suffixes.hftd,
+        inset: suffixes.inset
+      }
+    };
+  };
+
+  const getSuffixLabel = (suffix) => {
+    if (suffix.hftd && suffix.inset) return "With HFTD + Inset";
+    if (suffix.hftd) return "With HFTD";
+    if (suffix.inset) return "With Inset";
+    return "No suffix";
+  };
+
+  const getSuffixKey = (suffix) => {
+    if (suffix.hftd && suffix.inset) return "with_hftd_with_inset";
+    if (suffix.hftd) return "with_hftd";
+    if (suffix.inset) return "with_inset";
+    return "none";
+  };
+
+  const normalizeImagePath = (path) => {
+    if (!path) return "";
+    if (path.startsWith("http://") || path.startsWith("https://")) return path;
+    if (path.startsWith("assets/")) return `${basePath}/${path}`;
+    return `${imageBasePath}${path}`;
   };
 
   const isNumericColumn = (rows, key) => {
@@ -398,99 +461,158 @@
 
   const buildImageControls = () => {
     imageParams.innerHTML = "";
-    getDisplayParams().forEach((param) => {
+    const paramsToShow = getDisplayParams().filter((param) => param !== "W_cap");
+
+    paramsToShow.forEach((param) => {
       const wrapper = document.createElement("div");
       wrapper.className = "sfps-field";
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      if (dataset.length && columns.includes(param)) {
-        const values = getUniqueValues(dataset, param);
-        const allNumeric = values.every((val) => !Number.isNaN(Number(val)));
+      const values = imageMeta
+        .map((meta) => meta.params[param])
+        .filter((value) => value !== undefined && value !== "");
 
-        if (allNumeric && values.length > 5) {
-          const slider = document.createElement("input");
-          slider.type = "range";
-          slider.min = "0";
-          slider.max = String(values.length - 1);
-          slider.step = "1";
-          slider.value = "0";
-          slider.dataset.param = param;
-          slider.dataset.values = JSON.stringify(values);
+      const uniqueValues = Array.from(new Set(values));
+      if (!uniqueValues.length) return;
 
-          const valueDisplay = document.createElement("div");
-          valueDisplay.className = "sfps-status";
-          valueDisplay.textContent = values[0];
-          valueDisplay.dataset.param = param;
+      const numericValues = uniqueValues.filter((val) => !Number.isNaN(Number(val)));
+      const allNumeric = numericValues.length === uniqueValues.length;
+      const sortedValues = allNumeric
+        ? uniqueValues.sort((a, b) => Number(a) - Number(b))
+        : uniqueValues.sort();
 
-          slider.addEventListener("input", () => {
-            const list = JSON.parse(slider.dataset.values || "[]");
-            const current = list[Number(slider.value)] ?? "";
-            valueDisplay.textContent = current;
-            renderImage();
-          });
+      if (allNumeric && sortedValues.length > 5) {
+        const slider = document.createElement("input");
+        slider.type = "range";
+        slider.min = "0";
+        slider.max = String(sortedValues.length - 1);
+        slider.step = "1";
+        slider.value = "0";
+        slider.dataset.param = param;
+        slider.dataset.values = JSON.stringify(sortedValues);
 
-          wrapper.appendChild(label);
-          wrapper.appendChild(slider);
-          wrapper.appendChild(valueDisplay);
-          imageParams.appendChild(wrapper);
-        } else {
-          const input = document.createElement("select");
-          input.id = `image-${param}`;
-          input.dataset.param = param;
+        const valueDisplay = document.createElement("div");
+        valueDisplay.className = "sfps-status sfps-slider-value";
+        valueDisplay.textContent = sortedValues[0];
+        valueDisplay.dataset.param = param;
 
-          values.forEach((value) => {
-            const option = document.createElement("option");
-            option.value = value;
-            option.textContent = value;
-            input.appendChild(option);
-          });
+        slider.addEventListener("input", () => {
+          const list = JSON.parse(slider.dataset.values || "[]");
+          const current = list[Number(slider.value)] ?? "";
+          valueDisplay.textContent = current;
+          imageSelection[param] = current;
+          renderImage();
+        });
 
-          input.addEventListener("change", renderImage);
-          wrapper.appendChild(label);
-          wrapper.appendChild(input);
-          imageParams.appendChild(wrapper);
-        }
+        wrapper.appendChild(label);
+        wrapper.appendChild(slider);
+        wrapper.appendChild(valueDisplay);
+        imageParams.appendChild(wrapper);
+        imageSelection[param] = sortedValues[0];
+      } else {
+        const input = document.createElement("select");
+        input.id = `image-${param}`;
+        input.dataset.param = param;
+
+        sortedValues.forEach((value) => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = value;
+          input.appendChild(option);
+        });
+
+        input.addEventListener("change", () => {
+          imageSelection[param] = input.value;
+          renderImage();
+        });
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+        imageParams.appendChild(wrapper);
+        imageSelection[param] = sortedValues[0];
       }
     });
   };
 
+  const buildSuffixControl = () => {
+    imageSuffixControl.innerHTML = "";
+    if (!imageSuffixOptions.length) return;
+
+    const label = document.createElement("label");
+    label.setAttribute("for", "image-suffix");
+    label.textContent = "Plot suffix";
+
+    const select = document.createElement("select");
+    select.id = "image-suffix";
+    imageSuffixOptions.forEach((suffix) => {
+      const option = document.createElement("option");
+      option.value = suffix.key;
+      option.textContent = suffix.label;
+      select.appendChild(option);
+    });
+
+    imageSelection.suffix = imageSuffixOptions[0].key;
+    select.value = imageSelection.suffix;
+    select.addEventListener("change", () => {
+      imageSelection.suffix = select.value;
+      renderImage();
+    });
+
+    imageSuffixControl.appendChild(label);
+    imageSuffixControl.appendChild(select);
+  };
+
   const renderImage = () => {
-    const params = {};
-    imageParams.querySelectorAll("select").forEach((select) => {
-      params[select.dataset.param] = select.value;
-    });
-    imageParams.querySelectorAll("input[type='range']").forEach((slider) => {
-      const list = JSON.parse(slider.dataset.values || "[]");
-      params[slider.dataset.param] = list[Number(slider.value)] ?? "";
-    });
-
-    let filename = imageFilenameInput.value.trim();
-    if (!filename) {
-      filename = imagePatternInput.value;
-      Object.entries(params).forEach(([key, value]) => {
-        filename = filename.replaceAll(`{${key}}`, value || "");
-      });
-    }
-
-    if (!filename) {
-      setStatus(imageStatus, "Provide an image filename or pattern.", true);
+    if (!imageMeta.length) {
+      setStatus(imageStatus, "No plot images available.", true);
       return;
     }
 
-    const base = imageBasePathInput.value.trim() || `${basePath}/assets/website_plots`;
-    const imageUrl = filename.includes("/") ? filename : `${base}/${filename}`;
+    const suffixKey = imageSelection.suffix || "none";
+    const matches = imageMeta.filter((meta) => {
+      const metaSuffixKey = getSuffixKey(meta.suffix);
+      if (metaSuffixKey !== suffixKey) return false;
+
+      return Object.entries(imageSelection).every(([key, value]) => {
+        if (key === "suffix") return true;
+        if (key === "W_cap") return true;
+        return String(meta.params[key]) === String(value);
+      });
+    });
+
+    const sortedMatches = matches.sort((a, b) => (a.row ?? 0) - (b.row ?? 0));
+    const selected = sortedMatches[0];
+    if (!selected) {
+      setStatus(imageStatus, "No matching plot found for the selected settings.", true);
+      decisionImage.removeAttribute("src");
+      return;
+    }
+
+    const imageUrl = normalizeImagePath(selected.path);
     decisionImage.src = imageUrl;
     setStatus(imageStatus, `Loading ${imageUrl}`);
   };
 
   const init = async () => {
-    buildImageControls();
     try {
       const response = await fetch(manifestUrl);
       if (!response.ok) throw new Error("No manifest.");
       const manifest = await response.json();
       defaultCsvFile = (manifest.csvFiles || [])[0] || "";
+      const images = manifest.images || manifest.imageFiles || [];
+      imageMeta = images.map(parseImageName).filter(Boolean);
+      imageSuffixOptions = Array.from(
+        new Map(
+          imageMeta.map((meta) => {
+            const key = getSuffixKey(meta.suffix);
+            return [key, { key, label: getSuffixLabel(meta.suffix) }];
+          })
+        ).values()
+      );
+
+      buildSuffixControl();
+      buildImageControls();
+      renderImage();
       await loadCsv();
     } catch (error) {
       defaultCsvFile = "";
@@ -503,9 +625,6 @@
   });
   yAxisLeftSelect.addEventListener("change", renderPlot);
   yAxisRightSelect.addEventListener("change", renderPlot);
-  imageBasePathInput.addEventListener("input", renderImage);
-  imageFilenameInput.addEventListener("input", renderImage);
-  imagePatternInput.addEventListener("input", renderImage);
   decisionImage.addEventListener("error", () => {
     setStatus(imageStatus, "Image failed to load. Check the path.", true);
   });

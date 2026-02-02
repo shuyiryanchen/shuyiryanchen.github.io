@@ -73,19 +73,7 @@ disable_nav: true
       <div class="sfps-panel">
         <div class="sfps-grid sfps-grid--two">
           <div>
-            <div class="sfps-field">
-              <label for="image-base-path">Image base path</label>
-              <input id="image-base-path" type="text" />
-            </div>
-            <div class="sfps-field">
-              <label for="image-filename">Image filename (optional)</label>
-              <input id="image-filename" type="text" placeholder="leave blank to use pattern" />
-            </div>
-            <div class="sfps-field">
-              <label for="image-pattern">Filename pattern</label>
-              <input id="image-pattern" type="text" />
-              <small>Use tokens like <code>{B_budget}</code></small>
-            </div>
+            <div class="sfps-field" id="image-suffix-control"></div>
             <div id="image-status" class="sfps-status"></div>
           </div>
           <div>

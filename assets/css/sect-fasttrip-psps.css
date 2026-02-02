@@ -75,6 +75,10 @@
   margin-top: 0.4rem;
 }
 
+.sfps-slider-value {
+  white-space: nowrap;
+}
+
 .sfps-plot {
   width: 100%;
   min-height: 420px;
