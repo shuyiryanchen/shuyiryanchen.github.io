@@ -14,7 +14,6 @@
   const plotTitleLeft = document.getElementById("plot-title-left");
   const plotTitleRight = document.getElementById("plot-title-right");
 
-  const imageSuffixControl = document.getElementById("image-suffix-control");
   const imageStatus = document.getElementById("image-status");
   const imageParams = document.getElementById("image-params");
   const decisionImage = document.getElementById("decision-image");
@@ -487,6 +486,11 @@
     const selectControls = [];
     const sliderControls = [];
 
+    const suffixControl = buildSuffixControl();
+    if (suffixControl) {
+      selectControls.push(suffixControl);
+    }
+
     orderedParams.forEach((param) => {
       const wrapper = document.createElement("div");
       wrapper.className = "sfps-field";
@@ -562,8 +566,7 @@
   };
 
   const buildSuffixControl = () => {
-    imageSuffixControl.innerHTML = "";
-    if (!imageSuffixOptions.length) return;
+    if (!imageSuffixOptions.length) return null;
 
     const label = document.createElement("label");
     label.setAttribute("for", "image-suffix");
@@ -585,8 +588,11 @@
       renderImage();
     });
 
-    imageSuffixControl.appendChild(label);
-    imageSuffixControl.appendChild(select);
+    const wrapper = document.createElement("div");
+    wrapper.className = "sfps-field";
+    wrapper.appendChild(label);
+    wrapper.appendChild(select);
+    return wrapper;
   };
 
   const renderImage = () => {
@@ -639,7 +645,6 @@
         ).values()
       );
 
-      buildSuffixControl();
       buildImageControls();
       renderImage();
       await loadCsv();
