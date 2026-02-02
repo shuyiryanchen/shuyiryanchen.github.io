@@ -84,6 +84,7 @@
   let imageSelection = {
     suffix: ""
   };
+  const userSelected = new Set();
 
   const hiddenParamsForDefault = new Set([
     "B_budget",
@@ -132,7 +133,10 @@
       inset: base.includes("_with_inset")
     };
 
-    base = base.replace(/_with_hftd/g, "").replace(/_with_inset/g, "");
+    base = base
+      .replace(/_with_hftd/g, "")
+      .replace(/_with_inset/g, "")
+      .replace(/_no_inset/g, "");
 
     const mhtMarker = "_mht_method=";
     const mhtIndex = base.lastIndexOf(mhtMarker);
@@ -513,12 +517,13 @@
 
   const getFilteredImageMeta = (excludeParam) => {
     return imageMeta.filter((meta) => {
-      if (excludeParam !== "suffix" && imageSelection.suffix) {
+      if (excludeParam !== "suffix" && userSelected.has("suffix")) {
         if (getSuffixKey(meta.suffix) !== imageSelection.suffix) return false;
       }
 
       return Object.entries(imageSelection).every(([key, value]) => {
         if (key === "suffix" || key === excludeParam) return true;
+        if (!userSelected.has(key)) return true;
         if (value === undefined || value === null || value === "") return true;
         if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
         return String(meta.params[key]) === String(value);
@@ -587,7 +592,16 @@
         ? uniqueValues.sort((a, b) => Number(a) - Number(b))
         : uniqueValues.sort();
 
-      if (allNumeric && sortedValues.length > 1) {
+      const requiredSliderParams = [
+        "B_budget_multiplier",
+        "C_budget_multiplier",
+        "effective_alpha",
+        "gamma_i_multiplier"
+      ];
+      if (
+        (requiredSliderParams.includes(param) && sortedValues.length >= 1) ||
+        (allNumeric && sortedValues.length > 1)
+      ) {
         const preferredValue =
           previousSelection[param] && sortedValues.includes(previousSelection[param])
             ? previousSelection[param]
@@ -612,6 +626,7 @@
           const current = list[Number(slider.value)] ?? "";
           valueDisplay.textContent = current;
           imageSelection[param] = current;
+          userSelected.add(param);
           buildImageControls();
           renderImage();
         });
@@ -640,6 +655,7 @@
         input.value = preferredValue;
         input.addEventListener("change", () => {
           imageSelection[param] = input.value;
+          userSelected.add(param);
           buildImageControls();
           renderImage();
         });
@@ -685,6 +701,7 @@
     select.value = imageSelection.suffix;
     select.addEventListener("change", () => {
       imageSelection.suffix = select.value;
+      userSelected.add("suffix");
       buildImageControls();
       renderImage();
     });
@@ -762,6 +779,7 @@
   });
   resetPart2Button.addEventListener("click", () => {
     imageSelection = { suffix: "" };
+    userSelected.clear();
     buildImageControls();
     renderImage();
   });
