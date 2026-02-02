@@ -224,6 +224,10 @@
   margin-bottom: 1rem;
 }
 
+#sfps-tab-sectionalization .sfps-grid--two {
+  grid-template-columns: 1fr;
+}
+
 .sfps-button {
   display: inline-block;
   padding: 0.5rem 1rem;
@@ -264,6 +268,10 @@
 .sfps-plot-title {
   margin: 0 0 0.75rem;
   font-size: 1.05rem;
+}
+
+#sfps-tab-optimization .sfps-plot-title {
+  text-align: center;
 }
 
 .sfps-image-wrap {
