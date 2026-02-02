@@ -131,6 +131,13 @@
   padding: 1rem;
 }
 
+.sfps-panel.sfps-controls {
+  flex: 0 0 900px;
+  max-width: 900px;
+  width: 900px;
+  min-width: 900px;
+}
+
 .sfps-field {
   display: flex;
   flex-direction: column;
