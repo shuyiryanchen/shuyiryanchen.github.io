@@ -55,8 +55,8 @@
   const yMetricOptions = [
     { key: "opt_cost", label: "Worst Case Cost", type: "direct" },
     { key: "true_cost", label: "Evaluation cost", type: "direct" },
-    { key: "x_size", label: "X size", type: "direct" },
-    { key: "y_size", label: "Y size", type: "direct" },
+    { key: "x_size", label: "Sect. circuits", type: "direct" },
+    { key: "y_size", label: "Fast-trip config circuits", type: "direct" },
     {
       key: "prevented_fast_trip_pct",
       label: "Prevented by fast-trip (% of ignitions)",
@@ -120,6 +120,31 @@
       throw new Error(result.errors[0].message);
     }
     return result.data;
+  };
+
+  const initTabs = () => {
+    const tabButtons = Array.from(document.querySelectorAll(".sfps-tab-button"));
+    const tabPanels = Array.from(document.querySelectorAll(".sfps-tab-panel"));
+    if (!tabButtons.length || !tabPanels.length) return;
+
+    const setActiveTab = (targetId) => {
+      tabButtons.forEach((button) => {
+        const isActive = button.dataset.tab === targetId;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-selected", String(isActive));
+      });
+      tabPanels.forEach((panel) => {
+        panel.classList.toggle("is-active", panel.id === targetId);
+      });
+    };
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const targetId = button.dataset.tab;
+        if (!targetId) return;
+        setActiveTab(targetId);
+      });
+    });
   };
 
   const parseImageName = (path) => {
@@ -803,6 +828,7 @@
   };
 
   const init = async () => {
+    initTabs();
     try {
       const manifest = await fetchManifest();
       defaultCsvFile = (manifest.csvFiles || [])[0] || "";

@@ -18,6 +18,58 @@
   margin: 2rem 0;
 }
 
+.sfps-tabs {
+  display: inline-flex;
+  gap: 0.5rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  background: #f1f1f1;
+  border: 1px solid #e2e2e2;
+}
+
+.sfps-tab-button {
+  border: none;
+  background: transparent;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.sfps-tab-button.is-active {
+  background: #1f77b4;
+  color: #fff;
+}
+
+.sfps-tab-panels {
+  margin-top: 1.5rem;
+}
+
+.sfps-tab-panel {
+  display: none;
+}
+
+.sfps-tab-panel.is-active {
+  display: block;
+}
+
+.sfps-split {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.sfps-controls {
+  flex: 0 0 420px;
+  max-width: 420px;
+}
+
+.sfps-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .sfps-intro {
   max-width: 960px;
   margin: 0 auto 1.5rem;
@@ -166,7 +218,7 @@
 
 .sfps-plot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
   gap: 2.5rem;
   margin-top: 1.5rem;
 }
@@ -178,7 +230,7 @@
 
 .sfps-image-wrap {
   margin-top: 1rem;
-  text-align: center;
+  text-align: left;
 }
 
 .sfps-image-wrap img {
@@ -188,4 +240,19 @@
   border-radius: 4px;
   padding: 0.4rem;
   background: #fff;
+}
+
+@media (max-width: 1200px) {
+  .sfps-split {
+    flex-direction: column;
+  }
+
+  .sfps-controls {
+    width: 100%;
+    max-width: none;
+  }
+
+  .sfps-plot-grid {
+    grid-template-columns: 1fr;
+  }
 }

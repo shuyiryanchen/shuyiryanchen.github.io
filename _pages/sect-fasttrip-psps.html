@@ -15,7 +15,7 @@ disable_site_title: true
   }
 
   .page__inner-wrap {
-    max-width: 1900px;
+    max-width: 2400px;
     width: 100%;
   }
 </style>
@@ -30,10 +30,41 @@ disable_site_title: true
     sectionalization and operational planning.
   </p>
 
-  <section class="sfps-section">
+  <div class="sfps-tabs" role="tablist" aria-label="Sectionalization tabs">
+    <button
+      id="sfps-tab-btn-optimization"
+      class="sfps-tab-button is-active"
+      type="button"
+      role="tab"
+      aria-selected="true"
+      aria-controls="sfps-tab-optimization"
+      data-tab="sfps-tab-optimization"
+    >
+      Optimization Outcome
+    </button>
+    <button
+      id="sfps-tab-btn-sectionalization"
+      class="sfps-tab-button"
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="sfps-tab-sectionalization"
+      data-tab="sfps-tab-sectionalization"
+    >
+      Sectionalization Outcome
+    </button>
+  </div>
+
+  <div class="sfps-tab-panels">
+    <section
+      id="sfps-tab-optimization"
+      class="sfps-section sfps-tab-panel is-active"
+      role="tabpanel"
+      aria-labelledby="sfps-tab-btn-optimization"
+    >
     <h2>Optimization Outcome (2024)</h2>
-    <div class="sfps-row">
-      <div class="sfps-panel">
+    <div class="sfps-split">
+      <div class="sfps-panel sfps-controls">
         <div class="sfps-grid sfps-grid--two">
           <div>
             <div class="sfps-field">
@@ -55,36 +86,46 @@ disable_site_title: true
         <div id="filter-controls" class="sfps-grid"></div>
         <button id="reset-part1" class="sfps-button">Reset</button>
       </div>
-    </div>
 
-    <div class="sfps-plot-grid">
-      <div>
-        <h3 class="sfps-plot-title" id="plot-title-left">Optimization Results</h3>
-        <div id="trend-plot-opt" class="sfps-plot"></div>
-      </div>
-      <div>
-        <h3 class="sfps-plot-title" id="plot-title-right">Evaluation</h3>
-        <div id="trend-plot-true" class="sfps-plot"></div>
+      <div class="sfps-content">
+        <div class="sfps-plot-grid">
+          <div>
+            <h3 class="sfps-plot-title" id="plot-title-left">Optimization Results</h3>
+            <div id="trend-plot-opt" class="sfps-plot"></div>
+          </div>
+          <div>
+            <h3 class="sfps-plot-title" id="plot-title-right">Evaluation</h3>
+            <div id="trend-plot-true" class="sfps-plot"></div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+    </section>
 
-  <section class="sfps-section">
+    <section
+      id="sfps-tab-sectionalization"
+      class="sfps-section sfps-tab-panel"
+      role="tabpanel"
+      aria-labelledby="sfps-tab-btn-sectionalization"
+    >
     <h2>Sectionalization Outcome (2024)</h2>
-    <div class="sfps-row">
-      <div class="sfps-panel">
+    <div class="sfps-split">
+      <div class="sfps-panel sfps-controls">
         <div class="sfps-grid sfps-grid--two">
           <div id="image-params" class="sfps-grid"></div>
         </div>
         <div id="image-status" class="sfps-status"></div>
         <button id="reset-part2" class="sfps-button">Reset</button>
       </div>
-    </div>
 
-    <div class="sfps-image-wrap">
-      <img id="decision-image" alt="Decision plot preview" />
+      <div class="sfps-content">
+        <div class="sfps-image-wrap">
+          <img id="decision-image" alt="Decision plot preview" />
+        </div>
+      </div>
     </div>
-  </section>
+    </section>
+  </div>
 </div>
 
 <link rel="stylesheet" href="{{ base_path }}/assets/css/sect-fasttrip-psps.css">
