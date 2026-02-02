@@ -729,13 +729,15 @@
       return;
     }
 
-    const suffixKey = imageSelection.suffix || "none";
     const matches = imageMeta.filter((meta) => {
-      const metaSuffixKey = getSuffixKey(meta.suffix);
-      if (metaSuffixKey !== suffixKey) return false;
+      if (userSelected.has("suffix")) {
+        const metaSuffixKey = getSuffixKey(meta.suffix);
+        if (metaSuffixKey !== imageSelection.suffix) return false;
+      }
 
       return Object.entries(imageSelection).every(([key, value]) => {
         if (key === "suffix") return true;
+        if (!userSelected.has(key)) return true;
         if (key === "W_cap") return true;
         if (key === "B_budget") return true;
         if (key === "C_budget") return true;
