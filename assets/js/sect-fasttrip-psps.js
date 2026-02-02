@@ -607,13 +607,12 @@
         ? uniqueValues.sort((a, b) => Number(a) - Number(b))
         : uniqueValues.sort();
 
+      const defaultValue = sortedValues[0];
       if (requiredSliderParams.has(param) || (allNumeric && sortedValues.length > 1)) {
-        const keepSelected =
-          previousSelection[param] && sortedValues.includes(previousSelection[param]);
-        const preferredValue = keepSelected ? previousSelection[param] : sortedValues[0];
-        if (!keepSelected) {
-          userSelected.delete(param);
-        }
+        const preferredValue =
+          previousSelection[param] && sortedValues.includes(previousSelection[param])
+            ? previousSelection[param]
+            : defaultValue;
         const preferredIndex = Math.max(0, sortedValues.indexOf(preferredValue));
         const slider = document.createElement("input");
         slider.type = "range";
@@ -634,7 +633,11 @@
           const current = list[Number(slider.value)] ?? "";
           valueDisplay.textContent = current;
           imageSelection[param] = current;
-          userSelected.add(param);
+          if (current === defaultValue) {
+            userSelected.delete(param);
+          } else {
+            userSelected.add(param);
+          }
           buildImageControls();
           renderImage();
         });
@@ -656,16 +659,18 @@
           input.appendChild(option);
         });
 
-        const keepSelected =
-          previousSelection[param] && sortedValues.includes(previousSelection[param]);
-        const preferredValue = keepSelected ? previousSelection[param] : sortedValues[0];
-        if (!keepSelected) {
-          userSelected.delete(param);
-        }
+        const preferredValue =
+          previousSelection[param] && sortedValues.includes(previousSelection[param])
+            ? previousSelection[param]
+            : defaultValue;
         input.value = preferredValue;
         input.addEventListener("change", () => {
           imageSelection[param] = input.value;
-          userSelected.add(param);
+          if (input.value === defaultValue) {
+            userSelected.delete(param);
+          } else {
+            userSelected.add(param);
+          }
           buildImageControls();
           renderImage();
         });
@@ -707,12 +712,10 @@
       select.appendChild(option);
     });
 
-    const keepSuffix =
-      previousSelection?.suffix && options.some((option) => option.key === previousSelection.suffix);
-    const preferredSuffix = keepSuffix ? previousSelection.suffix : options[0].key;
-    if (!keepSuffix) {
-      userSelected.delete("suffix");
-    }
+    const preferredSuffix =
+      previousSelection?.suffix && options.some((option) => option.key === previousSelection.suffix)
+        ? previousSelection.suffix
+        : options[0].key;
     imageSelection.suffix = preferredSuffix;
     select.value = imageSelection.suffix;
     select.addEventListener("change", () => {
