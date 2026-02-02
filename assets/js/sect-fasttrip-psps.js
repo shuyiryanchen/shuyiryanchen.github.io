@@ -94,8 +94,12 @@
   const imageBasePath = `${basePath}/assets/website_plots/`;
 
   const setStatus = (el, message, isError = false) => {
+    if (!isError) {
+      el.textContent = "";
+      return;
+    }
     el.textContent = message;
-    el.style.color = isError ? "#a40000" : "#555";
+    el.style.color = "#a40000";
   };
 
   const getLabel = (param) => paramLabels[param] || param;
@@ -461,9 +465,17 @@
 
   const buildImageControls = () => {
     imageParams.innerHTML = "";
-    const paramsToShow = getDisplayParams().filter((param) => param !== "W_cap");
+    const imageParamSet = new Set();
+    imageMeta.forEach((meta) => {
+      Object.keys(meta.params || {}).forEach((key) => imageParamSet.add(key));
+    });
 
-    paramsToShow.forEach((param) => {
+    const orderedParams = [
+      ...hyperparams.filter((param) => imageParamSet.has(param)),
+      ...Array.from(imageParamSet).filter((param) => !hyperparams.includes(param))
+    ];
+
+    orderedParams.forEach((param) => {
       const wrapper = document.createElement("div");
       wrapper.className = "sfps-field";
       const label = document.createElement("label");
@@ -590,7 +602,7 @@
 
     const imageUrl = normalizeImagePath(selected.path);
     decisionImage.src = imageUrl;
-    setStatus(imageStatus, `Loading ${imageUrl}`);
+    setStatus(imageStatus, "", false);
   };
 
   const init = async () => {
@@ -629,7 +641,7 @@
     setStatus(imageStatus, "Image failed to load. Check the path.", true);
   });
   decisionImage.addEventListener("load", () => {
-    setStatus(imageStatus, "Image loaded.");
+    setStatus(imageStatus, "", false);
   });
 
   init();
