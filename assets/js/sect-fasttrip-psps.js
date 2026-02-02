@@ -336,7 +336,7 @@
 
         const allOption = document.createElement("option");
         allOption.value = "";
-        allOption.textContent = "All (average)";
+        allOption.textContent = "All";
         select.appendChild(allOption);
 
         const filteredRows = dataset.filter((row) =>
