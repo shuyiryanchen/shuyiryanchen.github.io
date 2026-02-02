@@ -523,52 +523,16 @@
     "W_cap_multiplier"
   ]);
 
-  const getFilteredImageMeta = (excludeParam) => {
-    return imageMeta.filter((meta) => {
-      if (excludeParam !== "suffix" && userSelected.has("suffix")) {
-        if (getSuffixKey(meta.suffix) !== imageSelection.suffix) return false;
-      }
-
-      return Object.entries(imageSelection).every(([key, value]) => {
-        if (key === "suffix" || key === excludeParam) return true;
-        if (!userSelected.has(key)) return true;
-        if (value === undefined || value === null || value === "") return true;
-        if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
-        return String(meta.params[key]) === String(value);
-      });
-    });
-  };
-
-  const getImageValues = (param, fallbackMeta) => {
-    const sourceMeta = requiredSliderParams.has(param)
-      ? (userSelected.has("suffix")
-          ? imageMeta.filter((meta) => getSuffixKey(meta.suffix) === imageSelection.suffix)
-          : imageMeta)
-      : getFilteredImageMeta(param);
-    const useMeta = sourceMeta.length ? sourceMeta : fallbackMeta;
-    return useMeta
+  const getImageValues = (param) => {
+    return imageMeta
       .map((meta) => meta.params[param])
       .filter((value) => value !== undefined && value !== "");
-  };
-
-  const getMetaForSelection = (selection, excludeParam) => {
-    return imageMeta.filter((meta) => {
-      if (excludeParam !== "suffix" && selection.suffix) {
-        if (getSuffixKey(meta.suffix) !== selection.suffix) return false;
-      }
-      return Object.entries(selection).every(([key, value]) => {
-        if (key === "suffix" || key === excludeParam) return true;
-        if (value === undefined || value === null || value === "") return true;
-        if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
-        return String(meta.params[key]) === String(value);
-      });
-    });
   };
 
   const buildImageControls = () => {
     imageParams.innerHTML = "";
     const previousSelection = { ...imageSelection };
-    const workingSelection = { suffix: imageSelection.suffix || "" };
+    imageSelection = { suffix: imageSelection.suffix || "" };
     const excludedImageParams = new Set(["B_budget", "C_budget", "W_cap"]);
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
@@ -602,7 +566,6 @@
     const suffixControl = buildSuffixControl(previousSelection);
     if (suffixControl) {
       selectControls.push(suffixControl);
-      workingSelection.suffix = imageSelection.suffix;
     }
 
     orderedParams.forEach((param) => {
@@ -611,9 +574,7 @@
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      const values = getMetaForSelection(workingSelection, param)
-        .map((meta) => meta.params[param])
-        .filter((value) => value !== undefined && value !== "");
+      const values = getImageValues(param);
 
       const uniqueValues = Array.from(new Set(values));
       if (!uniqueValues.length) return;
@@ -650,15 +611,9 @@
           const current = list[Number(slider.value)] ?? "";
           valueDisplay.textContent = current;
           imageSelection[param] = current;
-          if (current === defaultValue) {
-            userSelected.delete(param);
-          } else {
-            userSelected.add(param);
-          }
           renderImage();
         });
         slider.addEventListener("change", () => {
-          buildImageControls();
           renderImage();
         });
 
@@ -687,19 +642,13 @@
         input.value = preferredValue;
         input.addEventListener("change", () => {
           imageSelection[param] = input.value;
-          if (input.value === defaultValue) {
-            userSelected.delete(param);
-          } else {
-            userSelected.add(param);
-          }
-          buildImageControls();
           renderImage();
         });
         wrapper.appendChild(label);
         wrapper.appendChild(input);
         selectControls.push(wrapper);
         imageSelection[param] = preferredValue;
-        workingSelection[param] = preferredValue;
+        // keep selection in sync
       }
     });
 
@@ -708,11 +657,9 @@
   };
 
   const buildSuffixControl = (previousSelection) => {
-    const filtered = getFilteredImageMeta("suffix");
-    const source = filtered.length ? filtered : imageMeta;
     const options = Array.from(
       new Map(
-        source.map((meta) => {
+        imageMeta.map((meta) => {
           const key = getSuffixKey(meta.suffix);
           return [key, { key, label: getSuffixLabel(meta.suffix) }];
         })
@@ -745,8 +692,6 @@
     userSelected.add("suffix");
     select.addEventListener("change", () => {
       imageSelection.suffix = select.value;
-      userSelected.add("suffix");
-      buildImageControls();
       renderImage();
     });
 
@@ -764,14 +709,11 @@
     }
 
     const matches = imageMeta.filter((meta) => {
-      if (userSelected.has("suffix")) {
-        const metaSuffixKey = getSuffixKey(meta.suffix);
-        if (metaSuffixKey !== imageSelection.suffix) return false;
-      }
+      const metaSuffixKey = getSuffixKey(meta.suffix);
+      if (metaSuffixKey !== imageSelection.suffix) return false;
 
       return Object.entries(imageSelection).every(([key, value]) => {
         if (key === "suffix") return true;
-        if (!userSelected.has(key)) return true;
         if (key === "W_cap") return true;
         if (key === "B_budget") return true;
         if (key === "C_budget") return true;
@@ -836,7 +778,6 @@
   });
   resetPart2Button.addEventListener("click", async () => {
     imageSelection = { suffix: "" };
-    userSelected.clear();
     try {
       await refreshImageMeta();
     } catch (error) {
