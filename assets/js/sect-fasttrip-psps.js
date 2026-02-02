@@ -180,7 +180,7 @@
     if (suffix.hftd && suffix.inset) return "HFTD + Inset";
     if (suffix.hftd) return "HFTD";
     if (suffix.inset) return "Inset";
-    return "Default";
+    return "None";
   };
 
   const getSuffixKey = (suffix) => {
@@ -655,6 +655,9 @@
           } else {
             userSelected.add(param);
           }
+          renderImage();
+        });
+        slider.addEventListener("change", () => {
           buildImageControls();
           renderImage();
         });
