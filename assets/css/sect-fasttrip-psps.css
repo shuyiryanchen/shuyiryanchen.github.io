@@ -49,6 +49,16 @@
   gap: 0.8rem;
 }
 
+#image-params {
+  display: block;
+  column-count: 2;
+  column-gap: 1.5rem;
+}
+
+#image-params .sfps-field {
+  break-inside: avoid;
+}
+
 .sfps-grid--two {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   margin-bottom: 1rem;

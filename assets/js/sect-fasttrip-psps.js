@@ -484,6 +484,8 @@
     ];
     const dropdownParams = ["mht_method", "K_groups", "alpha"];
     const orderedParams = [...sliderParams, ...dropdownParams];
+    const selectControls = [];
+    const sliderControls = [];
 
     orderedParams.forEach((param) => {
       const wrapper = document.createElement("div");
@@ -530,7 +532,7 @@
         wrapper.appendChild(label);
         wrapper.appendChild(slider);
         wrapper.appendChild(valueDisplay);
-        imageParams.appendChild(wrapper);
+        sliderControls.push(wrapper);
         imageSelection[param] = sortedValues[0];
       } else {
         const input = document.createElement("select");
@@ -550,10 +552,13 @@
         });
         wrapper.appendChild(label);
         wrapper.appendChild(input);
-        imageParams.appendChild(wrapper);
+        selectControls.push(wrapper);
         imageSelection[param] = sortedValues[0];
       }
     });
+
+    selectControls.forEach((node) => imageParams.appendChild(node));
+    sliderControls.forEach((node) => imageParams.appendChild(node));
   };
 
   const buildSuffixControl = () => {
