@@ -250,7 +250,7 @@
 .sfps-image-wrap {
   margin-top: 1rem;
   text-align: left;
-  min-height: 520px;
+  min-height: 680px;
   display: flex;
   align-items: center;
 }
@@ -258,7 +258,7 @@
 .sfps-image-wrap img {
   max-width: 100%;
   height: auto;
-  max-height: 720px;
+  max-height: 980px;
   width: 100%;
   object-fit: contain;
   border: 1px solid #ddd;
