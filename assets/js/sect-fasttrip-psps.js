@@ -13,10 +13,12 @@
   const trendPlotTrue = document.getElementById("trend-plot-true");
   const plotTitleLeft = document.getElementById("plot-title-left");
   const plotTitleRight = document.getElementById("plot-title-right");
+  const resetPart1Button = document.getElementById("reset-part1");
 
   const imageStatus = document.getElementById("image-status");
   const imageParams = document.getElementById("image-params");
   const decisionImage = document.getElementById("decision-image");
+  const resetPart2Button = document.getElementById("reset-part2");
 
   const hyperparams = [
     "B_budget",
@@ -268,9 +270,20 @@
     if (rightDefault) yAxisRightSelect.value = rightDefault.key;
   };
 
+  const getCurrentFilters = () => {
+    const filters = {};
+    filterControls.querySelectorAll("select").forEach((select) => {
+      if (select.value) {
+        filters[select.dataset.param] = select.value;
+      }
+    });
+    return filters;
+  };
+
   const buildFilterControls = () => {
     filterControls.innerHTML = "";
     const xAxis = xAxisSelect.value;
+    const currentFilters = getCurrentFilters();
 
     getDisplayParams()
       .filter((param) => param !== xAxis)
@@ -289,7 +302,14 @@
         allOption.textContent = "All (average)";
         select.appendChild(allOption);
 
-        getUniqueValues(dataset, param).forEach((value) => {
+        const filteredRows = dataset.filter((row) =>
+          Object.entries(currentFilters).every(([key, value]) => {
+            if (key === param) return true;
+            return String(row[key]) === value;
+          })
+        );
+
+        getUniqueValues(filteredRows, param).forEach((value) => {
           const option = document.createElement("option");
           option.value = value;
           option.textContent = value;
@@ -297,6 +317,12 @@
         });
 
         select.addEventListener("change", renderPlot);
+        if (currentFilters[param]) {
+          select.value = currentFilters[param];
+          if (select.value !== currentFilters[param]) {
+            select.value = "";
+          }
+        }
         wrapper.appendChild(label);
         wrapper.appendChild(select);
         filterControls.appendChild(wrapper);
@@ -318,12 +344,7 @@
     const leftMetric = yAxisLeftSelect.value;
     const rightMetric = yAxisRightSelect.value;
 
-    const filters = {};
-    filterControls.querySelectorAll("select").forEach((select) => {
-      if (select.value) {
-        filters[select.dataset.param] = select.value;
-      }
-    });
+    const filters = getCurrentFilters();
 
     const filteredRows = dataset.filter((row) =>
       Object.entries(filters).every(([key, value]) => String(row[key]) === value)
@@ -490,6 +511,29 @@
     }
   };
 
+  const getFilteredImageMeta = (excludeParam) => {
+    return imageMeta.filter((meta) => {
+      if (excludeParam !== "suffix" && imageSelection.suffix) {
+        if (getSuffixKey(meta.suffix) !== imageSelection.suffix) return false;
+      }
+
+      return Object.entries(imageSelection).every(([key, value]) => {
+        if (key === "suffix" || key === excludeParam) return true;
+        if (value === undefined || value === null || value === "") return true;
+        if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
+        return String(meta.params[key]) === String(value);
+      });
+    });
+  };
+
+  const getImageValues = (param, fallbackMeta) => {
+    const sourceMeta = getFilteredImageMeta(param);
+    const useMeta = sourceMeta.length ? sourceMeta : fallbackMeta;
+    return useMeta
+      .map((meta) => meta.params[param])
+      .filter((value) => value !== undefined && value !== "");
+  };
+
   const buildImageControls = () => {
     imageParams.innerHTML = "";
     imageSelection = { suffix: imageSelection.suffix || "" };
@@ -508,6 +552,7 @@
       "C_budget_multiplier",
       "W_cap_multiplier",
       "effective_alpha",
+      "gamma_i_multiplier",
       "mht_method",
       "K_groups",
       "alpha"
@@ -531,9 +576,7 @@
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      const values = imageMeta
-        .map((meta) => meta.params[param])
-        .filter((value) => value !== undefined && value !== "");
+      const values = getImageValues(param, imageMeta);
 
       const uniqueValues = Array.from(new Set(values));
       if (!uniqueValues.length) return;
@@ -564,6 +607,7 @@
           const current = list[Number(slider.value)] ?? "";
           valueDisplay.textContent = current;
           imageSelection[param] = current;
+          buildImageControls();
           renderImage();
         });
 
@@ -586,6 +630,7 @@
 
         input.addEventListener("change", () => {
           imageSelection[param] = input.value;
+          buildImageControls();
           renderImage();
         });
         wrapper.appendChild(label);
@@ -600,7 +645,18 @@
   };
 
   const buildSuffixControl = () => {
-    if (!imageSuffixOptions.length) return null;
+    const filtered = getFilteredImageMeta("suffix");
+    const source = filtered.length ? filtered : imageMeta;
+    const options = Array.from(
+      new Map(
+        source.map((meta) => {
+          const key = getSuffixKey(meta.suffix);
+          return [key, { key, label: getSuffixLabel(meta.suffix) }];
+        })
+      ).values()
+    );
+
+    if (!options.length) return null;
 
     const label = document.createElement("label");
     label.setAttribute("for", "image-suffix");
@@ -608,17 +664,18 @@
 
     const select = document.createElement("select");
     select.id = "image-suffix";
-    imageSuffixOptions.forEach((suffix) => {
+    options.forEach((suffix) => {
       const option = document.createElement("option");
       option.value = suffix.key;
       option.textContent = suffix.label;
       select.appendChild(option);
     });
 
-    imageSelection.suffix = imageSuffixOptions[0].key;
+    imageSelection.suffix = options[0].key;
     select.value = imageSelection.suffix;
     select.addEventListener("change", () => {
       imageSelection.suffix = select.value;
+      buildImageControls();
       renderImage();
     });
 
@@ -670,14 +727,6 @@
       defaultCsvFile = (manifest.csvFiles || [])[0] || "";
       const images = manifest.images || manifest.imageFiles || [];
       imageMeta = images.map(parseImageName).filter(Boolean);
-      imageSuffixOptions = Array.from(
-        new Map(
-          imageMeta.map((meta) => {
-            const key = getSuffixKey(meta.suffix);
-            return [key, { key, label: getSuffixLabel(meta.suffix) }];
-          })
-        ).values()
-      );
 
       buildImageControls();
       renderImage();
@@ -693,6 +742,16 @@
   });
   yAxisLeftSelect.addEventListener("change", renderPlot);
   yAxisRightSelect.addEventListener("change", renderPlot);
+  resetPart1Button.addEventListener("click", () => {
+    buildAxisSelects();
+    buildFilterControls();
+    renderPlot();
+  });
+  resetPart2Button.addEventListener("click", () => {
+    imageSelection = { suffix: imageSelection.suffix || "" };
+    buildImageControls();
+    renderImage();
+  });
   decisionImage.addEventListener("error", () => {
     setStatus(imageStatus, "Image failed to load. Check the path.", true);
   });
