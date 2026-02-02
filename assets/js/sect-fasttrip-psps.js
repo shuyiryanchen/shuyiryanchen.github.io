@@ -631,6 +631,13 @@
         slider.value = String(preferredIndex);
         slider.dataset.param = param;
         slider.dataset.values = JSON.stringify(sortedValues);
+        const updateSliderFill = () => {
+          const max = Number(slider.max) || 0;
+          const val = Number(slider.value) || 0;
+          const percent = max ? (val / max) * 100 : 0;
+          slider.style.setProperty("--value", `${percent}%`);
+        };
+        updateSliderFill();
 
         const valueDisplay = document.createElement("div");
         valueDisplay.className = "sfps-status sfps-slider-value";
@@ -647,9 +654,13 @@
           } else {
             userSelected.add(param);
           }
+          updateSliderFill();
           renderImage();
         });
-        slider.addEventListener("change", renderImage);
+        slider.addEventListener("change", () => {
+          updateSliderFill();
+          renderImage();
+        });
 
         wrapper.appendChild(label);
         wrapper.appendChild(slider);

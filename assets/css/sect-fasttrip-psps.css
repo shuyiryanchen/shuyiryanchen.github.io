@@ -68,6 +68,8 @@
   box-shadow: none;
   -webkit-appearance: none;
   appearance: none;
+  background: linear-gradient(#4da3ff, #4da3ff) 0/ var(--value, 0%) 100% no-repeat,
+    #c7c7c7;
 }
 
 .sfps-field input[type="range"]::-webkit-slider-runnable-track {
@@ -82,11 +84,17 @@
   border-radius: 999px;
 }
 
+.sfps-field input[type="range"]::-moz-range-progress {
+  height: 6px;
+  background: #4da3ff;
+  border-radius: 999px;
+}
+
 .sfps-field input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  background: #1f77b4;
+  background: #4da3ff;
   border-radius: 50%;
   margin-top: -5px;
   cursor: grab;
@@ -99,7 +107,7 @@
 .sfps-field input[type="range"]::-moz-range-thumb {
   width: 16px;
   height: 16px;
-  background: #1f77b4;
+  background: #4da3ff;
   border-radius: 50%;
   border: none;
   cursor: grab;
