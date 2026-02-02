@@ -229,7 +229,17 @@
       xAxisSelect.appendChild(option);
     });
 
-    yMetricOptions.forEach((metric) => {
+    const availableMetricOptions = yMetricOptions.filter((metric) => {
+      if (metric.type === "direct") {
+        return columns.includes(metric.key);
+      }
+      if (metric.type === "ratio") {
+        return columns.includes(metric.numerator) && columns.includes(metric.denominator);
+      }
+      return false;
+    });
+
+    availableMetricOptions.forEach((metric) => {
       const optionLeft = document.createElement("option");
       optionLeft.value = metric.key;
       optionLeft.textContent = metric.label;
@@ -246,8 +256,16 @@
       xAxisSelect.value = displayParams[0];
     }
 
-    yAxisLeftSelect.value = "opt_cost";
-    yAxisRightSelect.value = "true_cost";
+    const leftDefault =
+      availableMetricOptions.find((metric) => metric.key === "opt_cost") ||
+      availableMetricOptions[0];
+    const rightDefault =
+      availableMetricOptions.find((metric) => metric.key === "true_cost") ||
+      availableMetricOptions[1] ||
+      availableMetricOptions[0];
+
+    if (leftDefault) yAxisLeftSelect.value = leftDefault.key;
+    if (rightDefault) yAxisRightSelect.value = rightDefault.key;
   };
 
   const buildFilterControls = () => {
@@ -475,14 +493,30 @@
   const buildImageControls = () => {
     imageParams.innerHTML = "";
     imageSelection = { suffix: imageSelection.suffix || "" };
-    const sliderParams = [
+    const excludedImageParams = new Set(["B_budget", "C_budget", "W_cap"]);
+    const imageParamSet = new Set();
+    imageMeta.forEach((meta) => {
+      Object.keys(meta.params || {}).forEach((key) => {
+        if (!excludedImageParams.has(key)) {
+          imageParamSet.add(key);
+        }
+      });
+    });
+
+    const preferredOrder = [
       "B_budget_multiplier",
       "C_budget_multiplier",
       "W_cap_multiplier",
-      "effective_alpha"
+      "effective_alpha",
+      "mht_method",
+      "K_groups",
+      "alpha"
     ];
-    const dropdownParams = ["mht_method", "K_groups", "alpha"];
-    const orderedParams = [...sliderParams, ...dropdownParams];
+
+    const orderedParams = [
+      ...preferredOrder.filter((param) => imageParamSet.has(param)),
+      ...Array.from(imageParamSet).filter((param) => !preferredOrder.includes(param))
+    ];
     const selectControls = [];
     const sliderControls = [];
 
@@ -510,7 +544,7 @@
         ? uniqueValues.sort((a, b) => Number(a) - Number(b))
         : uniqueValues.sort();
 
-      if (sliderParams.includes(param) && allNumeric) {
+      if (allNumeric && sortedValues.length > 1) {
         const slider = document.createElement("input");
         slider.type = "range";
         slider.min = "0";
