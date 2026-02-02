@@ -536,6 +536,7 @@
 
   const buildImageControls = () => {
     imageParams.innerHTML = "";
+    const previousSelection = { ...imageSelection };
     imageSelection = { suffix: imageSelection.suffix || "" };
     const excludedImageParams = new Set(["B_budget", "C_budget", "W_cap"]);
     const imageParamSet = new Set();
@@ -550,7 +551,6 @@
     const preferredOrder = [
       "B_budget_multiplier",
       "C_budget_multiplier",
-      "W_cap_multiplier",
       "effective_alpha",
       "gamma_i_multiplier",
       "mht_method",
@@ -588,18 +588,23 @@
         : uniqueValues.sort();
 
       if (allNumeric && sortedValues.length > 1) {
+        const preferredValue =
+          previousSelection[param] && sortedValues.includes(previousSelection[param])
+            ? previousSelection[param]
+            : sortedValues[0];
+        const preferredIndex = Math.max(0, sortedValues.indexOf(preferredValue));
         const slider = document.createElement("input");
         slider.type = "range";
         slider.min = "0";
         slider.max = String(Math.max(sortedValues.length - 1, 0));
         slider.step = "1";
-        slider.value = "0";
+        slider.value = String(preferredIndex);
         slider.dataset.param = param;
         slider.dataset.values = JSON.stringify(sortedValues);
 
         const valueDisplay = document.createElement("div");
         valueDisplay.className = "sfps-status sfps-slider-value";
-        valueDisplay.textContent = sortedValues[0];
+        valueDisplay.textContent = preferredValue;
         valueDisplay.dataset.param = param;
 
         slider.addEventListener("input", () => {
@@ -615,7 +620,7 @@
         wrapper.appendChild(slider);
         wrapper.appendChild(valueDisplay);
         sliderControls.push(wrapper);
-        imageSelection[param] = sortedValues[0];
+        imageSelection[param] = preferredValue;
       } else {
         const input = document.createElement("select");
         input.id = `image-${param}`;
@@ -628,6 +633,11 @@
           input.appendChild(option);
         });
 
+        const preferredValue =
+          previousSelection[param] && sortedValues.includes(previousSelection[param])
+            ? previousSelection[param]
+            : sortedValues[0];
+        input.value = preferredValue;
         input.addEventListener("change", () => {
           imageSelection[param] = input.value;
           buildImageControls();
@@ -636,7 +646,7 @@
         wrapper.appendChild(label);
         wrapper.appendChild(input);
         selectControls.push(wrapper);
-        imageSelection[param] = sortedValues[0];
+        imageSelection[param] = preferredValue;
       }
     });
 
@@ -744,11 +754,14 @@
   yAxisRightSelect.addEventListener("change", renderPlot);
   resetPart1Button.addEventListener("click", () => {
     buildAxisSelects();
+    filterControls.querySelectorAll("select").forEach((select) => {
+      select.value = "";
+    });
     buildFilterControls();
     renderPlot();
   });
   resetPart2Button.addEventListener("click", () => {
-    imageSelection = { suffix: imageSelection.suffix || "" };
+    imageSelection = { suffix: "" };
     buildImageControls();
     renderImage();
   });
