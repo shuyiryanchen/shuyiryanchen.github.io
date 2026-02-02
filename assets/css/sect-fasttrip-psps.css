@@ -87,6 +87,8 @@
 .sfps-controls {
   flex: 0 0 900px;
   max-width: 900px;
+  width: 900px;
+  min-width: 900px;
 }
 
 .sfps-content {
@@ -103,6 +105,7 @@
 }
 
 .sfps-intro {
+  width: 100%;
   max-width: 960px;
   margin: 0 auto 1.5rem;
   text-align: center;
@@ -288,10 +291,10 @@
   max-height: 700px;
   width: 85%;
   object-fit: contain;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 0.4rem;
-  background: #fff;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
 }
 
 @media (max-width: 1200px) {
