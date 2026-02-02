@@ -571,9 +571,9 @@
       "alpha",
       "B_budget_multiplier",
       "C_budget_multiplier",
+      "W_cap_multiplier",
       "effective_alpha",
-      "gamma_i_multiplier",
-      "W_cap_multiplier"
+      "gamma_i_multiplier"
     ];
 
     const orderedParams = [
