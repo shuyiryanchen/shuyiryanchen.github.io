@@ -68,6 +68,18 @@
   box-shadow: none;
 }
 
+.sfps-field input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #d6d6d6;
+  border-radius: 999px;
+}
+
+.sfps-field input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: #d6d6d6;
+  border-radius: 999px;
+}
+
 .sfps-field input[type="range"]::-webkit-slider-thumb {
   width: 16px;
   height: 16px;
