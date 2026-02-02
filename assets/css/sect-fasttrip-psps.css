@@ -68,18 +68,19 @@
   box-shadow: none;
   -webkit-appearance: none;
   appearance: none;
-  background: transparent;
+  background: linear-gradient(#1f77b4, #1f77b4) 0/ var(--value, 0%) 100% no-repeat,
+    #d6d6d6;
 }
 
 .sfps-field input[type="range"]::-webkit-slider-runnable-track {
   height: 4px;
-  background: #1f77b4;
+  background: transparent;
   border-radius: 999px;
 }
 
 .sfps-field input[type="range"]::-moz-range-track {
   height: 4px;
-  background: #1f77b4;
+  background: #d6d6d6;
   border-radius: 999px;
 }
 
