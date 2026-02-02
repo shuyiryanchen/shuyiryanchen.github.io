@@ -65,15 +65,15 @@
 
 .sfps-split {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   align-items: flex-start;
   width: 100%;
   justify-content: flex-start;
 }
 
 .sfps-controls {
-  flex: 0 0 480px;
-  max-width: 480px;
+  flex: 0 0 640px;
+  max-width: 640px;
 }
 
 .sfps-content {
