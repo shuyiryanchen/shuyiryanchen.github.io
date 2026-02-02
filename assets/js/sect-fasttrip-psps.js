@@ -49,8 +49,7 @@
     gamma_i_multiplier: "Fast-trip average reliability cost",
     grouping_method: "Declustering method",
     ignitions: "Ignitions",
-    mht_method: "Decluster + MHT method",
-    row: "Row index"
+    mht_method: "Decluster + MHT method"
   };
 
   const yMetricOptions = [
@@ -168,8 +167,7 @@
       row: Number.isNaN(row) ? null : row,
       params: {
         ...params,
-        mht_method: mhtMethod,
-        row: Number.isNaN(row) ? "" : String(row)
+        mht_method: mhtMethod
       },
       suffix: {
         hftd: suffixes.hftd,
@@ -522,8 +520,7 @@
     "C_budget_multiplier",
     "effective_alpha",
     "gamma_i_multiplier",
-    "W_cap_multiplier",
-    "row"
+    "W_cap_multiplier"
   ]);
 
   const getFilteredImageMeta = (excludeParam) => {
@@ -584,8 +581,7 @@
       "C_budget_multiplier",
       "W_cap_multiplier",
       "effective_alpha",
-      "gamma_i_multiplier",
-      "row"
+      "gamma_i_multiplier"
     ];
 
     const orderedParams = [
