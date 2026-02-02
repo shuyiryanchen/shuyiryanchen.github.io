@@ -63,6 +63,9 @@
   padding: 0;
   height: 28px;
   cursor: pointer;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .sfps-field input[type="range"]::-webkit-slider-thumb {
