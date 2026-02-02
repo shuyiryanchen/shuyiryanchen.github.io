@@ -146,11 +146,16 @@
     const remainder = prefix.slice(rowMatch[0].length);
 
     const params = {};
-    remainder.split("_").forEach((part) => {
-      const [key, value] = part.split("=");
-      if (!key || value === undefined) return;
-      params[key] = value;
-    });
+    const regex = /([A-Za-z]+(?:_[A-Za-z]+)*)=([^_]+)/g;
+    let match = regex.exec(remainder);
+    while (match) {
+      const key = match[1];
+      const value = match[2];
+      if (key && value !== undefined) {
+        params[key] = value;
+      }
+      match = regex.exec(remainder);
+    }
 
     return {
       path,
@@ -494,11 +499,11 @@
         ? uniqueValues.sort((a, b) => Number(a) - Number(b))
         : uniqueValues.sort();
 
-      if (sliderParams.includes(param) && allNumeric && sortedValues.length > 1) {
+      if (sliderParams.includes(param) && allNumeric) {
         const slider = document.createElement("input");
         slider.type = "range";
         slider.min = "0";
-        slider.max = String(sortedValues.length - 1);
+        slider.max = String(Math.max(sortedValues.length - 1, 0));
         slider.step = "1";
         slider.value = "0";
         slider.dataset.param = param;
