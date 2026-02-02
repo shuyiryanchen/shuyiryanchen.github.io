@@ -177,10 +177,10 @@
   };
 
   const getSuffixLabel = (suffix) => {
-    if (suffix.hftd && suffix.inset) return "With HFTD + Inset";
-    if (suffix.hftd) return "With HFTD";
-    if (suffix.inset) return "With Inset";
-    return "No suffix";
+    if (suffix.hftd && suffix.inset) return "HFTD + Inset";
+    if (suffix.hftd) return "HFTD";
+    if (suffix.inset) return "Inset";
+    return "Default";
   };
 
   const getSuffixKey = (suffix) => {
@@ -701,7 +701,7 @@
 
     const label = document.createElement("label");
     label.setAttribute("for", "image-suffix");
-    label.textContent = "Plot suffix";
+    label.textContent = "Layer options";
 
     const select = document.createElement("select");
     select.id = "image-suffix";
@@ -712,10 +712,12 @@
       select.appendChild(option);
     });
 
+    const defaultOption =
+      options.find((option) => option.key === "with_hftd_with_inset") || options[0];
     const preferredSuffix =
       previousSelection?.suffix && options.some((option) => option.key === previousSelection.suffix)
         ? previousSelection.suffix
-        : options[0].key;
+        : defaultOption.key;
     imageSelection.suffix = preferredSuffix;
     select.value = imageSelection.suffix;
     select.addEventListener("change", () => {
