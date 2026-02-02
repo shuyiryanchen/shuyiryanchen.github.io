@@ -1,5 +1,8 @@
 .sfps-page {
   font-size: 0.92rem;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .sfps-page .page__title {
@@ -25,6 +28,7 @@
   border-radius: 999px;
   background: #f1f1f1;
   border: 1px solid #e2e2e2;
+  align-self: flex-start;
 }
 
 .sfps-tab-button {
@@ -90,8 +94,8 @@
 }
 
 .sfps-intro {
-  max-width: 100%;
-  margin: 0 auto 1.5rem;
+  max-width: 960px;
+  margin: 0 0 1.5rem 0;
 }
 
 .sfps-row {
