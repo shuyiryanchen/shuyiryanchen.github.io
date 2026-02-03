@@ -90,10 +90,10 @@
 }
 
 .sfps-controls {
-  flex: 0 0 900px;
-  max-width: 900px;
-  width: 900px;
-  min-width: 900px;
+  flex: 0 0 720px;
+  max-width: 720px;
+  width: 720px;
+  min-width: 720px;
 }
 
 .sfps-content {

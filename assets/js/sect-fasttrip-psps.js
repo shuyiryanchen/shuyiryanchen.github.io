@@ -750,6 +750,12 @@
         })
       ).values()
     );
+    const lastKey = "with_hftd_with_inset";
+    options.sort((a, b) => {
+      if (a.key === lastKey) return 1;
+      if (b.key === lastKey) return -1;
+      return a.label.localeCompare(b.label);
+    });
 
     if (!options.length) return null;
 
