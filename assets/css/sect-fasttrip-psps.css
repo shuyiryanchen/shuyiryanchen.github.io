@@ -344,8 +344,16 @@
 .sfps-historical-controls {
   max-width: 520px;
   width: 100%;
-  padding: 0.35rem 0.6rem;
+  padding: 0.2rem 0.5rem;
   align-self: flex-start;
+}
+
+.sfps-historical-controls .sfps-field {
+  margin-bottom: 0;
+}
+
+.sfps-historical-controls label {
+  margin-bottom: 0.2rem;
 }
 
 .sfps-historical-content {
