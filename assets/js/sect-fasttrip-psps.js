@@ -61,6 +61,20 @@
     { key: "population_fast_trip", label: "Population affected by fast-trip", type: "direct" },
     { key: "population_psps_actual", label: "Population affected by PSPS", type: "direct" },
     {
+      key: "x_size_budget_pct",
+      label: "Pct of sect. budget usage",
+      type: "ratio",
+      numerator: "x_size",
+      denominator: "C_budget"
+    },
+    {
+      key: "y_size_budget_pct",
+      label: "Pct of fast-trip budget usage",
+      type: "ratio",
+      numerator: "y_size",
+      denominator: "B_budget"
+    },
+    {
       key: "psps_reliability_pct",
       label: "Pct of PSPS impact on reliability constraint",
       type: "ratio",
@@ -73,6 +87,20 @@
       type: "ratio",
       numerator: "population_fast_trip",
       denominator: "W_cap"
+    },
+    {
+      key: "x_size_total_pct",
+      label: "Pct of circuits sectionalized",
+      type: "ratio",
+      numerator: "x_size",
+      denominator: "808"
+    },
+    {
+      key: "y_size_total_pct",
+      label: "Pct of circuits with fast-trip",
+      type: "ratio",
+      numerator: "y_size",
+      denominator: "808"
     },
     {
       key: "prevented_fast_trip_pct",
@@ -301,7 +329,13 @@
       return false;
     });
 
-    availableMetricOptions.forEach((metric) => {
+    const isPctLabel = (metric) => String(metric.label || "").startsWith("Pct");
+    const orderedMetricOptions = [
+      ...availableMetricOptions.filter((metric) => !isPctLabel(metric)),
+      ...availableMetricOptions.filter(isPctLabel)
+    ];
+
+    orderedMetricOptions.forEach((metric) => {
       const optionLeft = document.createElement("option");
       optionLeft.value = metric.key;
       optionLeft.textContent = metric.label;
@@ -319,12 +353,12 @@
     }
 
     const leftDefault =
-      availableMetricOptions.find((metric) => metric.key === "opt_cost") ||
-      availableMetricOptions[0];
+      orderedMetricOptions.find((metric) => metric.key === "opt_cost") ||
+      orderedMetricOptions[0];
     const rightDefault =
-      availableMetricOptions.find((metric) => metric.key === "true_cost") ||
-      availableMetricOptions[1] ||
-      availableMetricOptions[0];
+      orderedMetricOptions.find((metric) => metric.key === "true_cost") ||
+      orderedMetricOptions[1] ||
+      orderedMetricOptions[0];
 
     if (leftDefault) yAxisLeftSelect.value = leftDefault.key;
     if (rightDefault) yAxisRightSelect.value = rightDefault.key;
