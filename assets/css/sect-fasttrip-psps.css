@@ -311,6 +311,37 @@
   background: transparent;
 }
 
+.sfps-historical-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.sfps-historical-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sfps-historical-title {
+  font-size: 0.9rem;
+  text-align: center;
+  color: #444;
+}
+
+.sfps-historical-item img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 1400px) {
+  .sfps-historical-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 1200px) {
   .sfps-split {
     flex-direction: column;
@@ -334,6 +365,10 @@
   }
 
   .sfps-plot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sfps-historical-grid {
     grid-template-columns: 1fr;
   }
 }

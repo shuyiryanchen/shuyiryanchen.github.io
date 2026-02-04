@@ -20,6 +20,10 @@
   const decisionImage = document.getElementById("decision-image");
   const resetPart2Button = document.getElementById("reset-part2");
 
+  const historicalYearInput = document.getElementById("historical-year");
+  const historicalYearValue = document.getElementById("historical-year-value");
+  const historicalPlots = document.getElementById("historical-plots");
+
   const hyperparams = [
     "B_budget",
     "B_budget_multiplier",
@@ -140,6 +144,41 @@
   ]);
 
   const imageBasePath = `${basePath}/assets/website_plots/`;
+  const historicalBasePath = `${basePath}/assets/website_plots/historical plots/`;
+
+  const historicalYears = [2020, 2021, 2022, 2023, 2024];
+  const historicalPlotDefinitions = [
+    {
+      key: "ignitions_population_map",
+      label: "Ignitions + Population Map",
+      filename: (year) => `ignitions_${year}_population_map.png`
+    },
+    {
+      key: "pie_damage_pct",
+      label: "Damage % (Pie)",
+      filename: (year) => `pie_damage_pct_${year}.png`
+    },
+    {
+      key: "rank_damage_pct",
+      label: "Damage % (Rank)",
+      filename: (year) => `rank_damage_pct_${year}.png`
+    },
+    {
+      key: "rank_ignition_x_pop",
+      label: "Ignitions × Population (Rank)",
+      filename: (year) => `rank_ignition_x_pop_${year}.png`
+    },
+    {
+      key: "rank_ignitions",
+      label: "Ignitions (Rank)",
+      filename: (year) => `rank_ignitions_${year}.png`
+    },
+    {
+      key: "rank_population",
+      label: "Population (Rank)",
+      filename: (year) => `rank_population_${year}.png`
+    }
+  ];
 
   const setStatus = (el, message, isError = false) => {
     if (!isError) {
@@ -148,6 +187,56 @@
     }
     el.textContent = message;
     el.style.color = "#a40000";
+  };
+
+  const renderHistoricalPlots = (year) => {
+    if (!historicalPlots) return;
+    historicalPlots.innerHTML = "";
+    historicalPlotDefinitions.forEach((plot) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "sfps-historical-item";
+
+      const title = document.createElement("div");
+      title.className = "sfps-historical-title";
+      title.textContent = plot.label;
+
+      const img = document.createElement("img");
+      img.alt = `${plot.label} (${year})`;
+      img.loading = "lazy";
+      img.src = encodeURI(`${historicalBasePath}${plot.filename(year)}`);
+
+      wrapper.appendChild(title);
+      wrapper.appendChild(img);
+      historicalPlots.appendChild(wrapper);
+    });
+  };
+
+  const initHistorical = () => {
+    if (!historicalYearInput || !historicalYearValue || !historicalPlots) return;
+    if (!historicalYears.length) return;
+
+    historicalYearInput.min = "0";
+    historicalYearInput.max = String(historicalYears.length - 1);
+    historicalYearInput.step = "1";
+    historicalYearInput.value = String(historicalYears.length - 1);
+
+    const updateSliderFill = () => {
+      const max = Number(historicalYearInput.max) || 0;
+      const val = Number(historicalYearInput.value) || 0;
+      const percent = max ? (val / max) * 100 : 0;
+      historicalYearInput.style.setProperty("--value", `${percent}%`);
+    };
+
+    const updateYear = () => {
+      const year = historicalYears[Number(historicalYearInput.value)] ?? historicalYears[0];
+      historicalYearValue.textContent = String(year);
+      renderHistoricalPlots(year);
+      updateSliderFill();
+    };
+
+    historicalYearInput.addEventListener("input", updateYear);
+    historicalYearInput.addEventListener("change", updateYear);
+    updateYear();
   };
 
   const getLabel = (param) => paramLabels[param] || param;
@@ -920,6 +1009,7 @@
 
   const init = async () => {
     initTabs();
+    initHistorical();
     try {
       const manifest = await fetchManifest();
       defaultCsvFile = (manifest.csvFiles || [])[0] || "";

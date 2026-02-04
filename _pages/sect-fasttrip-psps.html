@@ -54,6 +54,17 @@ disable_site_title: true
       >
         Visualization
       </button>
+      <button
+        id="sfps-tab-btn-historical"
+        class="sfps-tab-button"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="sfps-tab-historical"
+        data-tab="sfps-tab-historical"
+      >
+        Historical Ignitions
+      </button>
     </div>
 
     <div class="sfps-tab-panels">
@@ -122,6 +133,27 @@ disable_site_title: true
         <div class="sfps-image-wrap">
           <img id="decision-image" alt="Decision plot preview" />
         </div>
+      </div>
+    </div>
+    </section>
+    <section
+      id="sfps-tab-historical"
+      class="sfps-section sfps-tab-panel"
+      role="tabpanel"
+      aria-labelledby="sfps-tab-btn-historical"
+      hidden
+    >
+    <div class="sfps-split">
+      <div class="sfps-panel sfps-controls">
+        <div class="sfps-field">
+          <label for="historical-year">Year</label>
+          <input id="historical-year" type="range" />
+          <div id="historical-year-value" class="sfps-status sfps-slider-value"></div>
+        </div>
+      </div>
+
+      <div class="sfps-content">
+        <div id="historical-plots" class="sfps-historical-grid"></div>
       </div>
     </div>
     </section>
