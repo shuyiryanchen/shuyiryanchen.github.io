@@ -105,6 +105,12 @@
   };
 
   const getLabel = (param) => paramLabels[param] || param;
+  const getOptionLabel = (param, value) => {
+    if (param === "mht_method") {
+      return String(value).replace(/_/g, " + ");
+    }
+    return value;
+  };
   const getMetricLabel = (key) =>
     (yMetricOptions.find((option) => option.key === key) || {}).label || key;
 
@@ -649,7 +655,10 @@
         ? uniqueValues.sort((a, b) => Number(a) - Number(b))
         : uniqueValues.sort();
 
-      const defaultValue = sortedValues[0];
+      let defaultValue = sortedValues[0];
+      if (param === "mht_method" && sortedValues.includes("Random_Bonferroni")) {
+        defaultValue = "Random_Bonferroni";
+      }
       if (requiredSliderParams.has(param) || (allNumeric && sortedValues.length > 1)) {
         const preferredValue =
           previousSelection[param] && sortedValues.includes(previousSelection[param])
@@ -709,7 +718,7 @@
         sortedValues.forEach((value) => {
           const option = document.createElement("option");
           option.value = value;
-          option.textContent = value;
+          option.textContent = getOptionLabel(param, value);
           input.appendChild(option);
         });
 
