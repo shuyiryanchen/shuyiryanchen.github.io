@@ -151,32 +151,32 @@
   const historicalPlotDefinitions = [
     {
       key: "ignitions_population_map",
-      label: "Ignitions + Population Map",
+      label: "Ignition Map",
       filename: (year) => `ignitions_${year}_population_map.png`
     },
     {
       key: "pie_damage_pct",
-      label: "Damage % (Pie)",
+      label: "Pct of Total Affected Customers",
       filename: (year) => `pie_damage_pct_${year}.png`
     },
     {
       key: "rank_damage_pct",
-      label: "Damage % (Rank)",
+      label: "Pct of Total Affected Customers (Rank)",
       filename: (year) => `rank_damage_pct_${year}.png`
     },
     {
       key: "rank_ignition_x_pop",
-      label: "Ignitions × Population (Rank)",
+      label: "Total Affected Customers (Rank)",
       filename: (year) => `rank_ignition_x_pop_${year}.png`
     },
     {
       key: "rank_ignitions",
-      label: "Ignitions (Rank)",
+      label: "Number of Ignitions (Rank)",
       filename: (year) => `rank_ignitions_${year}.png`
     },
     {
       key: "rank_population",
-      label: "Population (Rank)",
+      label: "Affected Circuit's Population (Rank)",
       filename: (year) => `rank_population_${year}.png`
     }
   ];
