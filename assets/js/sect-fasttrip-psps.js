@@ -58,7 +58,7 @@
     { key: "x_size", label: "Sect. circuits", type: "direct" },
     { key: "y_size", label: "Fast-trip config. circuits", type: "direct" },
     { key: "z_star_size", label: "PSPS enacted circuits", type: "direct" },
-  { key: "population_psps_actual", label: "Population affected by enacting PSPS", type: "direct" },
+    { key: "population_psps_actual", label: "Population affected by PSPS (actual)", type: "direct" },
     { key: "population_fast_trip", label: "Population affected by fast-trip", type: "direct" },
     { key: "population_psps", label: "Population affected by PSPS (planned)", type: "direct" },
     {
