@@ -562,6 +562,15 @@
     "W_cap_multiplier"
   ]);
 
+  const valuesMatch = (metaValue, selectedValue) => {
+    const metaNum = Number(metaValue);
+    const selectedNum = Number(selectedValue);
+    if (!Number.isNaN(metaNum) && !Number.isNaN(selectedNum)) {
+      return metaNum === selectedNum;
+    }
+    return String(metaValue) === String(selectedValue);
+  };
+
   const getFilteredImageMeta = (excludeParam) => {
     return imageMeta.filter((meta) => {
       if (excludeParam !== "suffix" && userSelected.has("suffix")) {
@@ -573,7 +582,7 @@
         if (!userSelected.has(key)) return true;
         if (value === undefined || value === null || value === "") return true;
         if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
-        return String(meta.params[key]) === String(value);
+        return valuesMatch(meta.params[key], value);
       });
     });
   };
@@ -593,7 +602,7 @@
         if (key === "suffix" || key === excludeParam) return true;
         if (value === undefined || value === null || value === "") return true;
         if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
-        return String(meta.params[key]) === String(value);
+        return valuesMatch(meta.params[key], value);
       });
     });
   };
@@ -691,11 +700,7 @@
           const current = list[Number(slider.value)] ?? "";
           valueDisplay.textContent = current;
           imageSelection[param] = current;
-          if (current === defaultValue) {
-            userSelected.delete(param);
-          } else {
-            userSelected.add(param);
-          }
+          userSelected.add(param);
           updateSliderFill();
           renderImage();
         });
@@ -729,11 +734,7 @@
         input.value = preferredValue;
         input.addEventListener("change", () => {
           imageSelection[param] = input.value;
-          if (input.value === defaultValue) {
-            userSelected.delete(param);
-          } else {
-            userSelected.add(param);
-          }
+          userSelected.add(param);
           renderImage();
         });
         wrapper.appendChild(label);
