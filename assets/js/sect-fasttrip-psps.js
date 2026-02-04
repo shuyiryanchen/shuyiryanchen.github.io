@@ -605,6 +605,12 @@
       .filter((value) => value !== undefined && value !== "");
   };
 
+  const getImageValuesForSelection = (param, selection) => {
+    return getMetaForSelection(selection, param)
+      .map((meta) => meta.params[param])
+      .filter((value) => value !== undefined && value !== "");
+  };
+
   const getMetaForSelection = (selection, excludeParam) => {
     return imageMeta.filter((meta) => {
       if (excludeParam !== "suffix" && selection.suffix) {
@@ -622,7 +628,7 @@
   const buildImageControls = () => {
     imageParams.innerHTML = "";
     const previousSelection = { ...imageSelection };
-    const workingSelection = { suffix: imageSelection.suffix || "" };
+    const workingSelection = { ...previousSelection, suffix: imageSelection.suffix || "" };
     const excludedImageParams = new Set(["B_budget", "C_budget", "W_cap"]);
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
@@ -660,12 +666,13 @@
     }
 
     orderedParams.forEach((param) => {
+      const selectionForFilter = { ...workingSelection };
       const wrapper = document.createElement("div");
       wrapper.className = "sfps-field";
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      const values = getImageValues(param);
+      const values = getImageValuesForSelection(param, selectionForFilter);
 
       const uniqueValues = Array.from(new Set(values));
       if (!uniqueValues.length) return;
@@ -718,6 +725,7 @@
         });
         slider.addEventListener("change", () => {
           updateSliderFill();
+          buildImageControls();
           renderImage();
         });
 
@@ -747,6 +755,7 @@
         input.addEventListener("change", () => {
           imageSelection[param] = input.value;
           userSelected.add(param);
+          buildImageControls();
           renderImage();
         });
         wrapper.appendChild(label);
