@@ -173,11 +173,6 @@
       key: "rank_ignitions",
       label: "Number of Ignitions (Rank)",
       filename: (year) => `rank_ignitions_${year}.png`
-    },
-    {
-      key: "rank_population",
-      label: "Affected Circuit's Population (Rank)",
-      filename: (year) => `rank_population_${year}.png`
     }
   ];
 
@@ -209,7 +204,7 @@
 
       wrapper.appendChild(title);
       wrapper.appendChild(img);
-      if (plot.key.startsWith("rank_")) {
+      if (plot.key.startsWith("rank_") || plot.key === "pie_damage_pct") {
         historicalPlotsRank.appendChild(wrapper);
       } else {
         historicalPlotsSummary.appendChild(wrapper);
