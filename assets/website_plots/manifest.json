@@ -1,5 +1,6 @@
 {
   "csvFiles": [
+    "iteration_optimization_runs_local_and_group_bounds_with_pop.csv",
     "iteration_optimization_runs_local_and_group_bounds.csv"
   ],
   "images": [
