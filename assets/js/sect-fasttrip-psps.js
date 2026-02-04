@@ -57,6 +57,9 @@
     { key: "true_cost", label: "Evaluation cost", type: "direct" },
     { key: "x_size", label: "Sect. circuits", type: "direct" },
     { key: "y_size", label: "Fast-trip config circuits", type: "direct" },
+    { key: "population_psps", label: "Population affected by PSPS (planned)", type: "direct" },
+    { key: "population_fast_trip", label: "Population affected by fast-trip", type: "direct" },
+    { key: "population_psps_actual", label: "Population affected by PSPS", type: "direct" },
     {
       key: "prevented_fast_trip_pct",
       label: "Prevented by fast-trip (% of ignitions)",
