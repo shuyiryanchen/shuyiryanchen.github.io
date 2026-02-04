@@ -22,7 +22,8 @@
 
   const historicalYearInput = document.getElementById("historical-year");
   const historicalYearValue = document.getElementById("historical-year-value");
-  const historicalPlots = document.getElementById("historical-plots");
+  const historicalPlotsRank = document.getElementById("historical-plots-rank");
+  const historicalPlotsSummary = document.getElementById("historical-plots-summary");
 
   const hyperparams = [
     "B_budget",
@@ -190,8 +191,9 @@
   };
 
   const renderHistoricalPlots = (year) => {
-    if (!historicalPlots) return;
-    historicalPlots.innerHTML = "";
+    if (!historicalPlotsRank || !historicalPlotsSummary) return;
+    historicalPlotsRank.innerHTML = "";
+    historicalPlotsSummary.innerHTML = "";
     historicalPlotDefinitions.forEach((plot) => {
       const wrapper = document.createElement("div");
       wrapper.className = "sfps-historical-item";
@@ -207,12 +209,16 @@
 
       wrapper.appendChild(title);
       wrapper.appendChild(img);
-      historicalPlots.appendChild(wrapper);
+      if (plot.key.startsWith("rank_")) {
+        historicalPlotsRank.appendChild(wrapper);
+      } else {
+        historicalPlotsSummary.appendChild(wrapper);
+      }
     });
   };
 
   const initHistorical = () => {
-    if (!historicalYearInput || !historicalYearValue || !historicalPlots) return;
+    if (!historicalYearInput || !historicalYearValue || !historicalPlotsRank) return;
     if (!historicalYears.length) return;
 
     historicalYearInput.min = "0";
