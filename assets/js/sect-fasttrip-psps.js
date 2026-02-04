@@ -605,19 +605,20 @@
       .filter((value) => value !== undefined && value !== "");
   };
 
-  const getImageValuesForSelection = (param, selection) => {
-    return getMetaForSelection(selection, param)
+  const getImageValuesForSelection = (param, selection, activeKeys) => {
+    return getMetaForSelection(selection, param, activeKeys)
       .map((meta) => meta.params[param])
       .filter((value) => value !== undefined && value !== "");
   };
 
-  const getMetaForSelection = (selection, excludeParam) => {
+  const getMetaForSelection = (selection, excludeParam, activeKeys = userSelected) => {
     return imageMeta.filter((meta) => {
-      if (excludeParam !== "suffix" && selection.suffix) {
+      if (excludeParam !== "suffix" && selection.suffix && activeKeys?.has("suffix")) {
         if (getSuffixKey(meta.suffix) !== selection.suffix) return false;
       }
       return Object.entries(selection).every(([key, value]) => {
         if (key === "suffix" || key === excludeParam) return true;
+        if (activeKeys && !activeKeys.has(key)) return true;
         if (value === undefined || value === null || value === "") return true;
         if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
         return valuesMatch(meta.params[key], value);
@@ -672,7 +673,7 @@
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      const values = getImageValuesForSelection(param, selectionForFilter);
+      const values = getImageValuesForSelection(param, selectionForFilter, userSelected);
 
       const uniqueValues = Array.from(new Set(values));
       if (!uniqueValues.length) return;
