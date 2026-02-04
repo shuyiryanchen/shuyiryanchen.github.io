@@ -61,6 +61,20 @@
     { key: "population_fast_trip", label: "Population affected by fast-trip", type: "direct" },
     { key: "population_psps_actual", label: "Population affected by PSPS", type: "direct" },
     {
+      key: "psps_reliability_pct",
+      label: "Pct of PSPS impact on reliability constraint",
+      type: "ratio",
+      numerator: "population_psps_actual",
+      denominator: "W_cap"
+    },
+    {
+      key: "fast_trip_reliability_pct",
+      label: "Pct of fast-trip impact on reliability constraint",
+      type: "ratio",
+      numerator: "population_fast_trip",
+      denominator: "W_cap"
+    },
+    {
       key: "prevented_fast_trip_pct",
       label: "Prevented by fast-trip (% of ignitions)",
       type: "ratio",
