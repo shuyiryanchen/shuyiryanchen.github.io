@@ -607,12 +607,12 @@
     });
 
     const preferredOrder = [
+      "W_cap_multiplier",
+      "C_budget_multiplier",
       "mht_method",
       "K_groups",
       "alpha",
       "B_budget_multiplier",
-      "C_budget_multiplier",
-      "W_cap_multiplier",
       "effective_alpha",
       "gamma_i_multiplier"
     ];
@@ -801,11 +801,11 @@
       return;
     }
 
-    let matches = getFilteredImageMeta();
+    const matches = getFilteredImageMeta();
     if (!matches.length) {
-      matches = imageMeta.filter(
-        (meta) => getSuffixKey(meta.suffix) === imageSelection.suffix
-      );
+      setStatus(imageStatus, "Image not found.", true);
+      decisionImage.removeAttribute("src");
+      return;
     }
 
     const sortedMatches = matches.sort((a, b) => (a.row ?? 0) - (b.row ?? 0));
