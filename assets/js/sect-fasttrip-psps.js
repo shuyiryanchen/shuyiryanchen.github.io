@@ -801,19 +801,12 @@
       return;
     }
 
-    const matches = imageMeta.filter((meta) => {
-      const metaSuffixKey = getSuffixKey(meta.suffix);
-      if (metaSuffixKey !== imageSelection.suffix) return false;
-
-      return Object.entries(imageSelection).every(([key, value]) => {
-        if (key === "suffix") return true;
-        if (value === undefined || value === null || value === "") return true;
-        if (key === "W_cap") return true;
-        if (key === "B_budget") return true;
-        if (key === "C_budget") return true;
-        return String(meta.params[key]) === String(value);
-      });
-    });
+    let matches = getFilteredImageMeta();
+    if (!matches.length) {
+      matches = imageMeta.filter(
+        (meta) => getSuffixKey(meta.suffix) === imageSelection.suffix
+      );
+    }
 
     const sortedMatches = matches.sort((a, b) => (a.row ?? 0) - (b.row ?? 0));
     const selected = sortedMatches[0];
