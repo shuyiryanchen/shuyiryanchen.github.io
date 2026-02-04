@@ -46,7 +46,7 @@
     W_cap_multiplier: "Reliability constraint (ratio of pop.)",
     alpha: "FWER",
     effective_alpha: "Effectiveness of fast-trip",
-    gamma_i_multiplier: "Fast-trip average reliability cost",
+    gamma_i_multiplier: "Fast-trip average reliability impact",
     grouping_method: "Declustering method",
     ignitions: "Ignitions",
     mht_method: "Decluster + MHT method"
@@ -587,6 +587,18 @@
     });
   };
 
+  const getStrictImageMeta = () => {
+    return imageMeta.filter((meta) => {
+      if (getSuffixKey(meta.suffix) !== imageSelection.suffix) return false;
+      return Object.entries(imageSelection).every(([key, value]) => {
+        if (key === "suffix") return true;
+        if (value === undefined || value === null || value === "") return true;
+        if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
+        return valuesMatch(meta.params[key], value);
+      });
+    });
+  };
+
   const getImageValues = (param) => {
     return imageMeta
       .map((meta) => meta.params[param])
@@ -811,7 +823,7 @@
       return;
     }
 
-    const matches = getFilteredImageMeta();
+    const matches = getStrictImageMeta();
     if (!matches.length) {
       setStatus(imageStatus, "Image not found.", true);
       decisionImage.removeAttribute("src");
