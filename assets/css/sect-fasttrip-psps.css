@@ -118,6 +118,62 @@
   text-align: center;
 }
 
+/* --- Understanding the key parameters (for CPUC / managers) --- */
+.sfps-params-section {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.sfps-params-heading {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+}
+
+.sfps-params-intro {
+  margin-bottom: 1.25rem;
+  color: #444;
+  line-height: 1.5;
+}
+
+.sfps-params-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.25rem;
+}
+
+.sfps-param-block {
+  background: #f9f9f9;
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sfps-param-block .sfps-param-title {
+  font-size: 1rem;
+  margin: 0 0 0.2rem;
+  color: #1f77b4;
+  font-weight: 600;
+}
+
+.sfps-param-block p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.sfps-param-meta {
+  font-size: 0.85rem !important;
+  color: #666 !important;
+  font-style: italic;
+}
+
 .sfps-row {
   display: flex;
   flex-wrap: wrap;
