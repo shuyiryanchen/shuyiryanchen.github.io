@@ -53,7 +53,7 @@ disable_site_title: true
             affected per event) but requires more upfront investment and coordination. Setting this is a
             tradeoff between operational flexibility and cost.
           </p>
-          <p class="sfps-param-meta">Controlled with Sect. budget (ratio of circuits), PSPS budget</p>
+          <p class="sfps-param-meta">Controlled with: Sect. budget (ratio of circuits), PSPS budget</p>
         </div>
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Fast-trip budget</h4>
@@ -66,7 +66,7 @@ disable_site_title: true
             increase momentary outages and affect reliability. The budget caps how much of the system uses
             this mitigation.
           </p>
-          <p class="sfps-param-meta">Controlled with Fast-trip budget (ratio of circuits), Fast-trip budget</p>
+          <p class="sfps-param-meta">Controlled with: Fast-trip budget (ratio of circuits), Fast-trip budget</p>
         </div>
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Reliability constraint</h4>
@@ -80,7 +80,7 @@ disable_site_title: true
             customer exposure. A tighter constraint limits how much the utility can rely on shutoffs and
             fast-trip; a looser one allows more aggressive risk reduction at the cost of more customer impact.
           </p>
-          <p class="sfps-param-meta">Controlled with Reliability constraint (ratio of pop.), Reliability constraint (absolute)</p>
+          <p class="sfps-param-meta">Controlled with: Reliability constraint (ratio of pop.), Reliability constraint (absolute)</p>
         </div>
       </div>
     </div>
@@ -100,7 +100,7 @@ disable_site_title: true
             PSPS. Higher values mean the model treats fast-trip as having a larger reliability cost, so
             it may use less fast-trip and more sectionalization or PSPS to stay within the cap.
           </p>
-          <p class="sfps-param-meta">Controlled with Fast-trip average reliability impact</p>
+          <p class="sfps-param-meta">Controlled with: Fast-trip average reliability impact</p>
         </div>
       </div>
     </div>
@@ -121,7 +121,7 @@ disable_site_title: true
             circuits but change how conservative the risk estimates are. Fewer groups are simpler and more
             conservative; more groups can improve targeting at the cost of more complexity.
           </p>
-          <p class="sfps-param-meta">Controlled with Number of groups</p>
+          <p class="sfps-param-meta">Controlled with: Number of groups</p>
         </div>
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Family-Wise Error Rate (FWER)</h4>
@@ -135,7 +135,7 @@ disable_site_title: true
             FWER allows more circuits to be flagged as high risk, which can mean more mitigation but also
             more false positives. It is a key dial for balancing safety vs. over-mitigation.
           </p>
-          <p class="sfps-param-meta">Controlled with FWER, Effectiveness of fast-trip</p>
+          <p class="sfps-param-meta">Controlled with: FWER, Effectiveness of fast-trip</p>
         </div>
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Declustering and multiple-testing method</h4>
@@ -149,7 +149,7 @@ disable_site_title: true
             and thus which get mitigation. Different methods trade off conservatism, power, and
             interpretability—important for regulatory consistency and stakeholder communication.
           </p>
-          <p class="sfps-param-meta">Controlled with Declustering method, Decluster + MHT method</p>
+          <p class="sfps-param-meta">Controlled with: Declustering method, Decluster + MHT method</p>
         </div>
       </div>
     </div>
