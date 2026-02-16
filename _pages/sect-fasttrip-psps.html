@@ -38,107 +38,119 @@ disable_site_title: true
       written for decision-makers and oversight staff.
     </p>
 
-    <div class="sfps-params-grid">
-      <div class="sfps-param-block">
-        <h3 class="sfps-param-title">Sectionalization (sect.) budget</h3>
-        <p>
-          <strong>What it is:</strong> The maximum number of circuits that can be sectionalized—i.e., prepared
-          so they can be shut off in segments during a PSPS event instead of all at once.
-        </p>
-        <p>
-          <strong>Why it matters:</strong> A higher budget allows more granular shutoffs (fewer customers
-          affected per event) but requires more upfront investment and coordination. Setting this is a
-          tradeoff between operational flexibility and cost.
-        </p>
-        <p class="sfps-param-meta">Controlled with Sect. budget (ratio of circuits), PSPS budget</p>
+    <div class="sfps-params-group">
+      <h3 class="sfps-params-group-title">Policy levers (budgets and caps)</h3>
+      <p class="sfps-params-group-desc">Limits you set on how much of the system can use sectionalization, fast-trip, or affect customers.</p>
+      <div class="sfps-params-row">
+        <div class="sfps-param-block">
+          <h4 class="sfps-param-title">Sectionalization (sect.) budget</h4>
+          <p>
+            <strong>What it is:</strong> The maximum number of circuits that can be sectionalized—i.e., prepared
+            so they can be shut off in segments during a PSPS event instead of all at once.
+          </p>
+          <p>
+            <strong>Why it matters:</strong> A higher budget allows more granular shutoffs (fewer customers
+            affected per event) but requires more upfront investment and coordination. Setting this is a
+            tradeoff between operational flexibility and cost.
+          </p>
+          <p class="sfps-param-meta">Controlled with Sect. budget (ratio of circuits), PSPS budget</p>
+        </div>
+        <div class="sfps-param-block">
+          <h4 class="sfps-param-title">Fast-trip budget</h4>
+          <p>
+            <strong>What it is:</strong> The maximum number of circuits that can be assigned fast-trip
+            settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions.
+          </p>
+          <p>
+            <strong>Why it matters:</strong> More circuits with fast-trip can reduce wildfire risk but may
+            increase momentary outages and affect reliability. The budget caps how much of the system uses
+            this mitigation.
+          </p>
+          <p class="sfps-param-meta">Controlled with Fast-trip budget (ratio of circuits), Fast-trip budget</p>
+        </div>
+        <div class="sfps-param-block">
+          <h4 class="sfps-param-title">Reliability constraint</h4>
+          <p>
+            <strong>What it is:</strong> A cap on the total “reliability impact” allowed from both PSPS and
+            fast-trip—typically expressed as a maximum amount of customer load (e.g., population or customer-hours)
+            that can be affected by these interventions.
+          </p>
+          <p>
+            <strong>Why it matters:</strong> This directly ties to CPUC’s goals around reliability and
+            customer exposure. A tighter constraint limits how much the utility can rely on shutoffs and
+            fast-trip; a looser one allows more aggressive risk reduction at the cost of more customer impact.
+          </p>
+          <p class="sfps-param-meta">Controlled with Reliability constraint (ratio of pop.), Reliability constraint (absolute)</p>
+        </div>
       </div>
+    </div>
 
-      <div class="sfps-param-block">
-        <h3 class="sfps-param-title">Fast-trip budget</h3>
-        <p>
-          <strong>What it is:</strong> The maximum number of circuits that can be assigned fast-trip
-          settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions.
-        </p>
-        <p>
-          <strong>Why it matters:</strong> More circuits with fast-trip can reduce wildfire risk but may
-          increase momentary outages and affect reliability. The budget caps how much of the system uses
-          this mitigation.
-        </p>
-        <p class="sfps-param-meta">Controlled with Fast-trip budget (ratio of circuits), Fast-trip budget</p>
+    <div class="sfps-params-group">
+      <h3 class="sfps-params-group-title">Reliability safeguards</h3>
+      <p class="sfps-params-group-desc">Parameters that link mitigation choices to the reliability cap and protect customer exposure.</p>
+      <div class="sfps-params-row">
+        <div class="sfps-param-block">
+          <h4 class="sfps-param-title">Fast-trip reliability impact (gamma)</h4>
+          <p>
+            <strong>What it is:</strong> A scaling factor that describes how much each circuit’s fast-trip
+            setting contributes to the overall reliability constraint (e.g., expected customer impact).
+          </p>
+          <p>
+            <strong>Why it matters:</strong> It links fast-trip decisions to the same reliability cap as
+            PSPS. Higher values mean the model treats fast-trip as having a larger reliability cost, so
+            it may use less fast-trip and more sectionalization or PSPS to stay within the cap.
+          </p>
+          <p class="sfps-param-meta">Controlled with Fast-trip average reliability impact</p>
+        </div>
       </div>
+    </div>
 
-      <div class="sfps-param-block">
-        <h3 class="sfps-param-title">Reliability constraint</h3>
-        <p>
-          <strong>What it is:</strong> A cap on the total “reliability impact” allowed from both PSPS and
-          fast-trip—typically expressed as a maximum amount of customer load (e.g., population or customer-hours)
-          that can be affected by these interventions.
-        </p>
-        <p>
-          <strong>Why it matters:</strong> This directly ties to CPUC’s goals around reliability and
-          customer exposure. A tighter constraint limits how much the utility can rely on shutoffs and
-          fast-trip; a looser one allows more aggressive risk reduction at the cost of more customer impact.
-        </p>
-        <p class="sfps-param-meta">Controlled with Reliability constraint (ratio of pop.), Reliability constraint (absolute)</p>
-      </div>
-
-      <div class="sfps-param-block">
-        <h3 class="sfps-param-title">Number of groups (K_groups)</h3>
-        <p>
-          <strong>What it is:</strong> The number of groups used when we statistically group circuits for
-          controlling false discoveries (see FWER below). Circuits are clustered into this many groups
-          before applying multiple-testing corrections.
-        </p>
-        <p>
-          <strong>Why it matters:</strong> More groups allow finer distinctions between high- and low-risk
-          circuits but change how conservative the risk estimates are. Fewer groups are simpler and more
-          conservative; more groups can improve targeting at the cost of more complexity.
-        </p>
-        <p class="sfps-param-meta">Controlled with Number of groups</p>
-      </div>
-
-      <div class="sfps-param-block">
-        <h3 class="sfps-param-title">FWER (Family-Wise Error Rate)</h3>
-        <p>
-          <strong>What it is:</strong> The target probability of making <em>at least one</em> false
-          “high risk” call when testing many circuits at once. Often set at 0.05 (5%) or 0.10 (10%).
-        </p>
-        <p>
-          <strong>Why it matters:</strong> Lower FWER (e.g., 0.05) means we are more conservative—fewer
-          circuits are labeled high risk, but we are less likely to miss a truly risky circuit. Higher
-          FWER allows more circuits to be flagged as high risk, which can mean more mitigation but also
-          more false positives. It is a key dial for balancing safety vs. over-mitigation.
-        </p>
-        <p class="sfps-param-meta">Controlled with FWER, Effectiveness of fast-trip</p>
-      </div>
-
-      <div class="sfps-param-block">
-        <h3 class="sfps-param-title">Fast-trip reliability impact (gamma)</h3>
-        <p>
-          <strong>What it is:</strong> A scaling factor that describes how much each circuit’s fast-trip
-          setting contributes to the overall reliability constraint (e.g., expected customer impact).
-        </p>
-        <p>
-          <strong>Why it matters:</strong> It links fast-trip decisions to the same reliability cap as
-          PSPS. Higher values mean the model treats fast-trip as having a larger reliability cost, so
-          it may use less fast-trip and more sectionalization or PSPS to stay within the cap.
-        </p>
-        <p class="sfps-param-meta">Controlled with Fast-trip average reliability impact</p>
-      </div>
-
-      <div class="sfps-param-block">
-        <h3 class="sfps-param-title">Declustering and multiple-testing method</h3>
-        <p>
-          <strong>What it is:</strong> The method used to (1) group nearby or similar ignition events
-          (declustering) and (2) control false discoveries when testing many circuits (e.g., Bonferroni,
-          MaxRank, or other MHT methods).
-        </p>
-        <p>
-          <strong>Why it matters:</strong> These choices affect which circuits are treated as high risk
-          and thus which get mitigation. Different methods trade off conservatism, power, and
-          interpretability—important for regulatory consistency and stakeholder communication.
-        </p>
-        <p class="sfps-param-meta">Controlled with Declustering method, Decluster + MHT method</p>
+    <div class="sfps-params-group">
+      <h3 class="sfps-params-group-title">Statistical controls</h3>
+      <p class="sfps-params-group-desc">How we group circuits and control false discoveries when identifying high-risk circuits.</p>
+      <div class="sfps-params-row">
+        <div class="sfps-param-block">
+          <h4 class="sfps-param-title">Number of groups</h4>
+          <p>
+            <strong>What it is:</strong> The number of groups used when we statistically group circuits for
+            controlling false discoveries (see FWER below). Circuits are clustered into this many groups
+            before applying multiple-testing corrections.
+          </p>
+          <p>
+            <strong>Why it matters:</strong> More groups allow finer distinctions between high- and low-risk
+            circuits but change how conservative the risk estimates are. Fewer groups are simpler and more
+            conservative; more groups can improve targeting at the cost of more complexity.
+          </p>
+          <p class="sfps-param-meta">Controlled with Number of groups</p>
+        </div>
+        <div class="sfps-param-block">
+          <h4 class="sfps-param-title">Family-Wise Error Rate (FWER)</h4>
+          <p>
+            <strong>What it is:</strong> The target probability of making <em>at least one</em> false
+            “high risk” call when testing many circuits at once. Often set at 0.05 (5%) or 0.10 (10%).
+          </p>
+          <p>
+            <strong>Why it matters:</strong> Lower FWER (e.g., 0.05) means we are more conservative—fewer
+            circuits are labeled high risk, but we are less likely to miss a truly risky circuit. Higher
+            FWER allows more circuits to be flagged as high risk, which can mean more mitigation but also
+            more false positives. It is a key dial for balancing safety vs. over-mitigation.
+          </p>
+          <p class="sfps-param-meta">Controlled with FWER, Effectiveness of fast-trip</p>
+        </div>
+        <div class="sfps-param-block">
+          <h4 class="sfps-param-title">Declustering and multiple-testing method</h4>
+          <p>
+            <strong>What it is:</strong> The method used to (1) group nearby or similar ignition events
+            (declustering) and (2) control false discoveries when testing many circuits (e.g., Bonferroni,
+            MaxRank, or other MHT methods).
+          </p>
+          <p>
+            <strong>Why it matters:</strong> These choices affect which circuits are treated as high risk
+            and thus which get mitigation. Different methods trade off conservatism, power, and
+            interpretability—important for regulatory consistency and stakeholder communication.
+          </p>
+          <p class="sfps-param-meta">Controlled with Declustering method, Decluster + MHT method</p>
+        </div>
       </div>
     </div>
   </section>
