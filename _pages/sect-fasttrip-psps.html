@@ -30,6 +30,137 @@ disable_site_title: true
     sectionalization and operational planning.
   </p>
 
+  <div class="sfps-fullbleed">
+    <div class="sfps-tabs" role="tablist" aria-label="Sectionalization tabs">
+      <button
+        id="sfps-tab-btn-optimization"
+        class="sfps-tab-button is-active"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        aria-controls="sfps-tab-optimization"
+        data-tab="sfps-tab-optimization"
+      >
+        Optimization Results
+      </button>
+      <button
+        id="sfps-tab-btn-sectionalization"
+        class="sfps-tab-button"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="sfps-tab-sectionalization"
+        data-tab="sfps-tab-sectionalization"
+      >
+        Planning Tool
+      </button>
+      <button
+        id="sfps-tab-btn-historical"
+        class="sfps-tab-button"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="sfps-tab-historical"
+        data-tab="sfps-tab-historical"
+      >
+        Historical Ignitions data analyssis
+      </button>
+    </div>
+
+    <div class="sfps-tab-panels">
+    <section
+      id="sfps-tab-optimization"
+      class="sfps-section sfps-tab-panel is-active"
+      role="tabpanel"
+      aria-labelledby="sfps-tab-btn-optimization"
+    >
+    <div class="sfps-split">
+      <div class="sfps-panel sfps-controls">
+        <div class="sfps-grid sfps-grid--two">
+          <div>
+            <div class="sfps-field">
+              <label for="x-axis">X axis</label>
+              <select id="x-axis"></select>
+            </div>
+          </div>
+          <div>
+            <div class="sfps-field">
+              <label for="y-axis-left">Left plot Y axis</label>
+              <select id="y-axis-left"></select>
+            </div>
+            <div class="sfps-field">
+              <label for="y-axis-right">Right plot Y axis</label>
+              <select id="y-axis-right"></select>
+            </div>
+          </div>
+        </div>
+        <div id="filter-controls" class="sfps-grid"></div>
+        <button id="reset-part1" class="sfps-button">Reset</button>
+      </div>
+
+      <div class="sfps-content">
+        <div class="sfps-plot-grid">
+          <div>
+            <h3 class="sfps-plot-title" id="plot-title-left">Optimization Results</h3>
+            <div id="trend-plot-opt" class="sfps-plot"></div>
+          </div>
+          <div>
+            <h3 class="sfps-plot-title" id="plot-title-right">Evaluation</h3>
+            <div id="trend-plot-true" class="sfps-plot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <section
+      id="sfps-tab-sectionalization"
+      class="sfps-section sfps-tab-panel"
+      role="tabpanel"
+      aria-labelledby="sfps-tab-btn-sectionalization"
+      hidden
+    >
+    <div class="sfps-split">
+      <div class="sfps-panel sfps-controls">
+        <div class="sfps-grid sfps-grid--two">
+          <div id="image-params" class="sfps-grid"></div>
+        </div>
+        <div id="image-status" class="sfps-status"></div>
+        <button id="reset-part2" class="sfps-button">Reset</button>
+      </div>
+
+      <div class="sfps-content">
+        <div class="sfps-image-wrap">
+          <img id="decision-image" alt="Decision plot preview" />
+        </div>
+      </div>
+    </div>
+    </section>
+    <section
+      id="sfps-tab-historical"
+      class="sfps-section sfps-tab-panel"
+      role="tabpanel"
+      aria-labelledby="sfps-tab-btn-historical"
+      hidden
+    >
+    <div class="sfps-historical-layout">
+      <div class="sfps-historical-content">
+        <div id="historical-plots-rank" class="sfps-historical-grid sfps-historical-grid--rank"></div>
+        <div id="historical-plots-summary" class="sfps-historical-grid sfps-historical-grid--summary"></div>
+      </div>
+
+      <div class="sfps-panel sfps-controls sfps-historical-controls">
+        <div class="sfps-field">
+          <label for="historical-year">Year</label>
+          <input id="historical-year" type="range" />
+          <div id="historical-year-value" class="sfps-status sfps-slider-value"></div>
+        </div>
+      </div>
+    </div>
+    </section>
+    </div>
+  </div>
+
   <section class="sfps-fullbleed sfps-params-section" aria-labelledby="sfps-params-heading">
     <h2 id="sfps-params-heading" class="sfps-params-heading">Understanding the key parameters</h2>
     <p class="sfps-params-intro">
@@ -155,136 +286,6 @@ disable_site_title: true
     </div>
   </section>
 
-  <div class="sfps-fullbleed">
-    <div class="sfps-tabs" role="tablist" aria-label="Sectionalization tabs">
-      <button
-        id="sfps-tab-btn-optimization"
-        class="sfps-tab-button is-active"
-        type="button"
-        role="tab"
-        aria-selected="true"
-        aria-controls="sfps-tab-optimization"
-        data-tab="sfps-tab-optimization"
-      >
-        Optimization Results
-      </button>
-      <button
-        id="sfps-tab-btn-sectionalization"
-        class="sfps-tab-button"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        aria-controls="sfps-tab-sectionalization"
-        data-tab="sfps-tab-sectionalization"
-      >
-        Planning Tool
-      </button>
-      <button
-        id="sfps-tab-btn-historical"
-        class="sfps-tab-button"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        aria-controls="sfps-tab-historical"
-        data-tab="sfps-tab-historical"
-      >
-        Historical Ignitions
-      </button>
-    </div>
-
-    <div class="sfps-tab-panels">
-    <section
-      id="sfps-tab-optimization"
-      class="sfps-section sfps-tab-panel is-active"
-      role="tabpanel"
-      aria-labelledby="sfps-tab-btn-optimization"
-    >
-    <div class="sfps-split">
-      <div class="sfps-panel sfps-controls">
-        <div class="sfps-grid sfps-grid--two">
-          <div>
-            <div class="sfps-field">
-              <label for="x-axis">X axis</label>
-              <select id="x-axis"></select>
-            </div>
-          </div>
-          <div>
-            <div class="sfps-field">
-              <label for="y-axis-left">Left plot Y axis</label>
-              <select id="y-axis-left"></select>
-            </div>
-            <div class="sfps-field">
-              <label for="y-axis-right">Right plot Y axis</label>
-              <select id="y-axis-right"></select>
-            </div>
-          </div>
-        </div>
-        <div id="filter-controls" class="sfps-grid"></div>
-        <button id="reset-part1" class="sfps-button">Reset</button>
-      </div>
-
-      <div class="sfps-content">
-        <div class="sfps-plot-grid">
-          <div>
-            <h3 class="sfps-plot-title" id="plot-title-left">Optimization Results</h3>
-            <div id="trend-plot-opt" class="sfps-plot"></div>
-          </div>
-          <div>
-            <h3 class="sfps-plot-title" id="plot-title-right">Evaluation</h3>
-            <div id="trend-plot-true" class="sfps-plot"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-    <section
-      id="sfps-tab-sectionalization"
-      class="sfps-section sfps-tab-panel"
-      role="tabpanel"
-      aria-labelledby="sfps-tab-btn-sectionalization"
-      hidden
-    >
-    <div class="sfps-split">
-      <div class="sfps-panel sfps-controls">
-        <div class="sfps-grid sfps-grid--two">
-          <div id="image-params" class="sfps-grid"></div>
-        </div>
-        <div id="image-status" class="sfps-status"></div>
-        <button id="reset-part2" class="sfps-button">Reset</button>
-      </div>
-
-      <div class="sfps-content">
-        <div class="sfps-image-wrap">
-          <img id="decision-image" alt="Decision plot preview" />
-        </div>
-      </div>
-    </div>
-    </section>
-    <section
-      id="sfps-tab-historical"
-      class="sfps-section sfps-tab-panel"
-      role="tabpanel"
-      aria-labelledby="sfps-tab-btn-historical"
-      hidden
-    >
-    <div class="sfps-historical-layout">
-      <div class="sfps-historical-content">
-        <div id="historical-plots-rank" class="sfps-historical-grid sfps-historical-grid--rank"></div>
-        <div id="historical-plots-summary" class="sfps-historical-grid sfps-historical-grid--summary"></div>
-      </div>
-
-      <div class="sfps-panel sfps-controls sfps-historical-controls">
-        <div class="sfps-field">
-          <label for="historical-year">Year</label>
-          <input id="historical-year" type="range" />
-          <div id="historical-year-value" class="sfps-status sfps-slider-value"></div>
-        </div>
-      </div>
-    </div>
-    </section>
-    </div>
-  </div>
 </div>
 
 <link rel="stylesheet" href="{{ base_path }}/assets/css/sect-fasttrip-psps.css">
