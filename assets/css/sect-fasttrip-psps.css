@@ -405,6 +405,7 @@
   background: transparent;
   border: none;
   box-shadow: none;
+  flex: 0 0 auto;
 }
 
 .sfps-historical-controls .sfps-field {
