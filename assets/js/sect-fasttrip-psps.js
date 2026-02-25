@@ -735,30 +735,46 @@
     return String(metaValue) === String(selectedValue);
   };
 
-  const getFilteredImageMeta = (excludeParam) => {
+  /** When user selects 0.7, match images with effective_alpha 0.70 or 0.90 (combine 0.7 and 0.9). */
+  const effectiveAlphaMatches = (selectedValue, metaValue) => {
+    const sel = Number(selectedValue);
+    const meta = Number(metaValue);
+    if (Number.isNaN(sel) || Number.isNaN(meta)) return valuesMatch(metaValue, selectedValue);
+    if (sel === 0.5) return meta === 0.5;
+    if (sel === 0.7) return meta === 0.7 || meta === 0.9;
+    return valuesMatch(metaValue, selectedValue);
+  };
+
+  const paramMatches = (key, metaValue, selectedValue) => {
+    if (key === "effective_alpha") return effectiveAlphaMatches(selectedValue, metaValue);
+    return valuesMatch(metaValue, selectedValue);
+  };
+
+  const getFilteredImageMeta = (excludeParam, selection = imageSelection) => {
     return imageMeta.filter((meta) => {
       if (excludeParam !== "suffix" && userSelected.has("suffix")) {
-        if (getSuffixKey(meta.suffix) !== imageSelection.suffix) return false;
+        if (getSuffixKey(meta.suffix) !== selection.suffix) return false;
       }
 
-      return Object.entries(imageSelection).every(([key, value]) => {
+      return Object.entries(selection).every(([key, value]) => {
         if (key === "suffix" || key === excludeParam) return true;
         if (!userSelected.has(key)) return true;
         if (value === undefined || value === null || value === "") return true;
         if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
-        return valuesMatch(meta.params[key], value);
+        return paramMatches(key, meta.params[key], value);
       });
     });
   };
 
-  const getStrictImageMeta = () => {
+  const getStrictImageMeta = (selectionOverride) => {
+    const sel = selectionOverride != null ? selectionOverride : imageSelection;
     return imageMeta.filter((meta) => {
-      if (getSuffixKey(meta.suffix) !== imageSelection.suffix) return false;
-      return Object.entries(imageSelection).every(([key, value]) => {
+      if (getSuffixKey(meta.suffix) !== sel.suffix) return false;
+      return Object.entries(sel).every(([key, value]) => {
         if (key === "suffix") return true;
         if (value === undefined || value === null || value === "") return true;
         if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
-        return valuesMatch(meta.params[key], value);
+        return paramMatches(key, meta.params[key], value);
       });
     });
   };
@@ -785,7 +801,7 @@
         if (activeKeys && !activeKeys.has(key)) return true;
         if (value === undefined || value === null || value === "") return true;
         if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
-        return valuesMatch(meta.params[key], value);
+        return paramMatches(key, meta.params[key], value);
       });
     });
   };
@@ -850,7 +866,17 @@
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      const values = getImageValuesForSelection(param, selectionForFilter, userSelected);
+      let values = getImageValuesForSelection(param, selectionForFilter, userSelected);
+
+      if (param === "effective_alpha") {
+        const canonical = new Set();
+        values.forEach((v) => {
+          const n = Number(v);
+          if (n === 0.5) canonical.add("0.5");
+          else if (n === 0.7 || n === 0.9) canonical.add("0.7");
+        });
+        values = ["0.5", "0.7"].filter((opt) => canonical.has(opt));
+      }
 
       const uniqueValues = Array.from(new Set(values));
       if (!uniqueValues.length) return;
@@ -1010,7 +1036,16 @@
       return;
     }
 
-    const matches = getStrictImageMeta();
+    let matches = getStrictImageMeta();
+    let fallbackMessage = "";
+
+    if (!matches.length && imageSelection.effective_alpha === "0.5") {
+      matches = getStrictImageMeta({ ...imageSelection, effective_alpha: "0.7" });
+      if (matches.length) {
+        fallbackMessage = "No image for Effectiveness 0.5 for this combination; showing 0.7.";
+      }
+    }
+
     if (!matches.length) {
       setStatus(imageStatus, "Image not found.", true);
       decisionImage.removeAttribute("src");
@@ -1027,7 +1062,7 @@
 
     const imageUrl = normalizeImagePath(selected.path);
     decisionImage.src = imageUrl;
-    setStatus(imageStatus, "", false);
+    setStatus(imageStatus, fallbackMessage, !!fallbackMessage);
   };
 
   const fetchManifest = async () => {
