@@ -164,8 +164,7 @@ disable_site_title: true
     <h2 id="sfps-params-heading" class="sfps-params-heading">Understanding the key parameters</h2>
     <p class="sfps-params-intro">
       The optimization uses several inputs that you can think of as <strong>policy levers</strong> (budgets and caps),
-      <strong>reliability safeguards</strong>, and <strong>statistical controls</strong>. Below is a short guide
-      written for decision-makers and oversight staff.
+      <strong>reliability safeguards</strong>, and <strong>statistical controls</strong>. Below is a short guide.
     </p>
 
     <div class="sfps-params-group">
@@ -175,32 +174,20 @@ disable_site_title: true
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Sectionalization (sect.) budget (% of circuits)</h4>
           <p>
-            <strong>What it is:</strong> The maximum share of all circuits (as a percentage) that can be sectionalized—i.e., prepared so they can be shut off in segments during a PSPS event instead of all at once. It is expressed on a percentage scale of all circuits.
+            The maximum share of all circuits (as a percentage) that can be sectionalized—i.e., prepared so they can be shut off in segments during a PSPS event instead of all at once. It is expressed on a percentage scale of all circuits. A higher budget allows more granular shutoffs (fewer customers affected per event) but requires more upfront investment and coordination; setting this is a tradeoff between operational flexibility and cost.
           </p>
-          <p>
-            <strong>Why it matters:</strong> A higher budget allows more granular shutoffs (fewer customers affected per event) but requires more upfront investment and coordination. Setting this is a tradeoff between operational flexibility and cost.
-          </p>
-          <p class="sfps-param-meta">Controlled with: Sect. budget (% of circuits)</p>
         </div>
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Fast-trip budget (% of circuits)</h4>
           <p>
-            <strong>What it is:</strong> The maximum share of all circuits (as a percentage) that can be assigned fast-trip settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions. It is expressed on a percentage scale of all circuits.
+            The maximum share of all circuits (as a percentage) that can be assigned fast-trip settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions. It is expressed on a percentage scale of all circuits. More circuits with fast-trip can reduce wildfire risk but may increase momentary outages and affect reliability; the budget caps how much of the system uses this mitigation.
           </p>
-          <p>
-            <strong>Why it matters:</strong> More circuits with fast-trip can reduce wildfire risk but may increase momentary outages and affect reliability. The budget caps how much of the system uses this mitigation.
-          </p>
-          <p class="sfps-param-meta">Controlled with: Fast-trip budget (% of circuits)</p>
         </div>
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">SAIFI reliability impact (customer-weighted)</h4>
           <p>
-            <strong>What it is:</strong> A scaling factor that determines how much each circuit's fast-trip setting and PSPS actions count toward the system-wide SAIFI cap (average sustained interruptions per customer). Concretely, it maps (y<sub>i</sub>, z<sub>i</sub>) into a customer-weighted interruption frequency contribution.
+            A scaling factor that determines how much each circuit's fast-trip setting and PSPS actions count toward the system-wide SAIFI cap (average sustained interruptions per customer). Concretely, it maps (y<sub>i</sub>, z<sub>i</sub>) into a customer-weighted interruption frequency contribution. It ties both mitigation levers—fast-trip (EPSS) and PSPS—to the same reliability limit. Higher values make the model treat these actions as causing more sustained interruptions (i.e., consuming more of the SAIFI budget), so it will rely more on long-term investments (e.g., sectionalization) or shift which lever it uses to remain under the SAIFI cap.
           </p>
-          <p>
-            <strong>Why it matters:</strong> It ties both mitigation levers—fast-trip (EPSS) and PSPS—to the same reliability limit. Higher values make the model treat these actions as causing more sustained interruptions (i.e., consuming more of the SAIFI budget), so it will rely more on long-term investments (e.g., sectionalization) or shift which lever it uses to remain under the SAIFI cap.
-          </p>
-          <p class="sfps-param-meta">Controlled with: SAIFI</p>
         </div>
       </div>
     </div>
@@ -212,25 +199,14 @@ disable_site_title: true
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Fast-trip reliability impact</h4>
           <p>
-            <strong>What it is:</strong> A scaling factor that describes how much each circuit’s fast-trip
-            setting contributes to the overall reliability constraint (e.g., expected customer impact).
+            A scaling factor that describes how much each circuit's fast-trip setting contributes to the overall reliability constraint (e.g., expected customer impact). It links fast-trip decisions to the same reliability cap as PSPS. Higher values mean the model treats fast-trip as having a larger reliability cost, so it may use less fast-trip and more sectionalization or PSPS to stay within the cap.
           </p>
-          <p>
-            <strong>Why it matters:</strong> It links fast-trip decisions to the same reliability cap as
-            PSPS. Higher values mean the model treats fast-trip as having a larger reliability cost, so
-            it may use less fast-trip and more sectionalization or PSPS to stay within the cap.
-          </p>
-          <p class="sfps-param-meta">Controlled with: Fast-trip average reliability impact</p>
         </div>
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Effectiveness of fast-trip</h4>
           <p>
-            <strong>What it is:</strong> A parameter on a percentage scale that measures how effective fast-trip (EPSS) is at controlling ignition risk—i.e., the degree to which enabling fast-trip on a circuit reduces its contribution to wildfire risk.
+            A parameter on a percentage scale that measures how effective fast-trip (EPSS) is at controlling ignition risk—i.e., the degree to which enabling fast-trip on a circuit reduces its contribution to wildfire risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
           </p>
-          <p>
-            <strong>Why it matters:</strong> Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
-          </p>
-          <p class="sfps-param-meta">Controlled with: Effectiveness of fast-trip</p>
         </div>
       </div>
     </div>
@@ -242,15 +218,11 @@ disable_site_title: true
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Hierarchical uncertainty set and coverage guarantee</h4>
           <p>
-            <strong>What we use:</strong> For a given planning window, we build a <strong>hierarchical polyhedral uncertainty set</strong> that encodes plausible future circuit-level ignition counts. The set imposes bounds on each circuit and on the sum of counts within each group (e.g., districts or climate zones). Circuit-level bounds protect local reliability risk; group-sum bounds protect aggregate risk at operational and planning scales.
+            For a given planning window, we build a <strong>hierarchical polyhedral uncertainty set</strong> that encodes plausible future circuit-level ignition counts. The set imposes bounds on each circuit and on the sum of counts within each group (e.g., districts or climate zones). Circuit-level bounds protect local reliability risk; group-sum bounds protect aggregate risk at operational and planning scales.
           </p>
           <p>
-            <strong>Guarantee:</strong> For a prescribed level α ∈ (0, 1), we construct the set so that the probability the realized outcome falls inside the set is at least 1 − α. In other words, we control the chance that the true outcome lies outside the predicted set to at most α.
+            For a prescribed level α ∈ (0, 1), we construct the set so that the probability the realized outcome falls inside the set is at least 1 − α—i.e., we control the chance that the true outcome lies outside the predicted set to at most α. In practice, our method controls the error rate of the predicted uncertainty set for all circuits and groups to (at most) 0.5.
           </p>
-          <p>
-            <strong>In plain terms:</strong> This means our method controls the error rate of the predicted uncertainty set for all circuits and groups to (at most) 0.5—i.e., the probability that the real ignition counts fall outside our set is no more than 0.5.
-          </p>
-          <p class="sfps-param-meta">Controlled with: FWER, Effectiveness of fast-trip</p>
         </div>
       </div>
     </div>
