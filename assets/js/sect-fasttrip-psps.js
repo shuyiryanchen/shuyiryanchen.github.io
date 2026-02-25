@@ -149,6 +149,11 @@
   const allowedMhtMethods = new Set(["Operational_MaxRank"]);
 
   const imageBasePath = `${basePath}/assets/website_plots/`;
+  const fixedImageParams = {
+    K_groups: "5",
+    alpha: "0.1",
+    mht_method: "Operational_MaxRank"
+  };
   const historicalBasePath = `${basePath}/assets/website_plots/historical plots/`;
 
   const historicalYears = [2020, 2021, 2022, 2023, 2024];
@@ -187,6 +192,13 @@
     }
     el.textContent = message;
     el.style.color = "#a40000";
+  };
+
+  const applyFixedImageParams = () => {
+    Object.entries(fixedImageParams).forEach(([param, value]) => {
+      imageSelection[param] = value;
+      userSelected.add(param);
+    });
   };
 
   const renderHistoricalPlots = (year) => {
@@ -781,7 +793,14 @@
     imageParams.innerHTML = "";
     const previousSelection = { ...imageSelection };
     const workingSelection = { ...previousSelection, suffix: imageSelection.suffix || "" };
-    const excludedImageParams = new Set(["B_budget", "C_budget", "W_cap"]);
+    const excludedImageParams = new Set([
+      "B_budget",
+      "C_budget",
+      "W_cap",
+      "K_groups",
+      "alpha",
+      "mht_method"
+    ]);
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
       Object.keys(meta.params || {}).forEach((key) => {
@@ -816,6 +835,11 @@
       selectControls.push(suffixControl);
       workingSelection.suffix = imageSelection.suffix;
     }
+
+    applyFixedImageParams();
+    Object.entries(fixedImageParams).forEach(([param, value]) => {
+      workingSelection[param] = value;
+    });
 
     orderedParams.forEach((param) => {
       const selectionForFilter = { ...workingSelection };
@@ -1026,6 +1050,7 @@
       const images = manifest.images || manifest.imageFiles || [];
       imageMeta = images.map(parseImageName).filter(Boolean);
 
+      applyFixedImageParams();
       buildImageControls();
       renderImage();
       await loadCsv();
@@ -1051,6 +1076,7 @@
   resetPart2Button.addEventListener("click", async () => {
     imageSelection = { suffix: "" };
     userSelected.clear();
+    applyFixedImageParams();
     try {
       await refreshImageMeta();
     } catch (error) {
