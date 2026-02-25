@@ -25,7 +25,7 @@ disable_site_title: true
     Utility-caused wildfires pose severe risks, and operational interventions
     like PSPS and fast-trip settings reduce ignition likelihood at the cost of
     service reliability. This visualization highlights how hyperparameter
-    choices shape the tradeoffs between wildfire risk mitigation and reliability
+    choices shape the tradeoffs between ignition risk mitigation and reliability
     in our adaptive robust optimization framework for coordinated
     sectionalization and operational planning.
   </p>
@@ -179,7 +179,7 @@ disable_site_title: true
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Fast-trip budget (% of circuits)</h4>
           <p>
-            The maximum share of all circuits (as a percentage) that can be assigned fast-trip settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions. It is expressed on a percentage scale of all circuits. More circuits with fast-trip can reduce wildfire risk but may increase momentary outages and affect reliability; the budget caps how much of the system uses this mitigation.
+            The maximum share of all circuits (as a percentage) that can be assigned fast-trip settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions. It is expressed on a percentage scale of all circuits. More circuits with fast-trip can reduce ignition risk but may increase momentary outages and affect reliability; the budget caps how much of the system uses this mitigation.
           </p>
         </div>
         <div class="sfps-param-block">
@@ -198,7 +198,7 @@ disable_site_title: true
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Effectiveness of fast-trip (% of successful mitigation)</h4>
           <p>
-            A parameter expressed as the percentage of successful mitigation—how effective fast-trip (EPSS) is at controlling ignition risk, i.e., the degree to which enabling fast-trip on a circuit reduces its contribution to wildfire risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
+            A parameter expressed as the percentage of successful mitigation—how effective fast-trip (EPSS) is at controlling ignition risk, i.e., the degree to which enabling fast-trip on a circuit reduces its ignition risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
           </p>
         </div>
       </div>
