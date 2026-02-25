@@ -235,6 +235,23 @@ disable_site_title: true
       </div>
     </div>
 
+    <div class="sfps-params-group">
+      <h3 class="sfps-params-group-title">Statistical controls</h3>
+      <p class="sfps-params-group-desc">How we control prediction error when identifying high-risk circuits.</p>
+      <div class="sfps-params-row">
+        <div class="sfps-param-block">
+          <h4 class="sfps-param-title">Family-Wise Error Rate (FWER)</h4>
+          <p>
+            <strong>What it is:</strong> FWER is controlled for prediction error at both the <strong>circuit</strong> and <strong>group</strong> level—so we limit the chance of wrongly labeling circuits or groups as high risk when they are not.
+          </p>
+          <p>
+            <strong>For managers:</strong> FWER is the maximum probability you allow for making <em>at least one</em> false “high risk” call across all tests. A lower FWER (e.g., 0.05) is more conservative: fewer circuits are flagged, but you are less likely to over-mitigate. A higher FWER flags more circuits as high risk, which can mean stronger mitigation but also more false positives. It is the main dial for balancing safety versus over-mitigation.
+          </p>
+          <p class="sfps-param-meta">Controlled with: FWER, Effectiveness of fast-trip</p>
+        </div>
+      </div>
+    </div>
+
   </section>
 
 </div>
