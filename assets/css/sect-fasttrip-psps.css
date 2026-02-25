@@ -396,10 +396,25 @@
 }
 
 .sfps-historical-controls {
-  max-width: 520px;
-  width: fit-content;
-  padding: 0.2rem 0.5rem;
-  align-self: flex-start;
+  width: 100%;
+  max-width: none;
+  padding: 0.25rem 0.75rem;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.sfps-historical-controls .sfps-field {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.sfps-historical-controls label {
+  margin-bottom: 0.2rem;
+}
+
+.sfps-historical-controls input[type="range"] {
+  width: 100%;
 }
 
 .sfps-historical-controls .sfps-field {
