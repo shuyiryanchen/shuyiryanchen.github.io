@@ -197,12 +197,6 @@ disable_site_title: true
       <p class="sfps-params-group-desc">Parameters that link mitigation choices to the reliability cap and protect customer exposure.</p>
       <div class="sfps-params-row">
         <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Fast-trip reliability impact</h4>
-          <p>
-            A scaling factor that describes how much each circuit's fast-trip setting contributes to the overall reliability constraint (e.g., expected customer impact). It links fast-trip decisions to the same reliability cap as PSPS. Higher values mean the model treats fast-trip as having a larger reliability cost, so it may use less fast-trip and more sectionalization or PSPS to stay within the cap.
-          </p>
-        </div>
-        <div class="sfps-param-block">
           <h4 class="sfps-param-title">Effectiveness of fast-trip</h4>
           <p>
             A parameter on a percentage scale that measures how effective fast-trip (EPSS) is at controlling ignition risk—i.e., the degree to which enabling fast-trip on a circuit reduces its contribution to wildfire risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
@@ -212,19 +206,14 @@ disable_site_title: true
     </div>
 
     <div class="sfps-params-group">
-      <h3 class="sfps-params-group-title">Statistical controls</h3>
+      <h3 class="sfps-params-group-title">Hierarchical uncertainty set and coverage guarantee</h3>
       <p class="sfps-params-group-desc">The guarantee we aim for when building the predicted uncertainty set for ignition risk.</p>
-      <div class="sfps-params-row">
-        <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Hierarchical uncertainty set and coverage guarantee</h4>
-          <p>
-            For a given planning window, we build a <strong>hierarchical polyhedral uncertainty set</strong> that encodes plausible future circuit-level ignition counts. The set imposes bounds on each circuit and on the sum of counts within each group (e.g., districts or climate zones). Circuit-level bounds protect local reliability risk; group-sum bounds protect aggregate risk at operational and planning scales.
-          </p>
-          <p>
-            For a prescribed level α ∈ (0, 1), we construct the set so that the probability the realized outcome falls inside the set is at least 1 − α—i.e., we control the chance that the true outcome lies outside the predicted set to at most α. In practice, our method controls the error rate of the predicted uncertainty set for all circuits and groups to (at most) 0.5.
-          </p>
-        </div>
-      </div>
+      <p>
+        For a given planning window, we build a <strong>hierarchical polyhedral uncertainty set</strong> that encodes plausible future circuit-level ignition counts. The set imposes bounds on each circuit and on the sum of counts within each group (e.g., districts or climate zones). Circuit-level bounds protect local reliability risk; group-sum bounds protect aggregate risk at operational and planning scales.
+      </p>
+      <p>
+        For a prescribed level α ∈ (0, 1), we construct the set so that the probability the realized outcome falls inside the set is at least 1 − α—i.e., we control the chance that the true outcome lies outside the predicted set to at most α. In practice, our method controls the error rate of the predicted uncertainty set for all circuits and groups to (at most) 0.5.
+      </p>
     </div>
 
   </section>
