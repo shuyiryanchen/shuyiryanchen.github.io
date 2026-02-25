@@ -152,7 +152,8 @@
   const fixedImageParams = {
     K_groups: "5",
     alpha: "0.1",
-    mht_method: "Operational_MaxRank"
+    mht_method: "Operational_MaxRank",
+    gamma_i_multiplier: "0.5"
   };
   const historicalBasePath = `${basePath}/assets/website_plots/historical plots/`;
 
@@ -799,7 +800,8 @@
       "W_cap",
       "K_groups",
       "alpha",
-      "mht_method"
+      "mht_method",
+      "gamma_i_multiplier"
     ]);
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
