@@ -7,12 +7,13 @@
 
 #sect-fasttrip-psps {
   width: 100%;
+  overflow-x: hidden;
 }
 
 .sfps-fullbleed {
-  width: calc(100% + 2em);
-  margin-left: -1em;
-  margin-right: -1em;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
   padding-left: 1.75rem;
   padding-right: 1.25rem;
   box-sizing: border-box;
@@ -37,7 +38,7 @@
 .sfps-tabs {
   display: inline-flex;
   gap: 0.5rem;
-  margin-left: 0.5rem;
+  margin-left: 0;
   padding: 0.35rem;
   border-radius: 999px;
   background: #f1f1f1;
@@ -113,8 +114,8 @@
 .sfps-intro {
   max-width: 100%;
   margin: 0 auto 1.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 1.75rem;
+  padding-right: 1.25rem;
   box-sizing: border-box;
   text-align: center;
 }
