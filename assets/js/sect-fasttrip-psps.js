@@ -144,6 +144,10 @@
     "ignitions"
   ]);
 
+  const hiddenParamsForControls = new Set(["K_groups", "alpha"]);
+
+  const allowedMhtMethods = new Set(["Operational_MaxRank"]);
+
   const imageBasePath = `${basePath}/assets/website_plots/`;
   const historicalBasePath = `${basePath}/assets/website_plots/historical plots/`;
 
@@ -252,8 +256,9 @@
 
   const getDisplayParams = () => {
     const params = availableParams.length ? availableParams : hyperparams;
-    if (!usingDefaultCsv) return params;
-    return params.filter((param) => !hiddenParamsForDefault.has(param));
+    const filtered = params.filter((param) => !hiddenParamsForControls.has(param));
+    if (!usingDefaultCsv) return filtered;
+    return filtered.filter((param) => !hiddenParamsForDefault.has(param));
   };
 
   const parseCsvText = (text) => {
@@ -494,7 +499,11 @@
           })
         );
 
-        getUniqueValues(filteredRows, param).forEach((value) => {
+        let values = getUniqueValues(filteredRows, param);
+        if (param === "mht_method") {
+          values = values.filter((value) => allowedMhtMethods.has(String(value)));
+        }
+        values.forEach((value) => {
           const option = document.createElement("option");
           option.value = value;
           option.textContent = value;
