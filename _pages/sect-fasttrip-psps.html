@@ -235,54 +235,6 @@ disable_site_title: true
       </div>
     </div>
 
-    <div class="sfps-params-group">
-      <h3 class="sfps-params-group-title">Statistical controls</h3>
-      <p class="sfps-params-group-desc">How we group circuits and control false discoveries when identifying high-risk circuits.</p>
-      <div class="sfps-params-row">
-        <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Number of groups</h4>
-          <p>
-            <strong>What it is:</strong> The number of groups used when we statistically group circuits for
-            controlling false discoveries (see FWER below). Circuits are clustered into this many groups
-            before applying multiple-testing corrections.
-          </p>
-          <p>
-            <strong>Why it matters:</strong> More groups allow finer distinctions between high- and low-risk
-            circuits but change how conservative the risk estimates are. Fewer groups are simpler and more
-            conservative; more groups can improve targeting at the cost of more complexity.
-          </p>
-          <p class="sfps-param-meta">Controlled with: Number of groups</p>
-        </div>
-        <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Family-Wise Error Rate (FWER)</h4>
-          <p>
-            <strong>What it is:</strong> The target probability of making <em>at least one</em> false
-            “high risk” call when testing many circuits at once. Often set at 0.05 (5%) or 0.10 (10%).
-          </p>
-          <p>
-            <strong>Why it matters:</strong> Lower FWER (e.g., 0.05) means we are more conservative—fewer
-            circuits are labeled high risk, but we are less likely to miss a truly risky circuit. Higher
-            FWER allows more circuits to be flagged as high risk, which can mean more mitigation but also
-            more false positives. It is a key dial for balancing safety vs. over-mitigation.
-          </p>
-          <p class="sfps-param-meta">Controlled with: FWER, Effectiveness of fast-trip</p>
-        </div>
-        <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Declustering and multiple-testing method</h4>
-          <p>
-            <strong>What it is:</strong> The method used to (1) group nearby or similar ignition events
-            (declustering) and (2) control false discoveries when testing many circuits (e.g., Bonferroni,
-            MaxRank, or other MHT methods).
-          </p>
-          <p>
-            <strong>Why it matters:</strong> These choices affect which circuits are treated as high risk
-            and thus which get mitigation. Different methods trade off conservatism, power, and
-            interpretability—important for regulatory consistency and stakeholder communication.
-          </p>
-          <p class="sfps-param-meta">Controlled with: Declustering method, Decluster + MHT method</p>
-        </div>
-      </div>
-    </div>
   </section>
 
 </div>
