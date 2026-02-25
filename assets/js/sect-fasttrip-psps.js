@@ -891,6 +891,10 @@
       if (param === "mht_method" && sortedValues.includes("Random_Bonferroni")) {
         defaultValue = "Random_Bonferroni";
       }
+      if (param === "C_budget_multiplier") {
+        const half = sortedValues.find((v) => Number(v) === 0.5);
+        if (half !== undefined) defaultValue = half;
+      }
       if (requiredSliderParams.has(param) || (allNumeric && sortedValues.length > 1)) {
         const preferredValue =
           previousSelection[param] && sortedValues.includes(previousSelection[param])
