@@ -11,9 +11,9 @@
 }
 
 .sfps-fullbleed {
-  width: calc(100% + 2em);
-  margin-left: -1em;
-  margin-right: -1em;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   padding-left: 0;
   padding-right: 0;
   box-sizing: border-box;
