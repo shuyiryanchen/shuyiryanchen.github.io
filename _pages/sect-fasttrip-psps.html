@@ -199,18 +199,14 @@ disable_site_title: true
           <p class="sfps-param-meta">Controlled with: Fast-trip budget (ratio of circuits)</p>
         </div>
         <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Reliability constraint</h4>
+          <h4 class="sfps-param-title">SAIFI reliability impact (customer-weighted)</h4>
           <p>
-            <strong>What it is:</strong> A cap on the total “reliability impact” allowed from both PSPS and
-            fast-trip—typically expressed as a maximum amount of customer load (e.g., population or customer-hours)
-            that can be affected by these interventions.
+            <strong>What it is:</strong> A scaling factor that determines how much each circuit's fast-trip setting and PSPS actions count toward the system-wide SAIFI cap (average sustained interruptions per customer). Concretely, it maps (y<sub>i</sub>, z<sub>i</sub>) into a customer-weighted interruption frequency contribution.
           </p>
           <p>
-            <strong>Why it matters:</strong> This directly ties to CPUC’s goals around reliability and
-            customer exposure. A tighter constraint limits how much the utility can rely on shutoffs and
-            fast-trip; a looser one allows more aggressive risk reduction at the cost of more customer impact.
+            <strong>Why it matters:</strong> It ties both mitigation levers—fast-trip (EPSS) and PSPS—to the same reliability limit. Higher values make the model treat these actions as causing more sustained interruptions (i.e., consuming more of the SAIFI budget), so it will rely more on long-term investments (e.g., sectionalization) or shift which lever it uses to remain under the SAIFI cap.
           </p>
-          <p class="sfps-param-meta">Controlled with: Reliability constraint (ratio of pop.)</p>
+          <p class="sfps-param-meta">Controlled with: SAIFI</p>
         </div>
       </div>
     </div>
