@@ -408,6 +408,14 @@
   flex: 0 0 auto;
 }
 
+/* Override .sfps-panel.sfps-controls in column context: 720px flex-basis was forcing 720px height */
+.sfps-panel.sfps-controls.sfps-historical-controls {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
 .sfps-historical-controls .sfps-field {
   width: 100%;
   margin-bottom: 0;
