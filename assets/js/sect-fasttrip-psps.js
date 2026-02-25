@@ -50,7 +50,7 @@
     W_cap: "Reliability constraint (absolute)",
     W_cap_multiplier: "SAIFI",
     alpha: "FWER",
-    effective_alpha: "Effectiveness of fast-trip",
+    effective_alpha: "Effectiveness of fast-trip (% of successful mitigation)",
     gamma_i_multiplier: "Fast-trip average reliability impact",
     grouping_method: "Declustering method",
     ignitions: "Ignitions",

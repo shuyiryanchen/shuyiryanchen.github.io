@@ -163,13 +163,12 @@ disable_site_title: true
   <section class="sfps-fullbleed sfps-params-section" aria-labelledby="sfps-params-heading">
     <h2 id="sfps-params-heading" class="sfps-params-heading">Understanding the key parameters</h2>
     <p class="sfps-params-intro">
-      The optimization uses several inputs that you can think of as <strong>policy levers</strong> (budgets and caps),
-      <strong>reliability safeguards</strong>, and <strong>statistical controls</strong>. Below is a short guide.
+      We do optimal planning under operation and physical constraints, with statistical control in prediction. Below is a short guide.
     </p>
 
     <div class="sfps-params-group">
-      <h3 class="sfps-params-group-title">Policy levers (budgets and caps)</h3>
-      <p class="sfps-params-group-desc">Limits you set on how much of the system can use sectionalization, fast-trip, or affect customers.</p>
+      <h3 class="sfps-params-group-title">Operation constraints</h3>
+      <p class="sfps-params-group-desc">Limits on how much of the system can use sectionalization, fast-trip, or affect customers.</p>
       <div class="sfps-params-row">
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">Sectionalization (sect.) budget (% of circuits)</h4>
@@ -193,13 +192,13 @@ disable_site_title: true
     </div>
 
     <div class="sfps-params-group">
-      <h3 class="sfps-params-group-title">Reliability safeguards</h3>
+      <h3 class="sfps-params-group-title">Physical constraints</h3>
       <p class="sfps-params-group-desc">Parameters that link mitigation choices to the reliability cap and protect customer exposure.</p>
       <div class="sfps-params-row">
         <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Effectiveness of fast-trip</h4>
+          <h4 class="sfps-param-title">Effectiveness of fast-trip (% of successful mitigation)</h4>
           <p>
-            A parameter on a percentage scale that measures how effective fast-trip (EPSS) is at controlling ignition risk—i.e., the degree to which enabling fast-trip on a circuit reduces its contribution to wildfire risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
+            A parameter expressed as the percentage of successful mitigation—how effective fast-trip (EPSS) is at controlling ignition risk, i.e., the degree to which enabling fast-trip on a circuit reduces its contribution to wildfire risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
           </p>
         </div>
       </div>
@@ -207,7 +206,6 @@ disable_site_title: true
 
     <div class="sfps-params-group">
       <h3 class="sfps-params-group-title">Hierarchical uncertainty set and coverage guarantee</h3>
-      <p class="sfps-params-group-desc">The guarantee we aim for when building the predicted uncertainty set for ignition risk.</p>
       <p>
         For a given planning window, we build a <strong>hierarchical polyhedral uncertainty set</strong> that encodes plausible future circuit-level ignition counts. The set imposes bounds on each circuit and on the sum of counts within each group (e.g., districts or climate zones). Circuit-level bounds protect local reliability risk; group-sum bounds protect aggregate risk at operational and planning scales.
       </p>
