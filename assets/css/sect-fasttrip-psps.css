@@ -10,9 +10,9 @@
 }
 
 .sfps-fullbleed {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: calc(100% + 2em);
+  margin-left: -1em;
+  margin-right: -1em;
   padding-left: 1.75rem;
   padding-right: 1.25rem;
   box-sizing: border-box;
@@ -111,10 +111,10 @@
 }
 
 .sfps-intro {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto 1.5rem;
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
   box-sizing: border-box;
   text-align: center;
 }
