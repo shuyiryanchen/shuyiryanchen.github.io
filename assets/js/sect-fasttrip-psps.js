@@ -43,12 +43,12 @@
 
   const paramLabels = {
     B_budget: "Fast-trip budget",
-    B_budget_multiplier: "Fast-trip budget (ratio of circuits)",
+    B_budget_multiplier: "Fast-trip budget (% of circuits)",
     C_budget: "PSPS budget",
-    C_budget_multiplier: "Sect. budget (ratio of circuits)",
+    C_budget_multiplier: "Sect. budget (% of circuits)",
     K_groups: "Number of groups",
     W_cap: "Reliability constraint (absolute)",
-    W_cap_multiplier: "Reliability constraint (ratio of pop.)",
+    W_cap_multiplier: "SAIFI",
     alpha: "FWER",
     effective_alpha: "Effectiveness of fast-trip",
     gamma_i_multiplier: "Fast-trip average reliability impact",

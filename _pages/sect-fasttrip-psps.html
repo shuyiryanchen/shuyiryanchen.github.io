@@ -173,30 +173,24 @@ disable_site_title: true
       <p class="sfps-params-group-desc">Limits you set on how much of the system can use sectionalization, fast-trip, or affect customers.</p>
       <div class="sfps-params-row">
         <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Sectionalization (sect.) budget</h4>
+          <h4 class="sfps-param-title">Sectionalization (sect.) budget (% of circuits)</h4>
           <p>
-            <strong>What it is:</strong> The maximum number of circuits that can be sectionalized—i.e., prepared
-            so they can be shut off in segments during a PSPS event instead of all at once.
+            <strong>What it is:</strong> The maximum share of all circuits (as a percentage) that can be sectionalized—i.e., prepared so they can be shut off in segments during a PSPS event instead of all at once. It is expressed on a percentage scale of all circuits.
           </p>
           <p>
-            <strong>Why it matters:</strong> A higher budget allows more granular shutoffs (fewer customers
-            affected per event) but requires more upfront investment and coordination. Setting this is a
-            tradeoff between operational flexibility and cost.
+            <strong>Why it matters:</strong> A higher budget allows more granular shutoffs (fewer customers affected per event) but requires more upfront investment and coordination. Setting this is a tradeoff between operational flexibility and cost.
           </p>
-          <p class="sfps-param-meta">Controlled with: Sect. budget (ratio of circuits)</p>
+          <p class="sfps-param-meta">Controlled with: Sect. budget (% of circuits)</p>
         </div>
         <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Fast-trip budget</h4>
+          <h4 class="sfps-param-title">Fast-trip budget (% of circuits)</h4>
           <p>
-            <strong>What it is:</strong> The maximum number of circuits that can be assigned fast-trip
-            settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions.
+            <strong>What it is:</strong> The maximum share of all circuits (as a percentage) that can be assigned fast-trip settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions. It is expressed on a percentage scale of all circuits.
           </p>
           <p>
-            <strong>Why it matters:</strong> More circuits with fast-trip can reduce wildfire risk but may
-            increase momentary outages and affect reliability. The budget caps how much of the system uses
-            this mitigation.
+            <strong>Why it matters:</strong> More circuits with fast-trip can reduce wildfire risk but may increase momentary outages and affect reliability. The budget caps how much of the system uses this mitigation.
           </p>
-          <p class="sfps-param-meta">Controlled with: Fast-trip budget (ratio of circuits)</p>
+          <p class="sfps-param-meta">Controlled with: Fast-trip budget (% of circuits)</p>
         </div>
         <div class="sfps-param-block">
           <h4 class="sfps-param-title">SAIFI reliability impact (customer-weighted)</h4>
@@ -228,20 +222,33 @@ disable_site_title: true
           </p>
           <p class="sfps-param-meta">Controlled with: Fast-trip average reliability impact</p>
         </div>
+        <div class="sfps-param-block">
+          <h4 class="sfps-param-title">Effectiveness of fast-trip</h4>
+          <p>
+            <strong>What it is:</strong> A parameter on a percentage scale that measures how effective fast-trip (EPSS) is at controlling ignition risk—i.e., the degree to which enabling fast-trip on a circuit reduces its contribution to wildfire risk.
+          </p>
+          <p>
+            <strong>Why it matters:</strong> Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
+          </p>
+          <p class="sfps-param-meta">Controlled with: Effectiveness of fast-trip</p>
+        </div>
       </div>
     </div>
 
     <div class="sfps-params-group">
       <h3 class="sfps-params-group-title">Statistical controls</h3>
-      <p class="sfps-params-group-desc">How we control prediction error when identifying high-risk circuits.</p>
+      <p class="sfps-params-group-desc">The guarantee we aim for when building the predicted uncertainty set for ignition risk.</p>
       <div class="sfps-params-row">
         <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Family-Wise Error Rate (FWER)</h4>
+          <h4 class="sfps-param-title">Hierarchical uncertainty set and coverage guarantee</h4>
           <p>
-            <strong>What it is:</strong> FWER is controlled for prediction error at both the <strong>circuit</strong> and <strong>group</strong> level—so we limit the chance of wrongly labeling circuits or groups as high risk when they are not.
+            <strong>What we use:</strong> For a given planning window, we build a <strong>hierarchical polyhedral uncertainty set</strong> that encodes plausible future circuit-level ignition counts. The set imposes bounds on each circuit and on the sum of counts within each group (e.g., districts or climate zones). Circuit-level bounds protect local reliability risk; group-sum bounds protect aggregate risk at operational and planning scales.
           </p>
           <p>
-            <strong>For managers:</strong> FWER is the maximum probability you allow for making <em>at least one</em> false “high risk” call across all tests. A lower FWER (e.g., 0.05) is more conservative: fewer circuits are flagged, but you are less likely to over-mitigate. A higher FWER flags more circuits as high risk, which can mean stronger mitigation but also more false positives. It is the main dial for balancing safety versus over-mitigation.
+            <strong>Guarantee:</strong> For a prescribed level α ∈ (0, 1), we construct the set so that the probability the realized outcome falls inside the set is at least 1 − α. In other words, we control the chance that the true outcome lies outside the predicted set to at most α.
+          </p>
+          <p>
+            <strong>In plain terms:</strong> This means our method controls the error rate of the predicted uncertainty set for all circuits and groups to (at most) 0.5—i.e., the probability that the real ignition counts fall outside our set is no more than 0.5.
           </p>
           <p class="sfps-param-meta">Controlled with: FWER, Effectiveness of fast-trip</p>
         </div>
