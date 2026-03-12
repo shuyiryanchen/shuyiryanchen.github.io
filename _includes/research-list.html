@@ -1,0 +1,35 @@
+{% comment %}
+  Renders research entries from _data/research.yml.
+  order: "working_papers_first" (Research page) or "publications_first" (About page)
+{% endcomment %}
+{% assign research = site.data.research %}
+
+<div class="research-list">
+  {% if include.order == "working_papers_first" %}
+    <h2 class="research-list__section-title" id="working-papers-and-preprints">Working Papers and Preprints</h2>
+    <ul class="research-list__section">
+      {% for item in research.working_papers %}
+        <li class="research-list__item">{{ item | markdownify }}</li>
+      {% endfor %}
+    </ul>
+    <h2 class="research-list__section-title" id="publications">Publications</h2>
+    <ul class="research-list__section">
+      {% for item in research.publications %}
+        <li class="research-list__item">{{ item | markdownify }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <h2 class="research-list__section-title" id="publications">Publications</h2>
+    <ul class="research-list__section">
+      {% for item in research.publications %}
+        <li class="research-list__item">{{ item | markdownify }}</li>
+      {% endfor %}
+    </ul>
+    <h2 class="research-list__section-title" id="working-papers-and-preprints">Working Papers and Preprints</h2>
+    <ul class="research-list__section">
+      {% for item in research.working_papers %}
+        <li class="research-list__item">{{ item | markdownify }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>

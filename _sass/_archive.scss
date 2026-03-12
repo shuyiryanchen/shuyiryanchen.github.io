@@ -243,3 +243,45 @@
     }
   }
 }
+
+/* Research page list (Working Papers first, then Publications) */
+.research-list {
+  margin-top: 1.5em;
+
+  .research-list__section-title {
+    margin-top: 1.25em;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.35em;
+    font-size: $type-size-4;
+    color: mix(#fff, $gray, 25%);
+    border-bottom: 1px solid $border-color;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .research-list__section {
+    margin: 0 0 0.5em;
+    padding-left: 1.5em;
+    list-style: disc;
+  }
+
+  .research-list__item {
+    margin-bottom: 1em;
+    font-size: $type-size-6;
+    line-height: 1.6;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    p {
+      margin-bottom: 0.25em;
+    }
+  }
+}
+
+.research-page-intro {
+  margin-bottom: 0.5em;
+}
