@@ -244,16 +244,23 @@
   }
 }
 
-/* Research page list (Working Papers first, then Publications) */
+/* Research page list (Working Papers first, then Publications). Matches .page__content styling from About. */
+.archive--research .research-list {
+  margin-top: 0;
+}
+
 .research-list {
-  margin-top: 1.5em;
+  color: $text-color;
+  font-size: 1em;
 
   .research-list__section-title {
     margin-top: 1.25em;
     margin-bottom: 0.5em;
-    padding-bottom: 0.35em;
+    padding-bottom: 0.5em;
     font-size: $type-size-4;
-    color: mix(#fff, $gray, 25%);
+    font-family: $header-font-family;
+    font-weight: bold;
+    color: $text-color;
     border-bottom: 1px solid $border-color;
 
     &:first-child {
@@ -269,8 +276,9 @@
 
   .research-list__item {
     margin-bottom: 1em;
-    font-size: $type-size-6;
-    line-height: 1.6;
+    font-size: 1em;
+    line-height: 1.5;
+    color: $text-color;
 
     &:last-child {
       margin-bottom: 0;
@@ -279,9 +287,15 @@
     p {
       margin-bottom: 0.25em;
     }
+
+    a {
+      text-decoration: underline;
+    }
   }
 }
 
 .research-page-intro {
   margin-bottom: 0.5em;
+  font-size: 1em;
+  color: $text-color;
 }
