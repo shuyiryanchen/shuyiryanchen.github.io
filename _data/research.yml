@@ -1,4 +1,7 @@
-# Source of truth for Publications and Working Papers. Used by Research page and About page.
+# Single source of truth for Publications and Working Papers.
+# - Research tab: shows this list (Working Papers first, then Publications).
+# - About page: same list is injected via layout (Publications first, then Working Papers).
+# Edit only this file to keep both pages in sync.
 
 working_papers:
   - |

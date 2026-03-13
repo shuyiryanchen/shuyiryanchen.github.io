@@ -1,31 +1,49 @@
 {% comment %}
-  Renders research entries from _data/research.yml.
+  Renders research entries from _data/research.yml (single source of truth).
   order: "working_papers_first" (Research page) or "publications_first" (About page)
+  style: "about" for About page (emoji headings + span ids), omit for Research page
 {% endcomment %}
 {% assign research = site.data.research %}
+{% assign is_about = include.style | default: "" | downcase | strip %}
 
-<div class="research-list">
+<div class="research-list{% if is_about == 'about' %} research-list--about{% endif %}">
   {% if include.order == "working_papers_first" %}
-    <h2 class="research-list__section-title" id="working-papers-and-preprints">Working Papers and Preprints</h2>
+    {% if is_about == "about" %}
+      <h2 id="working-papers-and-preprints">🔬 Working Papers and Preprints<span id="wip"></span></h2>
+    {% else %}
+      <h2 class="research-list__section-title" id="working-papers-and-preprints">Working Papers and Preprints</h2>
+    {% endif %}
     <ul class="research-list__section">
       {% for item in research.working_papers %}
         <li class="research-list__item">{{ item | markdownify }}</li>
       {% endfor %}
     </ul>
-    <h2 class="research-list__section-title" id="publications">Publications</h2>
+    {% if is_about == "about" %}
+      <h2 id="publications">📄 Publications<span id="conferences-and-workshops"></span></h2>
+    {% else %}
+      <h2 class="research-list__section-title" id="publications">Publications</h2>
+    {% endif %}
     <ul class="research-list__section">
       {% for item in research.publications %}
         <li class="research-list__item">{{ item | markdownify }}</li>
       {% endfor %}
     </ul>
   {% else %}
-    <h2 class="research-list__section-title" id="publications">Publications</h2>
+    {% if is_about == "about" %}
+      <h2 id="publications">📄 Publications<span id="conferences-and-workshops"></span></h2>
+    {% else %}
+      <h2 class="research-list__section-title" id="publications">Publications</h2>
+    {% endif %}
     <ul class="research-list__section">
       {% for item in research.publications %}
         <li class="research-list__item">{{ item | markdownify }}</li>
       {% endfor %}
     </ul>
-    <h2 class="research-list__section-title" id="working-papers-and-preprints">Working Papers and Preprints</h2>
+    {% if is_about == "about" %}
+      <h2 id="working-papers-and-preprints">🔬 Working Papers and Preprints<span id="wip"></span></h2>
+    {% else %}
+      <h2 class="research-list__section-title" id="working-papers-and-preprints">Working Papers and Preprints</h2>
+    {% endif %}
     <ul class="research-list__section">
       {% for item in research.working_papers %}
         <li class="research-list__item">{{ item | markdownify }}</li>
