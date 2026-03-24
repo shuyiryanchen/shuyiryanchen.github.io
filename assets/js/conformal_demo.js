@@ -879,7 +879,7 @@ function App() {
                   <Tex size="12px">{mth.texTagline}</Tex>
                 </div>
                 <div style={{ padding:"8px 12px", background:C.surface2, borderRadius:5, marginBottom:12, borderLeft:`3px solid ${mth.color}`, overflowX:"auto" }}>
-                  <Tex display color={mth.color}>{mth.formula}</Tex>
+                  <Tex display color={mth.color} size="10px">{mth.formula}</Tex>
                 </div>
                 {mth.texSteps.map((tex, i) => (
                   <div key={i} style={{ display:"flex", gap:8, marginBottom:6 }}>
