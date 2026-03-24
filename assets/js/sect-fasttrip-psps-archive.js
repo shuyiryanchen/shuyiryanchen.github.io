@@ -1,6 +1,6 @@
 /**
- * Frozen UI for `/sect-fasttrip-psps/archive/` only (pre–Planning-Tool-grid behavior).
- * Copied from commit 946e77d; uses `manifest-archive.json`. Edit the live `sect-fasttrip-psps.js` for new features.
+ * Frozen UI for `/sect-fasttrip-psps/archive/` only (legacy `plots/map_*.png` via manifest-archive.json).
+ * The live `/sect-fasttrip-psps/` page uses `grid_plots/` + `sect-fasttrip-psps.js`; do not merge those flows here.
  */
 (() => {
   const root = document.getElementById("sect-fasttrip-psps");
@@ -150,13 +150,10 @@
 
   const hiddenParamsForControls = new Set(["K_groups", "alpha"]);
 
-  const allowedMhtMethods = new Set(["Operational_MaxRank"]);
-
   const imageBasePath = `${basePath}/assets/website_plots/`;
   const fixedImageParams = {
     K_groups: "5",
     alpha: "0.1",
-    mht_method: "Operational_MaxRank",
     gamma_i_multiplier: "0.5"
   };
   const historicalBasePath = `${basePath}/assets/website_plots/historical plots/`;
@@ -516,10 +513,7 @@
           })
         );
 
-        let values = getUniqueValues(filteredRows, param);
-        if (param === "mht_method") {
-          values = values.filter((value) => allowedMhtMethods.has(String(value)));
-        }
+        const values = getUniqueValues(filteredRows, param);
         values.forEach((value) => {
           const option = document.createElement("option");
           option.value = value;
@@ -820,7 +814,6 @@
       "W_cap",
       "K_groups",
       "alpha",
-      "mht_method",
       "gamma_i_multiplier"
     ]);
     const imageParamSet = new Set();
