@@ -854,7 +854,7 @@ function App() {
       <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
         The demo shows one shared <Tex size="12px">{`m \\times J`}</Tex> score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
         {" "}
-        <strong>Max-Score</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
+        <strong>Max-Score (Ours)</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
       </p>
 
       {/* Tabs — page title lives on the PSPS tab bar */}
@@ -934,7 +934,7 @@ function App() {
         <div style={{ fontSize: 14 }}>
           <p style={{ ...label(), fontSize: 13, margin:"0 0 20px", lineHeight:1.65 }}>
             Same data, all three methods overlaid. Each bar is the test score for constraint j.
-            Orange group-sum bars matter only for Max-Score; the two baselines calibrate and evaluate on the blue circuit bars only.
+            Orange group-sum bars matter only for Max-Score (Ours); the two baselines calibrate and evaluate on the blue circuit bars only.
           </p>
 
           <div style={{ ...card(), ...sectionGap, overflowX: "auto" }}>
@@ -1004,7 +1004,7 @@ function App() {
         <div>
           <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
             {mcReps} independent replications with the current parameters (ρ_AR={rhoAR.toFixed(2)}, γ={gamma.toFixed(2)}, α={alpha.toFixed(2)}).
-            Coverage targets differ by method: <strong>Max-Score</strong> must cover all J={J} circuit-plus-group constraints, while the two baselines are evaluated on the n={n} circuit constraints only.
+            Coverage targets differ by method: <strong>Max-Score (Ours)</strong> must cover all J={J} circuit-plus-group constraints, while the two baselines are evaluated on the n={n} circuit constraints only.
             Each method still targets joint coverage <Tex>{`\\geq 1-\\alpha = ${((1-alpha)*100).toFixed(0)}\\%`}</Tex> for the constraint set it uses.
           </p>
 
