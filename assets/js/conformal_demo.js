@@ -229,12 +229,35 @@ const C = {
   good:"#1a7f3c", bad:"#c0392b",
 };
 
-/** COVERED/MISSED — match inner tabs ②–③ strip styling (12px monospace, fixed pill width) */
+/** COVERED/MISSED — shared by CoverageStrip + HowItWorksDiagram (same pill as inner tabs ②–③) */
 const COVERAGE_BADGE_FS = 12;
 const COVERAGE_BADGE_MIN_W = 88;
-/** Narrow HowItWorks SVG (viewBox 260px wide): slightly smaller user-units so on-screen size matches HTML strip */
-const COVERAGE_DIAGRAM_BADGE_FS = 10;
-const COVERAGE_DIAGRAM_BADGE_W = 72;
+
+function coverageBadgeInlineStyle(cov) {
+  return {
+    fontSize: COVERAGE_BADGE_FS,
+    fontWeight: 700,
+    fontFamily: "monospace",
+    minWidth: COVERAGE_BADGE_MIN_W,
+    textAlign: "center",
+    display: "inline-block",
+    boxSizing: "border-box",
+    color: cov ? C.good : C.bad,
+    background: cov ? `${C.good}15` : `${C.bad}12`,
+    padding: "2px 10px",
+    borderRadius: 4,
+    border: `1px solid ${cov ? C.good : C.bad}44`,
+    lineHeight: 1.25,
+  };
+}
+
+function CoverageBadgePill({ cov }) {
+  return (
+    <span style={coverageBadgeInlineStyle(cov)}>
+      {cov ? "✓ COVERED" : "✗ MISSED"}
+    </span>
+  );
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function Slider({ label, value, min, max, step, onChange, color, fmt }) {
@@ -346,8 +369,9 @@ function HowItWorksDiagram({ sim, method }) {
   // Number-line bar spans nlAxisY±10; top of bar = nlAxisY-10
   // We need nlAxisY-10 = arrow2Tip + ARROW_GAP  →  nlAxisY = arrow2Tip + ARROW_GAP + 10
   const nlAxisY   = arrow2Tip + ARROW_GAP + 10;
-  const COV_BADGE_W = COVERAGE_DIAGRAM_BADGE_W;
-  const COV_BADGE_FS = COVERAGE_DIAGRAM_BADGE_FS;
+  /* foreignObject box in SVG user units — fits CoverageBadgePill (12px + padding) */
+  const covFoW = 102;
+  const covFoH = 26;
   const SVG_H     = nlAxisY + 48;
 
   // Downsample series to ≤200 display points to keep SVG lightweight
@@ -450,8 +474,11 @@ function HowItWorksDiagram({ sim, method }) {
             <text x={Math.min(tauX,W-48)} y={nlAxisY-15} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">τ̂={finalTau.toFixed(2)}</text>
             <line x1={testX} y1={nlAxisY-10} x2={testX} y2={nlAxisY+10} stroke={C.test} strokeWidth={2} strokeDasharray="3,2"/>
             <text x={testX} y={nlAxisY+22} textAnchor="middle" fill={C.test} fontSize={8} fontFamily="monospace">{method==="ours" ? "max test" : "test j=0"}</text>
-            <rect x={W-2-COV_BADGE_W} y={nlAxisY-9} width={COV_BADGE_W} height={18} rx={3} fill={covLocal?`${C.good}15`:`${C.bad}15`} stroke={covLocal?C.good:C.bad} strokeWidth={1}/>
-            <text x={W-2-COV_BADGE_W/2} y={nlAxisY+4} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={COV_BADGE_FS} fontFamily="monospace" fontWeight={700}>{covLocal?"✓ COVERED":"✗ MISSED"}</text>
+            <foreignObject x={W - 2 - covFoW} y={nlAxisY - 11} width={covFoW} height={covFoH}>
+              <div xmlns="http://www.w3.org/1999/xhtml" style={{ margin: 0, width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CoverageBadgePill cov={covLocal} />
+              </div>
+            </foreignObject>
           </g>
         );
       })()}
@@ -463,8 +490,11 @@ function HowItWorksDiagram({ sim, method }) {
             <line x1={rStarX} y1={nlAxisY-12} x2={rStarX} y2={nlAxisY+12} stroke={color} strokeWidth={2.5}/>
             <text x={Math.min(rStarX,W-52)} y={nlAxisY-15} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">r★={Math.round(rStar)}</text>
             <text x={0} y={nlAxisY+22} fill={C.muted} fontSize={8} fontFamily="monospace">score at rank {Math.round(rStar)} per col</text>
-            <rect x={W-2-COV_BADGE_W} y={nlAxisY-9} width={COV_BADGE_W} height={18} rx={3} fill={covLocal?`${C.good}15`:`${C.bad}15`} stroke={covLocal?C.good:C.bad} strokeWidth={1}/>
-            <text x={W-2-COV_BADGE_W/2} y={nlAxisY+4} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={COV_BADGE_FS} fontFamily="monospace" fontWeight={700}>{covLocal?"✓ COVERED":"✗ MISSED"}</text>
+            <foreignObject x={W - 2 - covFoW} y={nlAxisY - 11} width={covFoW} height={covFoH}>
+              <div xmlns="http://www.w3.org/1999/xhtml" style={{ margin: 0, width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CoverageBadgePill cov={covLocal} />
+              </div>
+            </foreignObject>
           </g>
         );
       })()}
@@ -643,7 +673,6 @@ function MonteCarloControls({
 function CoverageStrip({ methodsMeta, mt=0, mb=20, large=false }) {
   const card = (extra={}) => ({ background:C.surface, border:`1px solid ${C.border}`, borderRadius:8, padding:16, ...extra });
   const nameFs = large ? 14 : 13;
-  const badgeFs = COVERAGE_BADGE_FS;
   const tauFs = large ? 13 : 12;
   return (
     <div style={{ display:"grid", gridTemplateColumns:"repeat(3,minmax(0,1fr))", gap:16, marginTop:mt, marginBottom:mb }}>
@@ -651,17 +680,7 @@ function CoverageStrip({ methodsMeta, mt=0, mb=20, large=false }) {
         <div key={mth.key} style={{ ...card({ padding:"12px 16px" }), borderTopWidth:3, borderTopColor: mth.color }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:4 }}>
             <span style={{ fontSize:nameFs, fontWeight:600, color:C.text }}>{mth.name}</span>
-            <span style={{
-              fontSize:badgeFs, fontWeight:700, fontFamily:"monospace",
-              minWidth: COVERAGE_BADGE_MIN_W,
-              textAlign:"center",
-              display:"inline-block",
-              boxSizing:"border-box",
-              color: mth.cov ? C.good : C.bad,
-              background: mth.cov ? `${C.good}15` : `${C.bad}12`,
-              padding:"2px 10px", borderRadius:4,
-              border:`1px solid ${mth.cov ? C.good : C.bad}44`,
-            }}>{mth.cov ? "✓ COVERED" : "✗ MISSED"}</span>
+            <CoverageBadgePill cov={mth.cov} />
           </div>
           <span style={{ fontSize:tauFs, color:C.muted, display:"flex", alignItems:"center", gap:4 }}>
             <Tex>{`\\bar{\\hat{\\tau}}`}</Tex> = <span style={{ color:mth.color, fontWeight:600, fontFamily:"monospace" }}>{mth.tau.toFixed(3)}</span>
