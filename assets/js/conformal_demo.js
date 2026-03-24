@@ -229,8 +229,12 @@ const C = {
   good:"#1a7f3c", bad:"#c0392b",
 };
 
-/** COVERED/MISSED pill width — shared by HowItWorksDiagram + CoverageStrip */
-const COVERAGE_BADGE_MIN_W = 100;
+/** COVERED/MISSED — match inner tabs ②–③ strip styling (12px monospace, fixed pill width) */
+const COVERAGE_BADGE_FS = 12;
+const COVERAGE_BADGE_MIN_W = 88;
+/** Narrow HowItWorks SVG (viewBox 260px wide): slightly smaller user-units so on-screen size matches HTML strip */
+const COVERAGE_DIAGRAM_BADGE_FS = 10;
+const COVERAGE_DIAGRAM_BADGE_W = 72;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function Slider({ label, value, min, max, step, onChange, color, fmt }) {
@@ -342,9 +346,8 @@ function HowItWorksDiagram({ sim, method }) {
   // Number-line bar spans nlAxisY±10; top of bar = nlAxisY-10
   // We need nlAxisY-10 = arrow2Tip + ARROW_GAP  →  nlAxisY = arrow2Tip + ARROW_GAP + 10
   const nlAxisY   = arrow2Tip + ARROW_GAP + 10;
-  // COVERED/MISSED badge matches CoverageStrip (font 12, min width ~100)
-  const COV_BADGE_W = COVERAGE_BADGE_MIN_W;
-  const COV_BADGE_FS = 12;
+  const COV_BADGE_W = COVERAGE_DIAGRAM_BADGE_W;
+  const COV_BADGE_FS = COVERAGE_DIAGRAM_BADGE_FS;
   const SVG_H     = nlAxisY + 48;
 
   // Downsample series to ≤200 display points to keep SVG lightweight
@@ -447,8 +450,8 @@ function HowItWorksDiagram({ sim, method }) {
             <text x={Math.min(tauX,W-48)} y={nlAxisY-15} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">τ̂={finalTau.toFixed(2)}</text>
             <line x1={testX} y1={nlAxisY-10} x2={testX} y2={nlAxisY+10} stroke={C.test} strokeWidth={2} strokeDasharray="3,2"/>
             <text x={testX} y={nlAxisY+22} textAnchor="middle" fill={C.test} fontSize={8} fontFamily="monospace">{method==="ours" ? "max test" : "test j=0"}</text>
-            <rect x={W-2-COV_BADGE_W} y={nlAxisY-11} width={COV_BADGE_W} height={22} rx={4} fill={covLocal?`${C.good}15`:`${C.bad}15`} stroke={covLocal?C.good:C.bad} strokeWidth={1}/>
-            <text x={W-2-COV_BADGE_W/2} y={nlAxisY+5} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={COV_BADGE_FS} fontFamily="monospace" fontWeight="bold">{covLocal?"✓ COVERED":"✗ MISSED"}</text>
+            <rect x={W-2-COV_BADGE_W} y={nlAxisY-9} width={COV_BADGE_W} height={18} rx={3} fill={covLocal?`${C.good}15`:`${C.bad}15`} stroke={covLocal?C.good:C.bad} strokeWidth={1}/>
+            <text x={W-2-COV_BADGE_W/2} y={nlAxisY+4} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={COV_BADGE_FS} fontFamily="monospace" fontWeight={700}>{covLocal?"✓ COVERED":"✗ MISSED"}</text>
           </g>
         );
       })()}
@@ -460,8 +463,8 @@ function HowItWorksDiagram({ sim, method }) {
             <line x1={rStarX} y1={nlAxisY-12} x2={rStarX} y2={nlAxisY+12} stroke={color} strokeWidth={2.5}/>
             <text x={Math.min(rStarX,W-52)} y={nlAxisY-15} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">r★={Math.round(rStar)}</text>
             <text x={0} y={nlAxisY+22} fill={C.muted} fontSize={8} fontFamily="monospace">score at rank {Math.round(rStar)} per col</text>
-            <rect x={W-2-COV_BADGE_W} y={nlAxisY-11} width={COV_BADGE_W} height={22} rx={4} fill={covLocal?`${C.good}15`:`${C.bad}15`} stroke={covLocal?C.good:C.bad} strokeWidth={1}/>
-            <text x={W-2-COV_BADGE_W/2} y={nlAxisY+5} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={COV_BADGE_FS} fontFamily="monospace" fontWeight="bold">{covLocal?"✓ COVERED":"✗ MISSED"}</text>
+            <rect x={W-2-COV_BADGE_W} y={nlAxisY-9} width={COV_BADGE_W} height={18} rx={3} fill={covLocal?`${C.good}15`:`${C.bad}15`} stroke={covLocal?C.good:C.bad} strokeWidth={1}/>
+            <text x={W-2-COV_BADGE_W/2} y={nlAxisY+4} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={COV_BADGE_FS} fontFamily="monospace" fontWeight={700}>{covLocal?"✓ COVERED":"✗ MISSED"}</text>
           </g>
         );
       })()}
@@ -640,7 +643,7 @@ function MonteCarloControls({
 function CoverageStrip({ methodsMeta, mt=0, mb=20, large=false }) {
   const card = (extra={}) => ({ background:C.surface, border:`1px solid ${C.border}`, borderRadius:8, padding:16, ...extra });
   const nameFs = large ? 14 : 13;
-  const badgeFs = large ? 13 : 12;
+  const badgeFs = COVERAGE_BADGE_FS;
   const tauFs = large ? 13 : 12;
   return (
     <div style={{ display:"grid", gridTemplateColumns:"repeat(3,minmax(0,1fr))", gap:16, marginTop:mt, marginBottom:mb }}>
@@ -852,7 +855,7 @@ function App() {
           </div>
 
           {/* Coverage strip — above threshold anatomy */}
-          <CoverageStrip methodsMeta={methodsMeta} mt={0} mb={20} large />
+          <CoverageStrip methodsMeta={methodsMeta} mt={0} mb={20} />
 
           {/* Threshold anatomy */}
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,minmax(0,1fr))", gap:16, alignItems:"start", ...sectionGap }}>
