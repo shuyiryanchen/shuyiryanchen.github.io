@@ -48,6 +48,30 @@ function Tex({ children, display = false, color, size }) {
   return <span ref={ref} style={style}>{!ready ? children : null}</span>;
 }
 
+/** KaTeX inside SVG via foreignObject (HowItWorksDiagram captions/labels). */
+function SvgTex({ x, y, width, height, tex, color, fontSize = "10px", textAlign = "center" }) {
+  return (
+    <foreignObject x={x} y={y} width={width} height={height}>
+      <div
+        xmlns="http://www.w3.org/1999/xhtml"
+        style={{
+          margin: 0,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: textAlign === "center" ? "center" : "flex-start",
+          color: color || "inherit",
+          overflow: "hidden",
+          lineHeight: 1.15,
+        }}
+      >
+        <Tex size={fontSize} color={color}>{tex}</Tex>
+      </div>
+    </foreignObject>
+  );
+}
+
 // ── Seeded RNG ────────────────────────────────────────────────────────────────
 function mulberry32(seed) {
   return function() {
@@ -343,15 +367,18 @@ function HowItWorksDiagram({ sim, method }) {
     return j < n && v >= tauMR[jc];
   };
 
-  let series, seriesLabel, seriesTau, seriesQIdx;
+  let series, seriesTex, seriesTau, seriesQIdx;
   if (method === "ours") {
-    series = E_cal_sorted; seriesLabel = "Envelope  E_t = max_j S_j  (sorted)";
+    series = E_cal_sorted;
+    seriesTex = "\\text{Envelope } E_t = \\max_{1 \\le j \\le J} S_{j,t} \\;\\text{(sorted)}";
     seriesTau = tauMS; seriesQIdx = Math.min(Math.max(Math.ceil((m+1)*(1-alpha))-1,0),m-1);
   } else if (method === "bonf") {
-    series = colsSorted[0]; seriesLabel = "Circuit scores  S_{j,t}  (j=0 example; group bounds ignored)";
+    series = colsSorted[0];
+    seriesTex = "\\text{Circuit scores } S_{j,t} \\;\\text{(}j=0\\text{ example; group bounds ignored)}";
     seriesTau = tauBonf[0]; seriesQIdx = bonfQIdx;
   } else {
-    series = rMaxSorted; seriesLabel = "Circuit-only row-max rank  r_max[t] = max_{j <= n} rank(S_{j,t})";
+    series = rMaxSorted;
+    seriesTex = "\\text{Circuit-only row-max rank } r_{\\max,t} = \\max_{j \\le n} \\operatorname{rank}(S_{j,t})";
     seriesTau = rStar; seriesQIdx = Math.min(Math.max(Math.ceil((m+1)*(1-alpha))-1,0),m-1);
   }
 
@@ -449,21 +476,41 @@ function HowItWorksDiagram({ sim, method }) {
       ))}
       <line x1={0} y1={sy(seriesTau)} x2={W} y2={sy(seriesTau)} stroke={color} strokeWidth={1.5} strokeDasharray="5,3" opacity={0.85}/>
       <line x1={sx(displayQIdx)} y1={sy(seriesTau)} x2={sx(displayQIdx)} y2={serBot} stroke={color} strokeWidth={1} strokeDasharray="2,2" opacity={0.5}/>
-      <text x={Math.min(sx(displayQIdx)+3,W-56)} y={sy(seriesTau)-4} fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">
-        {method==="mr" ? `r★=${Math.round(seriesTau)}` : `τ̂=${seriesTau.toFixed(2)}`}
-      </text>
+      <SvgTex
+        x={Math.min(sx(displayQIdx) + 2, W - 108)}
+        y={sy(seriesTau) - 16}
+        width={106}
+        height={18}
+        tex={method === "mr" ? `r^\\star = ${Math.round(seriesTau)}` : `\\hat{\\tau} = ${seriesTau.toFixed(2)}`}
+        color={color}
+        fontSize="9px"
+        textAlign="left"
+      />
 
       {/* Series caption */}
-      <text x={W/2} y={serCapY} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace">{seriesLabel}</text>
+      <SvgTex x={0} y={serCapY - 14} width={W} height={22} tex={seriesTex} color={color} fontSize="9px" />
 
       {/* Arrow 2: caption → number line — same length as Arrow 1, gap before bar */}
       <line x1={W/2} y1={serCapY+6} x2={W/2} y2={arrow2Tip} stroke={color} strokeWidth={1} strokeDasharray="3,2" opacity={0.5}/>
       <polygon points={`${W/2-3},${arrow2Tip} ${W/2+3},${arrow2Tip} ${W/2},${arrow2Tip+5}`} fill={color} opacity={0.6}/>
 
       {/* Section label — sits in the ARROW_GAP between tip and bar */}
-      <text x={0} y={arrow2Tip+10} fill={C.muted} fontSize={7.5} fontFamily="monospace">
-        {method==="mr" ? "→ lookup circuit score at r★ per column:" : method==="ours" ? "→ envelope threshold vs max test score:" : "→ example circuit j=0 threshold vs test:"}
-      </text>
+      <SvgTex
+        x={0}
+        y={arrow2Tip + 2}
+        width={W}
+        height={20}
+        tex={
+          method === "mr"
+            ? "\\rightarrow\\;\\text{lookup circuit score at } r^\\star \\text{ per column:}"
+            : method === "ours"
+            ? "\\rightarrow\\;\\text{envelope threshold vs max test score:}"
+            : "\\rightarrow\\;\\text{example circuit } j=0 \\text{ threshold vs test:}"
+        }
+        color={C.muted}
+        fontSize="8px"
+        textAlign="left"
+      />
 
       {/* Number line */}
       <line x1={0} y1={nlAxisY} x2={W} y2={nlAxisY} stroke={C.border} strokeWidth={1}/>
@@ -473,7 +520,15 @@ function HowItWorksDiagram({ sim, method }) {
           <g>
             <rect x={0} y={nlAxisY-8} width={Math.max(0,tauX)} height={16} fill={`${color}12`} rx={2}/>
             <line x1={tauX} y1={nlAxisY-12} x2={tauX} y2={nlAxisY+12} stroke={color} strokeWidth={2.5}/>
-            <text x={Math.min(tauX,W-48)} y={nlAxisY-15} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">τ̂={finalTau.toFixed(2)}</text>
+            <SvgTex
+              x={Math.min(Math.max(tauX - 44, 0), W - 88)}
+              y={nlAxisY - 26}
+              width={88}
+              height={18}
+              tex={`\\hat{\\tau} = ${finalTau.toFixed(2)}`}
+              color={color}
+              fontSize="9px"
+            />
             <line x1={testX} y1={nlAxisY-10} x2={testX} y2={nlAxisY+10} stroke={C.test} strokeWidth={2} strokeDasharray="3,2"/>
             <text x={testX} y={nlAxisY+22} textAnchor="middle" fill={C.test} fontSize={8} fontFamily="monospace">{method==="ours" ? "max test" : "test j=0"}</text>
           </g>
@@ -485,8 +540,25 @@ function HowItWorksDiagram({ sim, method }) {
           <g>
             <rect x={0} y={nlAxisY-8} width={Math.max(0,rStarX)} height={16} fill={`${color}12`} rx={2}/>
             <line x1={rStarX} y1={nlAxisY-12} x2={rStarX} y2={nlAxisY+12} stroke={color} strokeWidth={2.5}/>
-            <text x={Math.min(rStarX,W-52)} y={nlAxisY-15} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">r★={Math.round(rStar)}</text>
-            <text x={0} y={nlAxisY+22} fill={C.muted} fontSize={8} fontFamily="monospace">score at rank {Math.round(rStar)} per col</text>
+            <SvgTex
+              x={Math.min(Math.max(rStarX - 45, 0), W - 90)}
+              y={nlAxisY - 26}
+              width={90}
+              height={18}
+              tex={`r^\\star = ${Math.round(rStar)}`}
+              color={color}
+              fontSize="9px"
+            />
+            <SvgTex
+              x={0}
+              y={nlAxisY + 10}
+              width={W}
+              height={18}
+              tex={`\\text{score at rank } ${Math.round(rStar)} \\text{ per column}`}
+              color={C.muted}
+              fontSize="8px"
+              textAlign="left"
+            />
           </g>
         );
       })()}
@@ -729,30 +801,36 @@ function App() {
   const methodsMeta = [
     {
       key:"ours", color:C.ours, name:"Max-Score (Ours)", cov:sim.covMS, tau:sim.widthMS,
-      tagline:"One τ̂ on the joint envelope of all n+G constraints",
+      texTagline:`\\text{One } \\hat{\\tau} \\text{ on the joint envelope of all } ${n}+${G} \\text{ constraints}`,
       formula:`\\hat{\\tau} = Q_{1-\\alpha}\\bigl(\\max_{j} S_{j,t}\\bigr), \\quad j \\in \\{1,\\ldots,J\\}`,
-      step1:`Compute E_t = max score across all J=${J} constraints (${n} circuits + ${G} group-sum) for each calibration row.`,
-      step2:`Sort {E_t} and take the (1−α) = ${(1-alpha).toFixed(2)} quantile → τ̂ = ${sim.tauMS.toFixed(3)}. One value covers ALL constraints simultaneously.`,
-      step3:`At test time: covered if all J test scores ≤ τ̂ (single flat threshold).`,
-      why:`This is the only method here that gets to use the extra group-sum bounds. The envelope automatically blends circuit and group information into one threshold.`,
+      texSteps:[
+        `\\text{For each calibration row, } E_t = \\max_{1 \\le j \\le J} S_{j,t} \\text{ over all } J=${J} \\text{ constraints (}${n}\\text{ circuits } + ${G}\\text{ group-sum).}`,
+        `\\text{Sort } \\{E_t\\} \\text{ and take the } (1-\\alpha) \\text{-quantile with } \\alpha=${alpha.toFixed(2)} \\text{, i.e. } \\hat{\\tau} = ${sim.tauMS.toFixed(3)} \\text{. One threshold covers all } J \\text{ constraints simultaneously.}`,
+        `\\text{At test time: covered if } S_{\\mathrm{test},j} \\le \\hat{\\tau} \\text{ for all } j \\in \\{1,\\ldots,J\\} \\text{ (single flat threshold).}`,
+      ],
+      texWhy:`\\text{This is the only method here that gets to use the extra group-sum bounds. The envelope automatically blends circuit and group information into one threshold.}`,
     },
     {
       key:"bonf", color:C.bonf, name:"Bonferroni", cov:sim.covBonf, tau:sim.widthBonf,
-      tagline:`Circuit-only union bound — n=${n} separate thresholds at level α/n`,
+      texTagline:`\\text{Circuit-only union bound: } n=${n} \\text{ separate thresholds at level } \\alpha/n`,
       formula:`\\hat{\\tau}_j = Q_{1-\\alpha/n}\\bigl(S_{j,t}\\bigr), \\quad j \\in \\{1,\\ldots,n\\}, \\; \\alpha/n = ${(alpha/n).toFixed(4)}`,
-      step1:`Only the n=${n} circuit columns are calibrated. The extra G=${G} group-sum bounds are not used by this baseline.`,
-      step2:`For each circuit j: sort its m=${m} scores, take the (1−α/n) = ${(1-alpha/n).toFixed(4)} quantile → τ̂_j. Example circuit 0: ${sim.tauBonf[0].toFixed(3)}.`,
-      step3:`Covered if each circuit test score is ≤ τ̂_j. Group-sum constraints are ignored.`,
-      why:`Classical union bound over circuit constraints only. It is simple, but it never gets the extra hierarchical information that Max-Score uses.`,
+      texSteps:[
+        `\\text{Only the } ${n} \\text{ circuit columns are calibrated; the } ${G} \\text{ group-sum bounds are not used.}`,
+        `\\text{For each } j \\text{: sort column } j \\text{ of } S_{j,t} \\text{ and take the } (1-\\alpha/n) \\text{-quantile, } \\hat{\\tau}_j \\text{. Example } j=0\\text{: } \\hat{\\tau}_0=${sim.tauBonf[0].toFixed(3)} \\text{.}`,
+        `\\text{Covered if } S_{\\mathrm{test},j} \\le \\hat{\\tau}_j \\text{ for each circuit } j\\text{; group-sum constraints ignored.}`,
+      ],
+      texWhy:`\\text{Classical union bound over circuit constraints only. It is simple, but it never gets the extra hierarchical information that Max-Score uses.}`,
     },
     {
       key:"mr", color:C.mr, name:"Max-Rank (Timans 2025)", cov:sim.covMR, tau:sim.widthMR,
-      tagline:"Circuit-only rank correction over the n circuit columns",
+      texTagline:`\\text{Circuit-only rank correction over the } n \\text{ circuit columns}`,
       formula:`r^\\star = Q_{1-\\alpha}\\bigl(\\max_{j \\le n} \\mathrm{rank}(S_{j,t})\\bigr) = ${Math.round(sim.rStar)}, \\quad \\hat{\\tau}_j = \\mathrm{col}_j[r^\\star]`,
-      step1:`Compute within-column ranks using only the n=${n} circuit columns. The G=${G} group-sum bounds are ignored.`,
-      step2:`Take row-max-rank r_max[t] = max_j rank. Find the (1−α) = ${(1-alpha).toFixed(2)} quantile → r★ = ${Math.round(sim.rStar)} (out of m=${m}).`,
-      step3:`τ̂_j = score at rank r★ in sorted circuit column j. Coverage is checked on circuits only; group-sum constraints are ignored.`,
-      why:`This can be less conservative than Bonferroni on circuit scores, but it still does not enforce the extra group-level bounds, and temporal dependence can miscalibrate r★.`,
+      texSteps:[
+        `\\text{Compute ranks of } S_{j,t} \\text{ using only the } ${n} \\text{ circuit columns; group-sum bounds ignored.}`,
+        `\\text{Let } r_{\\max,t} = \\max_{j \\le n} \\operatorname{rank}(S_{j,t}) \\text{. Take the } (1-\\alpha) \\text{-quantile of } \\{r_{\\max,t}\\} \\text{ to get } r^\\star=${Math.round(sim.rStar)} \\text{ (among } m=${m} \\text{ rows).}`,
+        `\\text{Set } \\hat{\\tau}_j \\text{ to the score at rank } r^\\star \\text{ in sorted column } j\\text{. Coverage on circuits only.}`,
+      ],
+      texWhy:`\\text{This can be less conservative than Bonferroni on circuit scores, but it still does not enforce the extra group-level bounds, and temporal dependence can miscalibrate } r^\\star \\text{.}`,
     },
   ];
 
@@ -770,7 +848,7 @@ function App() {
     <div style={{ background:C.bg, minHeight:"100vh", color:C.text, fontFamily:"system-ui,sans-serif", padding:"24px 28px", boxSizing:"border-box", maxWidth:"100%", overflowX:"hidden" }}>
 
       <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
-        The demo shows one shared m×J score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
+        The demo shows one shared <Tex size="12px">{`m \\times J`}</Tex> score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
         {" "}
         <strong>Max-Score</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
       </p>
@@ -794,20 +872,22 @@ function App() {
                 <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
                   <span style={{ fontSize:14, fontWeight:700, color:mth.color }}>{mth.name}</span>
                 </div>
-                <p style={{ ...label(), margin:"0 0 8px" }}>{mth.tagline}</p>
+                <div style={{ ...label(), margin:"0 0 8px" }}>
+                  <Tex size="12px">{mth.texTagline}</Tex>
+                </div>
                 <div style={{ padding:"8px 12px", background:C.surface2, borderRadius:5, marginBottom:12, borderLeft:`3px solid ${mth.color}`, overflowX:"auto" }}>
                   <Tex display color={mth.color}>{mth.formula}</Tex>
                 </div>
-                {[mth.step1, mth.step2, mth.step3].map((s, i) => (
+                {mth.texSteps.map((tex, i) => (
                   <div key={i} style={{ display:"flex", gap:8, marginBottom:6 }}>
                     <div style={{ minWidth:18, height:18, borderRadius:"50%", background:mth.color, display:"flex", flexShrink:0, alignItems:"center", justifyContent:"center", fontSize:10, fontWeight:700, color:"white" }}>
                       {i+1}
                     </div>
-                    <span style={{ fontSize:12, color:C.muted, lineHeight:1.5 }}>{s}</span>
+                    <span style={{ fontSize:12, color:C.muted, lineHeight:1.5 }}><Tex size="12px">{tex}</Tex></span>
                   </div>
                 ))}
                 <div style={{ marginTop:10, padding:"6px 10px", borderLeft:`3px solid ${C.border}`, fontSize:12, color:C.muted, lineHeight:1.5 }}>
-                  {mth.why}
+                  <Tex size="12px">{mth.texWhy}</Tex>
                 </div>
               </div>
             ))}
@@ -829,11 +909,17 @@ function App() {
           <div style={{ ...card({ padding:"12px 16px" }), borderTopWidth:3, borderTopColor:C.nominal, marginTop:20, marginBottom:0 }}>
             <span style={{ fontWeight:600, color:C.nominal, fontSize:13 }}>💡 Try: </span>
             <span style={{ color:C.muted, fontSize:13 }}>
-              {rhoAR > 0.5
-                ? `ρ_AR=${rhoAR.toFixed(2)} — rows are temporally correlated. In the Max-Rank diagram, row-max-ranks are no longer i.i.d. → r★ is wrong → under-coverage.`
-                : gamma > 0.5
-                ? `γ=${gamma.toFixed(2)} — within-group correlation makes the orange group columns informative. Max-Score gets to use them; the baselines still ignore them.`
-                : `Push ρ_AR → 0.9 to stress Max-Rank's exchangeability assumption. Push γ → 0.9 to make the extra group bounds more useful for Max-Score.`}
+              {rhoAR > 0.5 ? (
+                <>
+                  ρ_AR={rhoAR.toFixed(2)} — rows are temporally correlated. In the Max-Rank diagram, row-max-ranks are no longer i.i.d. →{" "}
+                  <Tex size="13px">r^\\star</Tex>
+                  {" "}is wrong → under-coverage.
+                </>
+              ) : gamma > 0.5 ? (
+                `γ=${gamma.toFixed(2)} — within-group correlation makes the orange group columns informative. Max-Score gets to use them; the baselines still ignore them.`
+              ) : (
+                `Push ρ_AR → 0.9 to stress Max-Rank's exchangeability assumption. Push γ → 0.9 to make the extra group bounds more useful for Max-Score.`
+              )}
             </span>
           </div>
         </div>
@@ -1068,11 +1154,6 @@ function App() {
         </div>
       )}
 
-      {/* Footer */}
-      <div style={{ marginTop:32, paddingTop:16, borderTop:`1px solid ${C.border}`, display:"flex", justifyContent:"space-between" }}>
-        <span style={{ fontSize:12, color:C.muted }}>n={n} circuits · G={G} group bounds · J={J} total available · m={m} · α={alpha.toFixed(2)} · ρ_AR={rhoAR.toFixed(2)} · γ={gamma.toFixed(2)} · seed={seed}</span>
-        <span style={{ fontSize:12, color:C.muted }}>Coverage methods comparison</span>
-      </div>
     </div>
   );
 }
