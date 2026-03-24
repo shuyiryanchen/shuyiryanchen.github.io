@@ -156,6 +156,23 @@ disable_site_title: true
       </p>
     </div>
 
+    <div class="sfps-params-group">
+      <h3 class="sfps-params-group-title">Grid scenario names (Planning Tool maps)</h3>
+      <p>
+        Decision maps for the Planning Tool are stored under <code>assets/website_plots/grid_plots/</code>.
+        Each run folder uses tokens separated by <code>__</code>, for example
+        <code>a0p4__C0p3__B0p4__W0p15__ae0p95__g0p9__d1__32a6911dbd</code>:
+        <code>a0p4</code> → prediction α = 0.4;
+        <code>C0p3</code> → sectionalization budget <code>C_budget</code> = 0.3;
+        <code>B0p4</code> → fast-trip budget <code>B_budget</code> = 0.4;
+        <code>W0p15</code> → reliability cap fraction <code>W_cap_fraction</code> = 0.15;
+        <code>ae0p95</code> → effectiveness <code>alpha_effective</code> = 0.95;
+        <code>g0p9</code> → γ = 0.9;
+        <code>d1</code> → δ = 1.0;
+        followed by a short hash. Maps live in <code>exp_{id}_{method}/map.png</code> within each folder.
+      </p>
+    </div>
+
   </section>
 
     </section>

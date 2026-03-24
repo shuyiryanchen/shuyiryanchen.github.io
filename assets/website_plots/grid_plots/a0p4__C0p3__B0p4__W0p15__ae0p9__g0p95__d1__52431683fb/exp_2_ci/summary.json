@@ -1,0 +1,22 @@
+{
+  "exp_id": 2,
+  "method": "CI",
+  "method_slug": "ci",
+  "worst_value": 17444003.23082057,
+  "best_lower": 17444003.230820585,
+  "best_upper": 17444003.23082057,
+  "gap": -8.54228298210806e-16,
+  "timed_out": false,
+  "elapsed_sec": 0.34415125846862793,
+  "last_iter": 2,
+  "x_sum": 101,
+  "y_sum": 0,
+  "n_circuits": 803,
+  "C_budget": 240.89999999999998,
+  "B_budget": 321.20000000000005,
+  "W_cap": 630327.9860876623,
+  "alpha_eff": 0.9,
+  "gamma": 0.95,
+  "delta": 1.0,
+  "use_group_bounds": false
+}

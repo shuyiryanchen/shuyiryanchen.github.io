@@ -26,6 +26,7 @@
   const historicalPlotsSummary = document.getElementById("historical-plots-summary");
 
   const hyperparams = [
+    "scenario_slug",
     "B_budget",
     "B_budget_multiplier",
     "C_budget",
@@ -42,6 +43,7 @@
   ];
 
   const paramLabels = {
+    scenario_slug: "Grid scenario (folder name under grid_plots/)",
     B_budget: "Fast-trip budget",
     B_budget_multiplier: "Fast-trip budget (% of circuits)",
     C_budget: "PSPS budget",
@@ -132,6 +134,8 @@
   let usingDefaultCsv = false;
   let imageMeta = [];
   let imageSuffixOptions = [];
+  /** When true, maps/decision images load from assets/website_plots/grid_plots/… (merged_planning_grid.csv). */
+  let gridPlotsMode = false;
   let imageSelection = {
     suffix: ""
   };
@@ -196,6 +200,7 @@
   };
 
   const applyFixedImageParams = () => {
+    if (gridPlotsMode) return;
     Object.entries(fixedImageParams).forEach(([param, value]) => {
       imageSelection[param] = value;
       userSelected.add(param);
@@ -269,7 +274,10 @@
 
   const getDisplayParams = () => {
     const params = availableParams.length ? availableParams : hyperparams;
-    const filtered = params.filter((param) => !hiddenParamsForControls.has(param));
+    let filtered = params.filter((param) => !hiddenParamsForControls.has(param));
+    if (gridPlotsMode) {
+      filtered = filtered.filter((param) => param !== "grouping_method");
+    }
     if (!usingDefaultCsv) return filtered;
     return filtered.filter((param) => !hiddenParamsForDefault.has(param));
   };
@@ -366,6 +374,33 @@
         hftd: suffixes.hftd,
         inset: suffixes.inset
       }
+    };
+  };
+
+  /** One row per map: grid_plots/{scenario_slug}/exp_{exp_id}_{method_slug}/map.png */
+  const buildGridImageMetaFromRow = (row) => {
+    const slug = row.scenario_slug;
+    const expId = row.exp_id;
+    const methodSlug = row.method_slug;
+    if (!slug || expId === undefined || expId === null || !methodSlug) return null;
+    const path = `grid_plots/${slug}/exp_${expId}_${methodSlug}/map.png`;
+    const str = (v) => (v === undefined || v === null ? "" : String(v));
+    return {
+      path,
+      row: Number(expId),
+      params: {
+        scenario_slug: slug,
+        B_budget_multiplier: str(row.B_budget_multiplier),
+        C_budget_multiplier: str(row.C_budget_multiplier),
+        W_cap_multiplier: str(row.W_cap_multiplier),
+        effective_alpha: str(row.effective_alpha),
+        gamma_i_multiplier: str(row.gamma_i_multiplier),
+        mht_method: str(row.mht_method),
+        K_groups: str(row.K_groups || "5"),
+        alpha: str(row.alpha),
+        grouping_method: str(row.grouping_method || "grid")
+      },
+      suffix: { hftd: false, inset: false }
     };
   };
 
@@ -513,7 +548,7 @@
         );
 
         let values = getUniqueValues(filteredRows, param);
-        if (param === "mht_method") {
+        if (param === "mht_method" && !gridPlotsMode) {
           values = values.filter((value) => allowedMhtMethods.has(String(value)));
         }
         values.forEach((value) => {
@@ -684,6 +719,10 @@
     numericColumns = columns.filter((col) => isNumericColumn(rows, col));
     availableParams = hyperparams.filter((param) => columns.includes(param));
 
+    if (gridPlotsMode && rows.length) {
+      imageMeta = rows.map(buildGridImageMetaFromRow).filter(Boolean);
+    }
+
     if (!numericColumns.length || !availableParams.length) {
       return;
     }
@@ -768,8 +807,9 @@
 
   const getStrictImageMeta = (selectionOverride) => {
     const sel = selectionOverride != null ? selectionOverride : imageSelection;
+    const suffixKey = sel.suffix || "none";
     return imageMeta.filter((meta) => {
-      if (getSuffixKey(meta.suffix) !== sel.suffix) return false;
+      if (getSuffixKey(meta.suffix) !== suffixKey) return false;
       return Object.entries(sel).every(([key, value]) => {
         if (key === "suffix") return true;
         if (value === undefined || value === null || value === "") return true;
@@ -819,6 +859,7 @@
       "mht_method",
       "gamma_i_multiplier"
     ]);
+    if (gridPlotsMode) excludedImageParams.add("grouping_method");
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
       Object.keys(meta.params || {}).forEach((key) => {
@@ -829,6 +870,7 @@
     });
 
     const preferredOrder = [
+      "scenario_slug",
       "W_cap_multiplier",
       "C_budget_multiplier",
       "mht_method",
@@ -868,7 +910,7 @@
 
       let values = getImageValuesForSelection(param, selectionForFilter, userSelected);
 
-      if (param === "effective_alpha") {
+      if (param === "effective_alpha" && !gridPlotsMode) {
         const canonical = new Set();
         values.forEach((v) => {
           const n = Number(v);
@@ -1077,6 +1119,12 @@
   };
 
   const refreshImageMeta = async () => {
+    if (gridPlotsMode) {
+      if (dataset.length) {
+        imageMeta = dataset.map(buildGridImageMetaFromRow).filter(Boolean);
+      }
+      return;
+    }
     const manifest = await fetchManifest();
     const images = manifest.images || manifest.imageFiles || [];
     imageMeta = images.map(parseImageName).filter(Boolean);
@@ -1087,16 +1135,20 @@
     initHistorical();
     try {
       const manifest = await fetchManifest();
+      gridPlotsMode = Boolean(manifest.gridPlots);
       defaultCsvFile = (manifest.csvFiles || [])[0] || "";
       const images = manifest.images || manifest.imageFiles || [];
-      imageMeta = images.map(parseImageName).filter(Boolean);
+      imageMeta = gridPlotsMode ? [] : images.map(parseImageName).filter(Boolean);
 
       applyFixedImageParams();
-      buildImageControls();
-      renderImage();
       await loadCsv();
+      if (!usingDefaultCsv) {
+        buildImageControls();
+        renderImage();
+      }
     } catch (error) {
       defaultCsvFile = "";
+      gridPlotsMode = false;
     }
   };
 
@@ -1115,7 +1167,7 @@
     renderPlot();
   });
   resetPart2Button.addEventListener("click", async () => {
-    imageSelection = { suffix: "" };
+    imageSelection = { suffix: gridPlotsMode ? "none" : "" };
     userSelected.clear();
     applyFixedImageParams();
     try {
