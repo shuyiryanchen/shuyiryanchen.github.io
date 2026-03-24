@@ -26,7 +26,6 @@
   const historicalPlotsSummary = document.getElementById("historical-plots-summary");
 
   const hyperparams = [
-    "scenario_slug",
     "B_budget",
     "B_budget_multiplier",
     "C_budget",
@@ -37,13 +36,13 @@
     "alpha",
     "effective_alpha",
     "gamma_i_multiplier",
+    "delta",
     "grouping_method",
     "ignitions",
     "mht_method"
   ];
 
   const paramLabels = {
-    scenario_slug: "Grid scenario (folder name under grid_plots/)",
     B_budget: "Fast-trip budget",
     B_budget_multiplier: "Fast-trip budget (% of circuits)",
     C_budget: "PSPS budget",
@@ -54,9 +53,21 @@
     alpha: "FWER",
     effective_alpha: "Effectiveness of fast-trip (% of successful mitigation)",
     gamma_i_multiplier: "Fast-trip average reliability impact",
+    delta: "δ",
     grouping_method: "Declustering method",
     ignitions: "Ignitions",
     mht_method: "Decluster + MHT method"
+  };
+
+  /** Short labels for Planning Tool (grid) sliders — maps to folder tokens a, C, B, W, ae, g, d. */
+  const gridShortLabels = {
+    W_cap_multiplier: "W",
+    C_budget_multiplier: "C",
+    B_budget_multiplier: "B",
+    effective_alpha: "α_eff",
+    alpha: "α",
+    gamma_i_multiplier: "γ",
+    delta: "δ"
   };
 
   const yMetricOptions = [
@@ -262,7 +273,8 @@
     updateYear();
   };
 
-  const getLabel = (param) => paramLabels[param] || param;
+  const getLabel = (param) =>
+    gridPlotsMode && gridShortLabels[param] ? gridShortLabels[param] : paramLabels[param] || param;
   const getOptionLabel = (param, value) => {
     if (param === "mht_method") {
       return String(value).replace(/_/g, " + ");
@@ -274,7 +286,9 @@
 
   const getDisplayParams = () => {
     const params = availableParams.length ? availableParams : hyperparams;
-    let filtered = params.filter((param) => !hiddenParamsForControls.has(param));
+    const hideControls = new Set(hiddenParamsForControls);
+    if (gridPlotsMode) hideControls.delete("alpha");
+    let filtered = params.filter((param) => !hideControls.has(param));
     if (gridPlotsMode) {
       filtered = filtered.filter((param) => param !== "grouping_method");
     }
@@ -398,10 +412,59 @@
         mht_method: str(row.mht_method),
         K_groups: str(row.K_groups || "5"),
         alpha: str(row.alpha),
+        delta: str(row.delta),
         grouping_method: str(row.grouping_method || "grid")
       },
       suffix: { hftd: false, inset: false }
     };
+  };
+
+  /** Params encoded in grid folder names: a__C__B__W__ae__g__d__&lt;hash&gt; */
+  const gridEncodedParamKeys = new Set([
+    "alpha",
+    "B_budget_multiplier",
+    "C_budget_multiplier",
+    "W_cap_multiplier",
+    "effective_alpha",
+    "gamma_i_multiplier",
+    "delta"
+  ]);
+
+  const floatToToken = (val) => {
+    const n = Number(val);
+    if (Number.isNaN(n)) return "0p0";
+    const s = n.toFixed(12).replace(/\.?0+$/, "");
+    if (!s.includes(".")) return `${s}p0`;
+    const [intp, frac] = s.split(".");
+    const fracTrim = (frac || "").replace(/0+$/, "") || "0";
+    return `${intp}p${fracTrim}`;
+  };
+
+  const encodeDelta = (val) => {
+    const n = Number(val);
+    if (Number.isNaN(n)) return "0";
+    const s = n.toFixed(12).replace(/\.?0+$/, "");
+    if (!s.includes(".")) return s;
+    const [intp, frac] = s.split(".");
+    if (!frac || /^0+$/.test(frac)) return intp;
+    const fracTrim = frac.replace(/0+$/, "") || "0";
+    return `${intp}p${fracTrim}`;
+  };
+
+  const encodeGridScenarioPrefix = (sel) => {
+    const a = floatToToken(sel.alpha);
+    const C = floatToToken(sel.C_budget_multiplier);
+    const B = floatToToken(sel.B_budget_multiplier);
+    const W = floatToToken(sel.W_cap_multiplier);
+    const ae = floatToToken(sel.effective_alpha);
+    const g = floatToToken(sel.gamma_i_multiplier);
+    const d = encodeDelta(sel.delta);
+    return `a${a}__C${C}__B${B}__W${W}__ae${ae}__g${g}__d${d}`;
+  };
+
+  const resolveGridScenarioSlug = (prefix) => {
+    const slugs = [...new Set(dataset.map((r) => r.scenario_slug).filter(Boolean))];
+    return slugs.find((s) => s === prefix || s.startsWith(`${prefix}__`)) || null;
   };
 
   const getSuffixLabel = (suffix) => {
@@ -713,6 +776,22 @@
     plotTitleRight.textContent = getMetricLabel(rightMetric);
   };
 
+  const syncGridImageDefaultsFromDataset = (rows) => {
+    if (!gridPlotsMode || !rows.length) return;
+    const r = rows[0];
+    const set = (k, v) => {
+      if (v !== undefined && v !== null && v !== "") imageSelection[k] = String(v);
+    };
+    set("alpha", r.alpha);
+    set("B_budget_multiplier", r.B_budget_multiplier);
+    set("C_budget_multiplier", r.C_budget_multiplier);
+    set("W_cap_multiplier", r.W_cap_multiplier);
+    set("effective_alpha", r.effective_alpha);
+    set("gamma_i_multiplier", r.gamma_i_multiplier);
+    set("delta", r.delta);
+    imageSelection.suffix = "none";
+  };
+
   const handleCsvData = (rows) => {
     dataset = rows;
     columns = rows.length ? Object.keys(rows[0]) : [];
@@ -721,6 +800,7 @@
 
     if (gridPlotsMode && rows.length) {
       imageMeta = rows.map(buildGridImageMetaFromRow).filter(Boolean);
+      syncGridImageDefaultsFromDataset(rows);
     }
 
     if (!numericColumns.length || !availableParams.length) {
@@ -758,11 +838,13 @@
   };
 
   const requiredSliderParams = new Set([
+    "alpha",
     "B_budget_multiplier",
     "C_budget_multiplier",
     "effective_alpha",
     "gamma_i_multiplier",
-    "W_cap_multiplier"
+    "W_cap_multiplier",
+    "delta"
   ]);
 
   const valuesMatch = (metaValue, selectedValue) => {
@@ -785,13 +867,19 @@
   };
 
   const paramMatches = (key, metaValue, selectedValue) => {
-    if (key === "effective_alpha") return effectiveAlphaMatches(selectedValue, metaValue);
+    if (key === "effective_alpha" && !gridPlotsMode) {
+      return effectiveAlphaMatches(selectedValue, metaValue);
+    }
     return valuesMatch(metaValue, selectedValue);
   };
 
   const getFilteredImageMeta = (excludeParam, selection = imageSelection) => {
     return imageMeta.filter((meta) => {
-      if (excludeParam !== "suffix" && userSelected.has("suffix")) {
+      if (
+        !gridPlotsMode &&
+        excludeParam !== "suffix" &&
+        userSelected.has("suffix")
+      ) {
         if (getSuffixKey(meta.suffix) !== selection.suffix) return false;
       }
 
@@ -808,6 +896,25 @@
   const getStrictImageMeta = (selectionOverride) => {
     const sel = selectionOverride != null ? selectionOverride : imageSelection;
     const suffixKey = sel.suffix || "none";
+
+    if (gridPlotsMode) {
+      const prefix = encodeGridScenarioPrefix(sel);
+      const resolvedSlug = resolveGridScenarioSlug(prefix);
+      if (!resolvedSlug) return [];
+      return imageMeta.filter((meta) => {
+        if (meta.params.scenario_slug !== resolvedSlug) return false;
+        if (getSuffixKey(meta.suffix) !== suffixKey) return false;
+        return Object.entries(sel).every(([key, value]) => {
+          if (key === "suffix") return true;
+          if (gridEncodedParamKeys.has(key)) return true;
+          if (value === undefined || value === null || value === "") return true;
+          if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
+          if (key === "scenario_slug") return true;
+          return paramMatches(key, meta.params[key], value);
+        });
+      });
+    }
+
     return imageMeta.filter((meta) => {
       if (getSuffixKey(meta.suffix) !== suffixKey) return false;
       return Object.entries(sel).every(([key, value]) => {
@@ -833,7 +940,12 @@
 
   const getMetaForSelection = (selection, excludeParam, activeKeys = userSelected) => {
     return imageMeta.filter((meta) => {
-      if (excludeParam !== "suffix" && selection.suffix && activeKeys?.has("suffix")) {
+      if (
+        !gridPlotsMode &&
+        excludeParam !== "suffix" &&
+        selection.suffix &&
+        activeKeys?.has("suffix")
+      ) {
         if (getSuffixKey(meta.suffix) !== selection.suffix) return false;
       }
       return Object.entries(selection).every(([key, value]) => {
@@ -855,10 +967,12 @@
       "C_budget",
       "W_cap",
       "K_groups",
-      "alpha",
-      "mht_method",
-      "gamma_i_multiplier"
+      "mht_method"
     ]);
+    if (!gridPlotsMode) {
+      excludedImageParams.add("alpha");
+      excludedImageParams.add("gamma_i_multiplier");
+    }
     if (gridPlotsMode) excludedImageParams.add("grouping_method");
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
@@ -870,15 +984,14 @@
     });
 
     const preferredOrder = [
-      "scenario_slug",
+      "alpha",
       "W_cap_multiplier",
       "C_budget_multiplier",
-      "mht_method",
-      "K_groups",
-      "alpha",
       "B_budget_multiplier",
       "effective_alpha",
-      "gamma_i_multiplier"
+      "gamma_i_multiplier",
+      "delta",
+      "mht_method"
     ];
 
     const orderedParams = [
@@ -897,9 +1010,11 @@
     }
 
     applyFixedImageParams();
-    Object.entries(fixedImageParams).forEach(([param, value]) => {
-      workingSelection[param] = value;
-    });
+    if (!gridPlotsMode) {
+      Object.entries(fixedImageParams).forEach(([param, value]) => {
+        workingSelection[param] = value;
+      });
+    }
 
     orderedParams.forEach((param) => {
       const selectionForFilter = { ...workingSelection };
@@ -908,7 +1023,10 @@
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      let values = getImageValuesForSelection(param, selectionForFilter, userSelected);
+      let values =
+        gridPlotsMode && gridEncodedParamKeys.has(param)
+          ? getUniqueValues(dataset, param)
+          : getImageValuesForSelection(param, selectionForFilter, userSelected);
 
       if (param === "effective_alpha" && !gridPlotsMode) {
         const canonical = new Set();
@@ -1021,6 +1139,7 @@
   };
 
   const buildSuffixControl = (previousSelection) => {
+    if (gridPlotsMode) return null;
     const filtered = getFilteredImageMeta("suffix");
     const source = filtered.length ? filtered : imageMeta;
     const options = Array.from(
@@ -1085,7 +1204,7 @@
     let matches = getStrictImageMeta();
     let fallbackMessage = "";
 
-    if (!matches.length && imageSelection.effective_alpha === "0.5") {
+    if (!matches.length && !gridPlotsMode && imageSelection.effective_alpha === "0.5") {
       matches = getStrictImageMeta({ ...imageSelection, effective_alpha: "0.7" });
       if (matches.length) {
         fallbackMessage = "No image for Effectiveness 0.5 for this combination; showing 0.7.";
@@ -1093,7 +1212,15 @@
     }
 
     if (!matches.length) {
-      setStatus(imageStatus, "Image not found.", true);
+      if (gridPlotsMode && !resolveGridScenarioSlug(encodeGridScenarioPrefix(imageSelection))) {
+        setStatus(
+          imageStatus,
+          "No plot folder for this combination of α, W, C, B, α_eff, γ, and δ.",
+          true
+        );
+      } else {
+        setStatus(imageStatus, "Image not found.", true);
+      }
       decisionImage.removeAttribute("src");
       return;
     }
@@ -1175,6 +1302,7 @@
     } catch (error) {
       // ignore refresh failures, keep existing options
     }
+    if (gridPlotsMode && dataset.length) syncGridImageDefaultsFromDataset(dataset);
     buildImageControls();
     renderImage();
   });
