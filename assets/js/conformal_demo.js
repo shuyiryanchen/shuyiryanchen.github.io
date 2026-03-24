@@ -478,6 +478,18 @@ function PerConstraintView({ sim, width }) {
 }
 
 // ── Shared UI components (defined outside App to avoid remount on every render) ─
+const MC_BTN = {
+  width: 220,
+  minHeight: 42,
+  padding: "10px 12px",
+  borderRadius: 6,
+  fontSize: 13,
+  fontWeight: 600,
+  fontFamily: "system-ui,sans-serif",
+  cursor: "pointer",
+  boxSizing: "border-box",
+};
+
 function Controls({ rhoAR, setRhoAR, gamma, setGamma, alpha, setAlpha, seed, setSeed }) {
   const card = { background:C.surface, border:`1px solid ${C.border}`, borderRadius:8, padding:16 };
   return (
@@ -491,6 +503,48 @@ function Controls({ rhoAR, setRhoAR, gamma, setGamma, alpha, setAlpha, seed, set
           width:"100%", padding:"5px 0", background:"white",
           border:`1px solid ${C.border}`, borderRadius:6,
           color:C.muted, cursor:"pointer", fontSize:12, fontFamily:"system-ui,sans-serif",
+        }}>↺ New sample</button>
+      </div>
+    </div>
+  );
+}
+
+/** Monte Carlo tab: same 4 sliders as Controls, then Replications (1 col width) + Run MC + New sample (matched size). */
+function MonteCarloControls({
+  rhoAR, setRhoAR, gamma, setGamma, alpha, setAlpha, seed, setSeed,
+  mcReps, setMcReps, doMC, mcBusy,
+}) {
+  const card = { background:C.surface, border:`1px solid ${C.border}`, borderRadius:8, padding:16 };
+  return (
+    <div style={{ ...card, display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:16, marginTop:0, marginBottom:24 }}>
+      <Slider label="ρ_AR — temporal dependence" value={rhoAR} min={0} max={0.95} step={0.05} onChange={setRhoAR} color={C.bonf}/>
+      <Slider label="γ — within-group noise corr." value={gamma} min={0} max={0.95} step={0.05} onChange={setGamma} color={C.nominal}/>
+      <Slider label="α — miscoverage target" value={alpha} min={0.03} max={0.30} step={0.01} onChange={setAlpha} color={C.text}/>
+      <Slider label="Seed" value={seed} min={1} max={200} step={1} onChange={setSeed} color={C.muted} fmt={v => String(Math.round(v))}/>
+
+      <div style={{ gridColumn:"1 / 2" }}>
+        <Slider label="Replications" value={mcReps} min={100} max={2000} step={100}
+          onChange={v => { setMcReps(Math.round(v)); }}
+          color={C.nominal} fmt={v => String(Math.round(v))}/>
+      </div>
+      <div style={{ gridColumn:"2 / 3", display:"flex", flexDirection:"column", justifyContent:"flex-end", paddingBottom:2 }}>
+        <button type="button" onClick={doMC} disabled={mcBusy} style={{
+          ...MC_BTN,
+          cursor: mcBusy ? "default" : "pointer",
+          background: mcBusy ? C.surface2 : "white",
+          border: `1.5px solid ${mcBusy ? C.border : C.ours}`,
+          color: mcBusy ? C.muted : C.ours,
+          transition: "color 0.2s, border-color 0.2s, background 0.2s",
+        }}>
+          {mcBusy ? `⟳  Running…` : `▶  Run Monte Carlo`}
+        </button>
+      </div>
+      <div style={{ gridColumn:"3 / 4", display:"flex", flexDirection:"column", justifyContent:"flex-end", paddingBottom:2 }}>
+        <button type="button" onClick={() => setSeed(s => (s % 200) + 1)} style={{
+          ...MC_BTN,
+          background: "white",
+          border: `1.5px solid ${C.border}`,
+          color: C.muted,
         }}>↺ New sample</button>
       </div>
     </div>
@@ -775,22 +829,14 @@ function App() {
             Each method still targets joint coverage <Tex>{`\\geq 1-\\alpha = ${((1-alpha)*100).toFixed(0)}\\%`}</Tex> for the constraint set it uses.
           </p>
 
-          <div style={{ marginBottom:24 }}>
-            <div style={{ marginBottom:12, maxWidth:280 }}>
-              <Slider label="Replications" value={mcReps} min={100} max={2000} step={100}
-                onChange={v => { setMcReps(Math.round(v)); }}
-                color={C.nominal} fmt={v => String(Math.round(v))}/>
-            </div>
-            <button onClick={doMC} disabled={mcBusy} style={{
-              width:220, padding:"10px 0", borderRadius:6, cursor:mcBusy?"default":"pointer",
-              background:mcBusy?C.surface2:"white",
-              border:`1.5px solid ${mcBusy?C.border:C.ours}`,
-              color:mcBusy?C.muted:C.ours,
-              fontSize:13, fontWeight:600, transition:"color 0.2s, border-color 0.2s, background 0.2s",
-            }}>
-              {mcBusy ? `⟳  Running…` : `▶  Run Monte Carlo`}
-            </button>
-          </div>
+          <MonteCarloControls
+            rhoAR={rhoAR} setRhoAR={setP(setRhoAR)}
+            gamma={gamma} setGamma={setP(setGamma)}
+            alpha={alpha} setAlpha={setP(setAlpha)}
+            seed={seed} setSeed={setP(setSeed)}
+            mcReps={mcReps} setMcReps={setMcReps}
+            doMC={doMC} mcBusy={mcBusy}
+          />
 
           {mcRes && (
             <>
@@ -889,7 +935,6 @@ function App() {
             </div>
           )}
 
-          <Controls rhoAR={rhoAR} setRhoAR={setP(setRhoAR)} gamma={gamma} setGamma={setP(setGamma)} alpha={alpha} setAlpha={setP(setAlpha)} seed={seed} setSeed={setP(setSeed)}/>
         </div>
       )}
 
