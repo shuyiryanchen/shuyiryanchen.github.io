@@ -177,18 +177,20 @@ function simulate({ rhoAR, gamma, n, G, m, alpha, seed }) {
   const rIdx       = Math.min(Math.max(Math.round(rStar) - 1, 0), m - 1);
   const tauMR      = Array.from({ length: n }, (_, j) => colsSorted[j][rIdx]);
 
-  // Exact Lebesgue volumes (no Monte Carlo inside this): score-space sets in the positive orthant.
-  // Max-Score (polyhedron): 𝒰_MS = { s ∈ ℝ^J_+ : s_j ≤ τ ∀j } = [0,τ]^J  →  Vol = τ^J.
-  // Bonferroni / Max-Rank (axis-aligned box in ℝ^n): 𝒰 = ∏_{j=1}^n [0,τ_j]  →  Vol = ∏_j τ_j.
+  // Score-space orthotope volumes (same log-sum pattern as hierarchical_conformal_experiments.ipynb
+  // for axis-aligned sets: log Vol = Σ log(edge length), Vol = exp(log Vol)).
+  // Max-Score: one threshold on all J dimensions → log Vol = J·log(τ). Baselines: log Vol = Σ_j log(τ_j).
+  const eps = 1e-300;
   const tauMSp = Math.max(tauMS, 0);
-  const volMS = Math.pow(tauMSp, J);
-  const volBonf = tauBonf.reduce((a, t) => a * Math.max(t, 0), 1);
-  const volMR = tauMR.reduce((a, t) => a * Math.max(t, 0), 1);
-  // Volume-equivalent side length in each method’s native score space (fair cross-method comparison).
-  // Max-Score: 𝒰 ⊂ ℝ^J_+ orthotope [0,τ]^J  →  Vol^{1/J} = τ.  Baselines: 𝒰 ⊂ ℝ^n_+  →  Vol^{1/n} = (∏ τ_j)^{1/n}.
-  const widthEquivMS = volMS > 0 ? Math.pow(volMS, 1 / J) : 0;
-  const widthEquivBonf = volBonf > 0 ? Math.pow(volBonf, 1 / n) : 0;
-  const widthEquivMR = volMR > 0 ? Math.pow(volMR, 1 / n) : 0;
+  const logVolMS = J * Math.log(Math.max(tauMSp, eps));
+  const logVolBonf = tauBonf.reduce((a, t) => a + Math.log(Math.max(t, eps)), 0);
+  const logVolMR = tauMR.reduce((a, t) => a + Math.log(Math.max(t, eps)), 0);
+  const volMS = Math.exp(logVolMS);
+  const volBonf = Math.exp(logVolBonf);
+  const volMR = Math.exp(logVolMR);
+  const widthEquivMS = Math.exp(logVolMS / J);
+  const widthEquivBonf = Math.exp(logVolBonf / n);
+  const widthEquivMR = Math.exp(logVolMR / n);
 
   return {
     S_cal, S_test, E_cal, E_cal_sorted, tauMS, tauBonf, tauMR,
@@ -966,13 +968,8 @@ function App() {
             })}
           </div>
 
-          {/* Width ranking — Vol^{1/d} in each method’s native ℝ^d (J for Max-Score, n for baselines) */}
           <div style={{ ...card(), ...sectionGap }}>
             <div style={{ ...heading(), fontSize: 14 }}>Volume-equivalent threshold scale</div>
-            <p style={{ fontSize:12, color:C.muted, margin:"0 0 12px", lineHeight:1.55 }}>
-              Same units as score: <strong>Ours</strong> uses <Tex>{`\\mathrm{Vol}^{1/J}=\\hat{\\tau}`}</Tex> in <Tex>{`\\mathbb{R}^J`}</Tex> (one τ̂ for all J constraints including group cuts).
-              <strong> Bonferroni / Max-Rank</strong> use <Tex>{`\\mathrm{Vol}^{1/n}=(\\prod_{j=1}^n \\hat{\\tau}_j)^{1/n}`}</Tex> in <Tex>{`\\mathbb{R}^n`}</Tex> (circuits only).
-            </p>
             {[
               { label:"Ours (Max-Score)", val:sim.widthEquivMS, color:C.ours },
               { label:"Bonferroni",       val:sim.widthEquivBonf, color:C.bonf },
@@ -1121,7 +1118,7 @@ function App() {
                 Volume-equivalent threshold scale — average over {mcReps} MC reps
               </div>
               <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
-                Same definition as tab ②: <Tex>{`\\mathrm{Vol}^{1/J}`}</Tex> for Max-Score in <Tex>{`\\mathbb{R}^J`}</Tex>; <Tex>{`\\mathrm{Vol}^{1/n}`}</Tex> for baselines in <Tex>{`\\mathbb{R}^n`}</Tex>.
+                <Tex>{`\\log\\mathrm{Vol}`}</Tex> is <Tex>{`J\\log\\hat{\\tau}`}</Tex> (Max-Score) or <Tex>{`\\sum_j\\log\\hat{\\tau}_j`}</Tex> (baselines); displayed scale is <Tex>{`\\exp((1/d)\\log\\mathrm{Vol})`}</Tex> (same as the notebook’s sum-of-logs volume for axis-aligned sets; this demo uses score-space orthotopes only).
               </div>
               {[
                 { label:"Ours (Max-Score)", val: mcRes.widthEquivMS,   color:C.ours },
