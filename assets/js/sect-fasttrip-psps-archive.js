@@ -1,9 +1,13 @@
+/**
+ * Frozen UI for `/sect-fasttrip-psps/archive/` only (pre–Planning-Tool-grid behavior).
+ * Copied from commit 946e77d; uses `manifest-archive.json`. Edit the live `sect-fasttrip-psps.js` for new features.
+ */
 (() => {
   const root = document.getElementById("sect-fasttrip-psps");
   if (!root) return;
 
   const basePath = root.dataset.basePath || "";
-  const manifestUrl = `${basePath}/assets/website_plots/manifest.json`;
+  const manifestUrl = `${basePath}/assets/website_plots/manifest-archive.json`;
 
   const xAxisSelect = document.getElementById("x-axis");
   const yAxisLeftSelect = document.getElementById("y-axis-left");
@@ -30,12 +34,12 @@
     "B_budget_multiplier",
     "C_budget",
     "C_budget_multiplier",
+    "K_groups",
     "W_cap",
     "W_cap_multiplier",
     "alpha",
     "effective_alpha",
     "gamma_i_multiplier",
-    "delta",
     "grouping_method",
     "ignitions",
     "mht_method"
@@ -46,45 +50,16 @@
     B_budget_multiplier: "Fast-trip budget (% of circuits)",
     C_budget: "PSPS budget",
     C_budget_multiplier: "Sect. budget (% of circuits)",
+    K_groups: "Number of groups",
     W_cap: "Reliability constraint (absolute)",
     W_cap_multiplier: "SAIFI",
     alpha: "FWER",
-    effective_alpha: "Effectiveness of fast-trip (% of mitigation)",
+    effective_alpha: "Effectiveness of fast-trip (% of successful mitigation)",
     gamma_i_multiplier: "Fast-trip average reliability impact",
-    delta: "δ",
     grouping_method: "Declustering method",
     ignitions: "Ignitions",
     mht_method: "Decluster + MHT method"
   };
-
-  /** Labels for Planning Tool (grid) sliders — folder names still encode a, C, B, W, ae, g, d. */
-  const gridShortLabels = {
-    W_cap_multiplier: "SAIFI",
-    C_budget_multiplier: "Sect. budget (% of circuits)",
-    B_budget_multiplier: "Fast-trip budget (% of circuits)",
-    effective_alpha: "Effectiveness of fast-trip (% of mitigation)",
-    alpha: "FWER",
-    gamma_i_multiplier: "γ",
-    delta: "δ",
-    mht_method: "Method"
-  };
-
-  /** Slugs excluded from Planning Tool (grid) method dropdown and map image list. */
-  const GRID_MHT_EXCLUDED_SLUGS = new Set(["group_conformal_oracle"]);
-
-  /** Display labels for grid mode — internal CSV slugs unchanged for paths. */
-  const gridMethodLabels = {
-    group_conformal_fixed: "Ours (fix groups)",
-    group_conformal_random: "Ours (random)",
-    maxrank: "Max-Rank",
-    ci: "C.I.",
-    bonferroni: "Bonferroni",
-    co_optimized: "Co-Optimized",
-    planning_only: "Planning-Only"
-  };
-
-  const filterGridMhtValues = (values) =>
-    values.filter((v) => !GRID_MHT_EXCLUDED_SLUGS.has(String(v)));
 
   const yMetricOptions = [
     { key: "opt_cost", label: "Worst Case Cost", type: "direct" },
@@ -161,8 +136,6 @@
   let usingDefaultCsv = false;
   let imageMeta = [];
   let imageSuffixOptions = [];
-  /** When true, maps/decision images load from assets/website_plots/grid_plots/… (merged_planning_grid.csv). */
-  let gridPlotsMode = false;
   let imageSelection = {
     suffix: ""
   };
@@ -175,12 +148,13 @@
     "ignitions"
   ]);
 
-  const hiddenParamsForControls = new Set(["alpha"]);
+  const hiddenParamsForControls = new Set(["K_groups", "alpha"]);
 
   const allowedMhtMethods = new Set(["Operational_MaxRank"]);
 
   const imageBasePath = `${basePath}/assets/website_plots/`;
   const fixedImageParams = {
+    K_groups: "5",
     alpha: "0.1",
     mht_method: "Operational_MaxRank",
     gamma_i_multiplier: "0.5"
@@ -226,7 +200,6 @@
   };
 
   const applyFixedImageParams = () => {
-    if (gridPlotsMode) return;
     Object.entries(fixedImageParams).forEach(([param, value]) => {
       imageSelection[param] = value;
       userSelected.add(param);
@@ -288,17 +261,9 @@
     updateYear();
   };
 
-  const getLabel = (param) =>
-    gridPlotsMode && gridShortLabels[param] ? gridShortLabels[param] : paramLabels[param] || param;
+  const getLabel = (param) => paramLabels[param] || param;
   const getOptionLabel = (param, value) => {
     if (param === "mht_method") {
-      if (gridPlotsMode) {
-        const v = String(value);
-        if (Object.prototype.hasOwnProperty.call(gridMethodLabels, v)) {
-          return gridMethodLabels[v];
-        }
-        return v.replace(/_/g, " ");
-      }
       return String(value).replace(/_/g, " + ");
     }
     return value;
@@ -308,12 +273,7 @@
 
   const getDisplayParams = () => {
     const params = availableParams.length ? availableParams : hyperparams;
-    const hideControls = new Set(hiddenParamsForControls);
-    if (gridPlotsMode) hideControls.delete("alpha");
-    let filtered = params.filter((param) => !hideControls.has(param));
-    if (gridPlotsMode) {
-      filtered = filtered.filter((param) => param !== "grouping_method");
-    }
+    const filtered = params.filter((param) => !hiddenParamsForControls.has(param));
     if (!usingDefaultCsv) return filtered;
     return filtered.filter((param) => !hiddenParamsForDefault.has(param));
   };
@@ -411,83 +371,6 @@
         inset: suffixes.inset
       }
     };
-  };
-
-  /** Maps always use experiment id 0: grid_plots/{folder}/exp_0_{method_slug}/map.png */
-  const GRID_MAP_EXP_ID = 0;
-
-  const buildGridImageMetaFromRow = (row) => {
-    const folderSlug = row.scenario_slug;
-    const methodSlug = row.method_slug;
-    if (!folderSlug || !methodSlug) return null;
-    const path = `grid_plots/${folderSlug}/exp_${GRID_MAP_EXP_ID}_${methodSlug}/map.png`;
-    const str = (v) => (v === undefined || v === null ? "" : String(v));
-    return {
-      path,
-      folderSlug,
-      row: GRID_MAP_EXP_ID,
-      params: {
-        B_budget_multiplier: str(row.B_budget_multiplier),
-        C_budget_multiplier: str(row.C_budget_multiplier),
-        W_cap_multiplier: str(row.W_cap_multiplier),
-        effective_alpha: str(row.effective_alpha),
-        gamma_i_multiplier: str(row.gamma_i_multiplier),
-        mht_method: str(row.mht_method),
-        alpha: str(row.alpha),
-        delta: str(row.delta),
-        grouping_method: str(row.grouping_method || "grid")
-      },
-      suffix: { hftd: false, inset: false }
-    };
-  };
-
-  /** Params encoded in grid folder names: a__C__B__W__ae__g__d__&lt;hash&gt; */
-  const gridEncodedParamKeys = new Set([
-    "alpha",
-    "B_budget_multiplier",
-    "C_budget_multiplier",
-    "W_cap_multiplier",
-    "effective_alpha",
-    "gamma_i_multiplier",
-    "delta"
-  ]);
-
-  const floatToToken = (val) => {
-    const n = Number(val);
-    if (Number.isNaN(n)) return "0p0";
-    const s = n.toFixed(12).replace(/\.?0+$/, "");
-    if (!s.includes(".")) return `${s}p0`;
-    const [intp, frac] = s.split(".");
-    const fracTrim = (frac || "").replace(/0+$/, "") || "0";
-    return `${intp}p${fracTrim}`;
-  };
-
-  const encodeDelta = (val) => {
-    const n = Number(val);
-    if (Number.isNaN(n)) return "0";
-    const s = n.toFixed(12).replace(/\.?0+$/, "");
-    if (!s.includes(".")) return s;
-    const [intp, frac] = s.split(".");
-    if (!frac || /^0+$/.test(frac)) return intp;
-    const fracTrim = frac.replace(/0+$/, "") || "0";
-    return `${intp}p${fracTrim}`;
-  };
-
-  const encodeGridFolderPrefix = (sel) => {
-    const a = floatToToken(sel.alpha);
-    const C = floatToToken(sel.C_budget_multiplier);
-    const B = floatToToken(sel.B_budget_multiplier);
-    const W = floatToToken(sel.W_cap_multiplier);
-    const ae = floatToToken(sel.effective_alpha);
-    const g = floatToToken(sel.gamma_i_multiplier);
-    const d = encodeDelta(sel.delta);
-    return `a${a}__C${C}__B${B}__W${W}__ae${ae}__g${g}__d${d}`;
-  };
-
-  /** Match encoded slider tuple to a folder name on disk (CSV column scenario_slug is only the path segment). */
-  const resolveGridFolderSlug = (prefix) => {
-    const folders = [...new Set(dataset.map((r) => r.scenario_slug).filter(Boolean))];
-    return folders.find((s) => s === prefix || s.startsWith(`${prefix}__`)) || null;
   };
 
   const getSuffixLabel = (suffix) => {
@@ -634,17 +517,13 @@
         );
 
         let values = getUniqueValues(filteredRows, param);
-        if (param === "mht_method" && !gridPlotsMode) {
+        if (param === "mht_method") {
           values = values.filter((value) => allowedMhtMethods.has(String(value)));
-        }
-        if (param === "mht_method" && gridPlotsMode) {
-          values = filterGridMhtValues(values);
         }
         values.forEach((value) => {
           const option = document.createElement("option");
           option.value = value;
-          option.textContent =
-            param === "mht_method" ? getOptionLabel(param, value) : value;
+          option.textContent = value;
           select.appendChild(option);
         });
 
@@ -803,63 +682,11 @@
     plotTitleRight.textContent = getMetricLabel(rightMetric);
   };
 
-  const rebuildGridImageMetaFromDataset = () => {
-    if (!gridPlotsMode || !dataset.length) {
-      imageMeta = [];
-      return;
-    }
-    const exp0 = dataset.filter(
-      (r) =>
-        Number(r.exp_id) === GRID_MAP_EXP_ID &&
-        !GRID_MHT_EXCLUDED_SLUGS.has(String(r.mht_method))
-    );
-    const seen = new Set();
-    imageMeta = [];
-    exp0.forEach((row) => {
-      const m = buildGridImageMetaFromRow(row);
-      if (!m) return;
-      const key = `${m.folderSlug}||${m.params.mht_method}`;
-      if (seen.has(key)) return;
-      seen.add(key);
-      imageMeta.push(m);
-    });
-  };
-
-  const syncGridImageDefaultsFromDataset = (rows) => {
-    if (!gridPlotsMode || !rows.length) return;
-    const r =
-      rows.find(
-        (row) =>
-          Number(row.exp_id) === GRID_MAP_EXP_ID &&
-          !GRID_MHT_EXCLUDED_SLUGS.has(String(row.mht_method))
-      ) ||
-      rows.find((row) => Number(row.exp_id) === GRID_MAP_EXP_ID) ||
-      rows[0];
-    const set = (k, v) => {
-      if (v !== undefined && v !== null && v !== "") imageSelection[k] = String(v);
-    };
-    set("alpha", r.alpha);
-    set("B_budget_multiplier", r.B_budget_multiplier);
-    set("C_budget_multiplier", r.C_budget_multiplier);
-    set("W_cap_multiplier", r.W_cap_multiplier);
-    set("effective_alpha", r.effective_alpha);
-    set("gamma_i_multiplier", r.gamma_i_multiplier);
-    set("delta", r.delta);
-    set("mht_method", r.mht_method);
-    imageSelection.suffix = "none";
-  };
-
   const handleCsvData = (rows) => {
     dataset = rows;
     columns = rows.length ? Object.keys(rows[0]) : [];
     numericColumns = columns.filter((col) => isNumericColumn(rows, col));
     availableParams = hyperparams.filter((param) => columns.includes(param));
-
-    if (gridPlotsMode && rows.length) {
-      rebuildGridImageMetaFromDataset();
-      const exp0 = rows.filter((r) => Number(r.exp_id) === GRID_MAP_EXP_ID);
-      syncGridImageDefaultsFromDataset(exp0.length ? exp0 : rows);
-    }
 
     if (!numericColumns.length || !availableParams.length) {
       return;
@@ -896,13 +723,11 @@
   };
 
   const requiredSliderParams = new Set([
-    "alpha",
     "B_budget_multiplier",
     "C_budget_multiplier",
     "effective_alpha",
     "gamma_i_multiplier",
-    "W_cap_multiplier",
-    "delta"
+    "W_cap_multiplier"
   ]);
 
   const valuesMatch = (metaValue, selectedValue) => {
@@ -925,19 +750,13 @@
   };
 
   const paramMatches = (key, metaValue, selectedValue) => {
-    if (key === "effective_alpha" && !gridPlotsMode) {
-      return effectiveAlphaMatches(selectedValue, metaValue);
-    }
+    if (key === "effective_alpha") return effectiveAlphaMatches(selectedValue, metaValue);
     return valuesMatch(metaValue, selectedValue);
   };
 
   const getFilteredImageMeta = (excludeParam, selection = imageSelection) => {
     return imageMeta.filter((meta) => {
-      if (
-        !gridPlotsMode &&
-        excludeParam !== "suffix" &&
-        userSelected.has("suffix")
-      ) {
+      if (excludeParam !== "suffix" && userSelected.has("suffix")) {
         if (getSuffixKey(meta.suffix) !== selection.suffix) return false;
       }
 
@@ -953,27 +772,8 @@
 
   const getStrictImageMeta = (selectionOverride) => {
     const sel = selectionOverride != null ? selectionOverride : imageSelection;
-    const suffixKey = sel.suffix || "none";
-
-    if (gridPlotsMode) {
-      const prefix = encodeGridFolderPrefix(sel);
-      const resolvedFolder = resolveGridFolderSlug(prefix);
-      if (!resolvedFolder) return [];
-      return imageMeta.filter((meta) => {
-        if (meta.folderSlug !== resolvedFolder) return false;
-        if (getSuffixKey(meta.suffix) !== suffixKey) return false;
-        return Object.entries(sel).every(([key, value]) => {
-          if (key === "suffix") return true;
-          if (gridEncodedParamKeys.has(key)) return true;
-          if (value === undefined || value === null || value === "") return true;
-          if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
-          return paramMatches(key, meta.params[key], value);
-        });
-      });
-    }
-
     return imageMeta.filter((meta) => {
-      if (getSuffixKey(meta.suffix) !== suffixKey) return false;
+      if (getSuffixKey(meta.suffix) !== sel.suffix) return false;
       return Object.entries(sel).every(([key, value]) => {
         if (key === "suffix") return true;
         if (value === undefined || value === null || value === "") return true;
@@ -997,12 +797,7 @@
 
   const getMetaForSelection = (selection, excludeParam, activeKeys = userSelected) => {
     return imageMeta.filter((meta) => {
-      if (
-        !gridPlotsMode &&
-        excludeParam !== "suffix" &&
-        selection.suffix &&
-        activeKeys?.has("suffix")
-      ) {
+      if (excludeParam !== "suffix" && selection.suffix && activeKeys?.has("suffix")) {
         if (getSuffixKey(meta.suffix) !== selection.suffix) return false;
       }
       return Object.entries(selection).every(([key, value]) => {
@@ -1022,14 +817,12 @@
     const excludedImageParams = new Set([
       "B_budget",
       "C_budget",
-      "W_cap"
+      "W_cap",
+      "K_groups",
+      "alpha",
+      "mht_method",
+      "gamma_i_multiplier"
     ]);
-    if (!gridPlotsMode) {
-      excludedImageParams.add("alpha");
-      excludedImageParams.add("gamma_i_multiplier");
-      excludedImageParams.add("mht_method");
-    }
-    if (gridPlotsMode) excludedImageParams.add("grouping_method");
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
       Object.keys(meta.params || {}).forEach((key) => {
@@ -1040,14 +833,14 @@
     });
 
     const preferredOrder = [
-      "alpha",
       "W_cap_multiplier",
       "C_budget_multiplier",
+      "mht_method",
+      "K_groups",
+      "alpha",
       "B_budget_multiplier",
       "effective_alpha",
-      "gamma_i_multiplier",
-      "delta",
-      "mht_method"
+      "gamma_i_multiplier"
     ];
 
     const orderedParams = [
@@ -1066,11 +859,9 @@
     }
 
     applyFixedImageParams();
-    if (!gridPlotsMode) {
-      Object.entries(fixedImageParams).forEach(([param, value]) => {
-        workingSelection[param] = value;
-      });
-    }
+    Object.entries(fixedImageParams).forEach(([param, value]) => {
+      workingSelection[param] = value;
+    });
 
     orderedParams.forEach((param) => {
       const selectionForFilter = { ...workingSelection };
@@ -1079,16 +870,9 @@
       const label = document.createElement("label");
       label.textContent = getLabel(param);
 
-      let values =
-        gridPlotsMode && gridEncodedParamKeys.has(param)
-          ? getUniqueValues(dataset, param)
-          : getImageValuesForSelection(param, selectionForFilter, userSelected);
+      let values = getImageValuesForSelection(param, selectionForFilter, userSelected);
 
-      if (param === "mht_method" && gridPlotsMode) {
-        values = filterGridMhtValues(values);
-      }
-
-      if (param === "effective_alpha" && !gridPlotsMode) {
+      if (param === "effective_alpha") {
         const canonical = new Set();
         values.forEach((v) => {
           const n = Number(v);
@@ -1108,10 +892,7 @@
         : uniqueValues.sort();
 
       let defaultValue = sortedValues[0];
-      if (param === "mht_method" && gridPlotsMode && sortedValues.includes("bonferroni")) {
-        defaultValue = "bonferroni";
-      }
-      if (param === "mht_method" && !gridPlotsMode && sortedValues.includes("Random_Bonferroni")) {
+      if (param === "mht_method" && sortedValues.includes("Random_Bonferroni")) {
         defaultValue = "Random_Bonferroni";
       }
       if (param === "C_budget_multiplier") {
@@ -1202,7 +983,6 @@
   };
 
   const buildSuffixControl = (previousSelection) => {
-    if (gridPlotsMode) return null;
     const filtered = getFilteredImageMeta("suffix");
     const source = filtered.length ? filtered : imageMeta;
     const options = Array.from(
@@ -1267,7 +1047,7 @@
     let matches = getStrictImageMeta();
     let fallbackMessage = "";
 
-    if (!matches.length && !gridPlotsMode && imageSelection.effective_alpha === "0.5") {
+    if (!matches.length && imageSelection.effective_alpha === "0.5") {
       matches = getStrictImageMeta({ ...imageSelection, effective_alpha: "0.7" });
       if (matches.length) {
         fallbackMessage = "No image for Effectiveness 0.5 for this combination; showing 0.7.";
@@ -1275,15 +1055,7 @@
     }
 
     if (!matches.length) {
-      if (gridPlotsMode && !resolveGridFolderSlug(encodeGridFolderPrefix(imageSelection))) {
-        setStatus(
-          imageStatus,
-          "No plot folder for this combination of FWER, SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
-          true
-        );
-      } else {
-        setStatus(imageStatus, "Image not found.", true);
-      }
+      setStatus(imageStatus, "Image not found.", true);
       decisionImage.removeAttribute("src");
       return;
     }
@@ -1309,10 +1081,6 @@
   };
 
   const refreshImageMeta = async () => {
-    if (gridPlotsMode) {
-      rebuildGridImageMetaFromDataset();
-      return;
-    }
     const manifest = await fetchManifest();
     const images = manifest.images || manifest.imageFiles || [];
     imageMeta = images.map(parseImageName).filter(Boolean);
@@ -1323,20 +1091,16 @@
     initHistorical();
     try {
       const manifest = await fetchManifest();
-      gridPlotsMode = Boolean(manifest.gridPlots);
       defaultCsvFile = (manifest.csvFiles || [])[0] || "";
       const images = manifest.images || manifest.imageFiles || [];
-      imageMeta = gridPlotsMode ? [] : images.map(parseImageName).filter(Boolean);
+      imageMeta = images.map(parseImageName).filter(Boolean);
 
       applyFixedImageParams();
+      buildImageControls();
+      renderImage();
       await loadCsv();
-      if (!usingDefaultCsv) {
-        buildImageControls();
-        renderImage();
-      }
     } catch (error) {
       defaultCsvFile = "";
-      gridPlotsMode = false;
     }
   };
 
@@ -1355,7 +1119,7 @@
     renderPlot();
   });
   resetPart2Button.addEventListener("click", async () => {
-    imageSelection = { suffix: gridPlotsMode ? "none" : "" };
+    imageSelection = { suffix: "" };
     userSelected.clear();
     applyFixedImageParams();
     try {
@@ -1363,7 +1127,6 @@
     } catch (error) {
       // ignore refresh failures, keep existing options
     }
-    if (gridPlotsMode && dataset.length) syncGridImageDefaultsFromDataset(dataset);
     buildImageControls();
     renderImage();
   });

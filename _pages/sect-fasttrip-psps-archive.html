@@ -44,7 +44,7 @@ disable_site_title: true
   Edit the <a href="{{ base_path }}/sect-fasttrip-psps/">current version</a> at <code>/sect-fasttrip-psps/</code>.
 </p>
 
-<div id="sect-fasttrip-psps" class="sfps-page" data-base-path="{{ base_path }}" data-sfps-archive="true">
+<div id="sect-fasttrip-psps" class="sfps-page" data-base-path="{{ base_path }}">
   <p class="sfps-intro">
     Utility-caused wildfires pose severe risks, and operational interventions
     like PSPS and fast-trip settings reduce ignition likelihood at the cost of
@@ -150,9 +150,9 @@ disable_site_title: true
       <p class="sfps-params-group-desc">Parameters that link mitigation choices to the reliability cap and protect customer exposure.</p>
       <div class="sfps-params-row">
         <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Effectiveness of fast-trip (% of mitigation)</h4>
+          <h4 class="sfps-param-title">Effectiveness of fast-trip (% of successful mitigation)</h4>
           <p>
-            A parameter expressed as the percentage of mitigation—how effective fast-trip (EPSS) is at controlling ignition risk, i.e., the degree to which enabling fast-trip on a circuit reduces its ignition risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
+            A parameter expressed as the percentage of successful mitigation—how effective fast-trip (EPSS) is at controlling ignition risk, i.e., the degree to which enabling fast-trip on a circuit reduces its ignition risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
           </p>
         </div>
       </div>
@@ -246,4 +246,4 @@ disable_site_title: true
 <link rel="stylesheet" href="{{ base_path }}/assets/css/sect-fasttrip-psps.css">
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-<script src="{{ base_path }}/assets/js/sect-fasttrip-psps.js"></script>
+<script src="{{ base_path }}/assets/js/sect-fasttrip-psps-archive.js"></script>
