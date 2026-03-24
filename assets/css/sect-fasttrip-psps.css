@@ -36,6 +36,7 @@
 
 .sfps-tabs {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin-left: 0.5rem;
   padding: 0.35rem;
@@ -43,6 +44,7 @@
   background: #f1f1f1;
   border: 1px solid #e2e2e2;
   align-self: flex-start;
+  max-width: 100%;
 }
 
 .sfps-tab-button {
@@ -80,6 +82,18 @@
 
 .sfps-tab-panel[hidden] {
   display: none;
+}
+
+/* Tab 4: React + Babel conformal demo */
+.sfps-tab-panel--conformal {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sfps-conformal-root {
+  min-height: 60vh;
+  width: 100%;
+  max-width: 100%;
 }
 
 .sfps-split {

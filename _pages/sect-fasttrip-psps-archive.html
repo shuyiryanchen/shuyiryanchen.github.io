@@ -87,6 +87,17 @@ disable_site_title: true
       >
         Optimization Results
       </button>
+      <button
+        id="sfps-tab-btn-conformal"
+        class="sfps-tab-button"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="sfps-tab-conformal"
+        data-tab="sfps-tab-conformal"
+      >
+        Hierarchical Conformal
+      </button>
     </div>
 
     <div class="sfps-tab-panels">
@@ -179,6 +190,15 @@ disable_site_title: true
       </div>
     </div>
     </section>
+    <section
+      id="sfps-tab-conformal"
+      class="sfps-section sfps-tab-panel sfps-tab-panel--conformal"
+      role="tabpanel"
+      aria-labelledby="sfps-tab-btn-conformal"
+      hidden
+    >
+      <div id="conformal-demo-root" class="sfps-conformal-root" aria-label="Hierarchical conformal prediction demo"></div>
+    </section>
     </div>
   </div>
 
@@ -244,3 +264,7 @@ disable_site_title: true
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="{{ base_path }}/assets/js/sect-fasttrip-psps.js"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel" data-presets="react" src="{{ base_path }}/assets/js/conformal_demo.js"></script>
