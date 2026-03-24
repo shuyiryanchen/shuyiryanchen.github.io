@@ -229,9 +229,21 @@ function Slider({ label, value, min, max, step, onChange, color, fmt }) {
           {fmt ? fmt(value) : value.toFixed(2)}
         </span>
       </div>
-      <input type="range" min={min} max={max} step={step} value={value}
+      <input
+        type="range"
+        className="sfps-conformal-range-input"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
         onChange={e => onChange(parseFloat(e.target.value))}
-        style={{ width:"100%", accentColor:color||C.ours, cursor:"pointer" }} />
+        style={{
+          width:"100%",
+          cursor:"pointer",
+          /* Flat thumb color; track styling in sect-fasttrip-psps.css (no filled/shaded track) */
+          ["--sfps-range-accent"]: color || C.ours,
+        }}
+      />
     </div>
   );
 }
@@ -419,7 +431,7 @@ function HowItWorksDiagram({ sim, method }) {
             <line x1={testX} y1={nlAxisY-10} x2={testX} y2={nlAxisY+10} stroke={C.test} strokeWidth={2} strokeDasharray="3,2"/>
             <text x={testX} y={nlAxisY+22} textAnchor="middle" fill={C.test} fontSize={8} fontFamily="monospace">{method==="ours" ? "max test" : "test j=0"}</text>
             <rect x={W-48} y={nlAxisY-10} width={46} height={17} rx={3} fill={covLocal?`${C.good}15`:`${C.bad}15`} stroke={covLocal?C.good:C.bad} strokeWidth={1}/>
-            <text x={W-25} y={nlAxisY+3} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={9} fontFamily="monospace" fontWeight="bold">{covLocal?"✓ PASS":"✗ FAIL"}</text>
+            <text x={W-25} y={nlAxisY+3} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={9} fontFamily="monospace" fontWeight="bold">{covLocal?"✓ COVERED":"✗ MISSED"}</text>
           </g>
         );
       })()}
@@ -432,7 +444,7 @@ function HowItWorksDiagram({ sim, method }) {
             <text x={Math.min(rStarX,W-52)} y={nlAxisY-15} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">r★={Math.round(rStar)}</text>
             <text x={0} y={nlAxisY+22} fill={C.muted} fontSize={8} fontFamily="monospace">score at rank {Math.round(rStar)} per col</text>
             <rect x={W-48} y={nlAxisY-10} width={46} height={17} rx={3} fill={covLocal?`${C.good}15`:`${C.bad}15`} stroke={covLocal?C.good:C.bad} strokeWidth={1}/>
-            <text x={W-25} y={nlAxisY+3} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={9} fontFamily="monospace" fontWeight="bold">{covLocal?"✓ PASS":"✗ FAIL"}</text>
+            <text x={W-25} y={nlAxisY+3} textAnchor="middle" fill={covLocal?C.good:C.bad} fontSize={9} fontFamily="monospace" fontWeight="bold">{covLocal?"✓ COVERED":"✗ MISSED"}</text>
           </g>
         );
       })()}
@@ -503,7 +515,7 @@ function PerConstraintView({ sim, width }) {
 
 // ── Shared UI components (defined outside App to avoid remount on every render) ─
 const MC_BTN = {
-  width: 220,
+  width: "100%",
   minHeight: 42,
   padding: "10px 12px",
   borderRadius: 6,
@@ -549,31 +561,34 @@ function MonteCarloControls({
       </div>
 
       <div style={{
-        display:"flex", flexDirection:"row", flexWrap:"wrap", alignItems:"center", gap:16, marginTop:12,
+        display:"grid",
+        gridTemplateColumns:"repeat(4, minmax(0, 1fr))",
+        gap:16,
+        marginTop:12,
+        alignItems:"end",
       }}>
-        <div style={{ flex:"1 1 240px", minWidth:0 }}>
+        <div style={{ minWidth:0 }}>
           <Slider label="Replications" value={mcReps} min={100} max={2000} step={100}
             onChange={v => { setMcReps(Math.round(v)); }}
             color={C.nominal} fmt={v => String(Math.round(v))}/>
         </div>
-        <div style={{ display:"flex", flexDirection:"row", gap:12, flexShrink:0, alignItems:"stretch" }}>
-          <button type="button" onClick={doMC} disabled={mcBusy} style={{
-            ...MC_BTN,
-            cursor: mcBusy ? "default" : "pointer",
-            background: mcBusy ? C.surface2 : "white",
-            border: `1.5px solid ${mcBusy ? C.border : C.ours}`,
-            color: mcBusy ? C.muted : C.ours,
-            transition: "color 0.2s, border-color 0.2s, background 0.2s",
-          }}>
-            {mcBusy ? `⟳  Running…` : `▶  Run Monte Carlo`}
-          </button>
-          <button type="button" onClick={() => setSeed(s => (s % 200) + 1)} style={{
-            ...MC_BTN,
-            background: "white",
-            border: `1.5px solid ${C.border}`,
-            color: C.muted,
-          }}>↺ New sample</button>
-        </div>
+        <button type="button" onClick={doMC} disabled={mcBusy} style={{
+          ...MC_BTN,
+          cursor: mcBusy ? "default" : "pointer",
+          background: mcBusy ? C.surface2 : "white",
+          border: `1.5px solid ${mcBusy ? C.border : C.ours}`,
+          color: mcBusy ? C.muted : C.ours,
+          transition: "color 0.2s, border-color 0.2s, background 0.2s",
+        }}>
+          {mcBusy ? `⟳  Running…` : `▶  Run Monte Carlo`}
+        </button>
+        <button type="button" onClick={() => setSeed(s => (s % 200) + 1)} style={{
+          ...MC_BTN,
+          background: "white",
+          border: `1.5px solid ${C.border}`,
+          color: C.muted,
+        }}>↺ New sample</button>
+        <div aria-hidden="true" />
       </div>
     </div>
   );
@@ -593,7 +608,7 @@ function CoverageStrip({ methodsMeta, mt=0, mb=20 }) {
               background: mth.cov ? `${C.good}15` : `${C.bad}12`,
               padding:"2px 10px", borderRadius:4,
               border:`1px solid ${mth.cov ? C.good : C.bad}44`,
-            }}>{mth.cov ? "✓ COVERED" : "✗ MISS"}</span>
+            }}>{mth.cov ? "✓ COVERED" : "✗ MISSED"}</span>
           </div>
           <span style={{ fontSize:12, color:C.muted, display:"flex", alignItems:"center", gap:4 }}>
             <Tex>{`\\bar{\\hat{\\tau}}`}</Tex> = <span style={{ color:mth.color, fontWeight:600, fontFamily:"monospace" }}>{mth.tau.toFixed(3)}</span>
@@ -758,11 +773,10 @@ function App() {
             ))}
           </div>
 
-          {/* Coverage strip — after diagrams */}
-          <CoverageStrip methodsMeta={methodsMeta} mt={0} mb={20}/>
+          <Controls rhoAR={rhoAR} setRhoAR={setP(setRhoAR)} gamma={gamma} setGamma={setP(setGamma)} alpha={alpha} setAlpha={setP(setAlpha)} seed={seed} setSeed={setP(setSeed)}/>
 
-          {/* Hint — same card style, nominal top border */}
-          <div style={{ ...card({ padding:"12px 16px" }), borderTopWidth:3, borderTopColor:C.nominal, marginBottom:0 }}>
+          {/* Hint — below sliders */}
+          <div style={{ ...card({ padding:"12px 16px" }), borderTopWidth:3, borderTopColor:C.nominal, marginTop:20, marginBottom:0 }}>
             <span style={{ fontWeight:600, color:C.nominal, fontSize:13 }}>💡 Try: </span>
             <span style={{ color:C.muted, fontSize:13 }}>
               {rhoAR > 0.5
@@ -772,8 +786,6 @@ function App() {
                 : `Push ρ_AR → 0.9 to stress Max-Rank's exchangeability assumption. Push γ → 0.9 to make the extra group bounds more useful for Max-Score.`}
             </span>
           </div>
-
-          <Controls rhoAR={rhoAR} setRhoAR={setP(setRhoAR)} gamma={gamma} setGamma={setP(setGamma)} alpha={alpha} setAlpha={setP(setAlpha)} seed={seed} setSeed={setP(setSeed)}/>
         </div>
       )}
 
