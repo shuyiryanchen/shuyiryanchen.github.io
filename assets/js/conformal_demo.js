@@ -341,7 +341,7 @@ function HowItWorksDiagram({ sim, method }) {
           rMaxSorted, rStar, colsSorted, J, n, G, m, alpha } = sim;
   const color = method==="ours" ? C.ours : method==="bonf" ? C.bonf : C.mr;
 
-  const W = 260, NR = 12, CW = W / J, CH = 13;
+  const W = 260, NR = 12, CW = W / J, CH = CW;
   const matH = NR * CH;
   const rowStep = Math.max(1, Math.floor(m / NR));
   const allVals = S_cal.flat();
