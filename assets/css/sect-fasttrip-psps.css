@@ -84,16 +84,31 @@
   display: none;
 }
 
-/* Tab 4: React + Babel conformal demo */
+/* Tab 4: React + Babel conformal demo — centered column, ~half page width on large screens */
 .sfps-tab-panel--conformal {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
 }
 
 .sfps-conformal-root {
   min-height: 60vh;
   width: 100%;
-  max-width: 100%;
+  max-width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1100px) {
+  .sfps-conformal-root {
+    max-width: 100%;
+  }
 }
 
 .sfps-split {
