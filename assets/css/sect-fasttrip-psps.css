@@ -84,7 +84,7 @@
   display: none;
 }
 
-/* Tab 4: React + Babel conformal demo — centered column, ~half page width on large screens */
+/* Tab 4: React + Babel conformal demo — centered column, comfortable width + slightly larger UI */
 .sfps-tab-panel--conformal {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -94,20 +94,24 @@
   padding-left: 1rem;
   padding-right: 1rem;
   box-sizing: border-box;
+  font-size: 1.0625rem; /* ~17px base; helps inherited text */
 }
 
 .sfps-conformal-root {
   min-height: 60vh;
   width: 100%;
-  max-width: 50%;
+  max-width: min(1320px, 72vw);
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
+  /* Scales inline px fonts in the React demo uniformly */
+  zoom: 1.06;
 }
 
 @media (max-width: 1100px) {
   .sfps-conformal-root {
     max-width: 100%;
+    zoom: 1.04;
   }
 }
 

@@ -533,8 +533,8 @@ function App() {
   const [mcBusy,   setMcBusy]   = useState(false);
   const [mcReps,   setMcReps]   = useState(400);
 
-  // helpers to update a param and clear stale MC result
-  const setP = (setter) => (v) => { setter(v); setMcRes(null); };
+  // Sliders: do not clear MC results until the user runs Monte Carlo again
+  const setP = (setter) => (v) => { setter(v); };
 
   const n = 25, G = 5, m = 300;  // matches the baseline synthetic configuration
   const sim = simulate({ rhoAR, gamma, n, G, m, alpha, seed });
@@ -778,7 +778,7 @@ function App() {
           <div style={{ marginBottom:24 }}>
             <div style={{ marginBottom:12, maxWidth:280 }}>
               <Slider label="Replications" value={mcReps} min={100} max={2000} step={100}
-                onChange={v => { setMcReps(Math.round(v)); setMcRes(null); }}
+                onChange={v => { setMcReps(Math.round(v)); }}
                 color={C.nominal} fmt={v => String(Math.round(v))}/>
             </div>
             <button onClick={doMC} disabled={mcBusy} style={{
@@ -797,8 +797,8 @@ function App() {
               <div style={{ ...card(), ...sectionGap }}>
                 <div style={{ ...heading() }}>Empirical joint coverage for each method's target event — blue tick = {((1-alpha)*100).toFixed(0)}%</div>
                 <CovBar value={mcRes.ms}   color={C.ours} label="Ours (Max-Score)" target={1-alpha}/>
-                <CovBar value={mcRes.bonf} color={C.bonf} label="Bonferroni"       target={1-alpha}/>
-                <CovBar value={mcRes.mr}   color={C.mr}   label="Max-Rank"         target={1-alpha}/>
+                <CovBar value={mcRes.bonf} color={mcRes.bonf >= 1-alpha ? C.ours : C.bonf} label="Bonferroni"       target={1-alpha}/>
+                <CovBar value={mcRes.mr}   color={mcRes.mr >= 1-alpha ? C.ours : C.mr}   label="Max-Rank"         target={1-alpha}/>
               </div>
 
               <div style={{ display:"grid", gridTemplateColumns:"repeat(3,minmax(0,1fr))", gap:16, ...sectionGap }}>
@@ -820,10 +820,10 @@ function App() {
                 ].map(row => (
                   <div key={row.label} style={{
                     ...card({ padding:"16px", textAlign:"center" }),
-                    borderTopWidth:3, borderTopColor: row.ok ? row.color : C.bad,
+                    borderTopWidth:3, borderTopColor: row.ok ? C.ours : C.bad,
                   }}>
                     <div style={{ fontSize:13, fontWeight:600, color:C.text, marginBottom:6 }}>{row.label}</div>
-                    <div style={{ fontSize:32, fontWeight:700, fontFamily:"monospace", color:row.ok?row.color:C.bad, marginBottom:4 }}>
+                    <div style={{ fontSize:32, fontWeight:700, fontFamily:"monospace", color:row.ok?C.ours:C.bad, marginBottom:4 }}>
                       {(row.val*100).toFixed(1)}%
                     </div>
                     <div style={{ fontSize:12, color:row.ok?C.good:C.bad, fontWeight:600, marginBottom:8 }}>{row.verdict}</div>
