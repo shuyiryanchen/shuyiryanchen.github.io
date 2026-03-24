@@ -479,7 +479,12 @@ function PerConstraintView({ sim, width, large=false }) {
   const fs = (a, b) => (large ? b : a);
   const ticks = [0,maxV*0.25,maxV*0.5,maxV*0.75,maxV].map(v=>({v,y:sy(v),label:v.toFixed(1)}));
   return (
-    <svg width={width} height={svgH} style={{display:"block"}}>
+    <svg
+      viewBox={`0 0 ${width} ${svgH}`}
+      width="100%"
+      style={{ display: "block", maxWidth: "100%", height: "auto", margin: "0 auto" }}
+      preserveAspectRatio="xMidYMid meet"
+    >
       {/* ℝ^J score space projected onto constraint index j; one column per dimension (n circuits + G group sums) */}
       <rect x={padL} y={padT} width={width - padL} height={H} fill="#ffffff" stroke="#e8eaed" strokeWidth={0.6}/>
       {Array.from({ length: J }, (_, j) => {
@@ -842,8 +847,8 @@ function App() {
             Orange group-sum bars matter only for Max-Score; the two baselines calibrate and evaluate on the blue circuit bars only.
           </p>
 
-          <div style={{ ...card(), ...sectionGap, overflowX:"auto" }}>
-            <PerConstraintView sim={sim} width={760} large />
+          <div style={{ ...card(), ...sectionGap, overflowX: "auto" }}>
+            <PerConstraintView sim={sim} width={1120} large />
           </div>
 
           {/* Coverage strip — above threshold anatomy */}
