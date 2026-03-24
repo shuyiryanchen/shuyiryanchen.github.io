@@ -30,7 +30,6 @@
     "B_budget_multiplier",
     "C_budget",
     "C_budget_multiplier",
-    "K_groups",
     "W_cap",
     "W_cap_multiplier",
     "alpha",
@@ -47,7 +46,6 @@
     B_budget_multiplier: "Fast-trip budget (% of circuits)",
     C_budget: "PSPS budget",
     C_budget_multiplier: "Sect. budget (% of circuits)",
-    K_groups: "Number of groups",
     W_cap: "Reliability constraint (absolute)",
     W_cap_multiplier: "SAIFI",
     alpha: "FWER",
@@ -67,7 +65,8 @@
     effective_alpha: "α_eff",
     alpha: "α",
     gamma_i_multiplier: "γ",
-    delta: "δ"
+    delta: "δ",
+    mht_method: "Method"
   };
 
   const yMetricOptions = [
@@ -159,13 +158,12 @@
     "ignitions"
   ]);
 
-  const hiddenParamsForControls = new Set(["K_groups", "alpha"]);
+  const hiddenParamsForControls = new Set(["alpha"]);
 
   const allowedMhtMethods = new Set(["Operational_MaxRank"]);
 
   const imageBasePath = `${basePath}/assets/website_plots/`;
   const fixedImageParams = {
-    K_groups: "5",
     alpha: "0.1",
     mht_method: "Operational_MaxRank",
     gamma_i_multiplier: "0.5"
@@ -391,26 +389,26 @@
     };
   };
 
-  /** One row per map: grid_plots/{scenario_slug}/exp_{exp_id}_{method_slug}/map.png */
+  /** Maps always use experiment id 0: grid_plots/{folder}/exp_0_{method_slug}/map.png */
+  const GRID_MAP_EXP_ID = 0;
+
   const buildGridImageMetaFromRow = (row) => {
-    const slug = row.scenario_slug;
-    const expId = row.exp_id;
+    const folderSlug = row.scenario_slug;
     const methodSlug = row.method_slug;
-    if (!slug || expId === undefined || expId === null || !methodSlug) return null;
-    const path = `grid_plots/${slug}/exp_${expId}_${methodSlug}/map.png`;
+    if (!folderSlug || !methodSlug) return null;
+    const path = `grid_plots/${folderSlug}/exp_${GRID_MAP_EXP_ID}_${methodSlug}/map.png`;
     const str = (v) => (v === undefined || v === null ? "" : String(v));
     return {
       path,
-      row: Number(expId),
+      folderSlug,
+      row: GRID_MAP_EXP_ID,
       params: {
-        scenario_slug: slug,
         B_budget_multiplier: str(row.B_budget_multiplier),
         C_budget_multiplier: str(row.C_budget_multiplier),
         W_cap_multiplier: str(row.W_cap_multiplier),
         effective_alpha: str(row.effective_alpha),
         gamma_i_multiplier: str(row.gamma_i_multiplier),
         mht_method: str(row.mht_method),
-        K_groups: str(row.K_groups || "5"),
         alpha: str(row.alpha),
         delta: str(row.delta),
         grouping_method: str(row.grouping_method || "grid")
@@ -451,7 +449,7 @@
     return `${intp}p${fracTrim}`;
   };
 
-  const encodeGridScenarioPrefix = (sel) => {
+  const encodeGridFolderPrefix = (sel) => {
     const a = floatToToken(sel.alpha);
     const C = floatToToken(sel.C_budget_multiplier);
     const B = floatToToken(sel.B_budget_multiplier);
@@ -462,9 +460,10 @@
     return `a${a}__C${C}__B${B}__W${W}__ae${ae}__g${g}__d${d}`;
   };
 
-  const resolveGridScenarioSlug = (prefix) => {
-    const slugs = [...new Set(dataset.map((r) => r.scenario_slug).filter(Boolean))];
-    return slugs.find((s) => s === prefix || s.startsWith(`${prefix}__`)) || null;
+  /** Match encoded slider tuple to a folder name on disk (CSV column scenario_slug is only the path segment). */
+  const resolveGridFolderSlug = (prefix) => {
+    const folders = [...new Set(dataset.map((r) => r.scenario_slug).filter(Boolean))];
+    return folders.find((s) => s === prefix || s.startsWith(`${prefix}__`)) || null;
   };
 
   const getSuffixLabel = (suffix) => {
@@ -776,9 +775,28 @@
     plotTitleRight.textContent = getMetricLabel(rightMetric);
   };
 
+  const rebuildGridImageMetaFromDataset = () => {
+    if (!gridPlotsMode || !dataset.length) {
+      imageMeta = [];
+      return;
+    }
+    const exp0 = dataset.filter((r) => Number(r.exp_id) === GRID_MAP_EXP_ID);
+    const seen = new Set();
+    imageMeta = [];
+    exp0.forEach((row) => {
+      const m = buildGridImageMetaFromRow(row);
+      if (!m) return;
+      const key = `${m.folderSlug}||${m.params.mht_method}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      imageMeta.push(m);
+    });
+  };
+
   const syncGridImageDefaultsFromDataset = (rows) => {
     if (!gridPlotsMode || !rows.length) return;
-    const r = rows[0];
+    const r =
+      rows.find((row) => Number(row.exp_id) === GRID_MAP_EXP_ID) || rows[0];
     const set = (k, v) => {
       if (v !== undefined && v !== null && v !== "") imageSelection[k] = String(v);
     };
@@ -789,6 +807,7 @@
     set("effective_alpha", r.effective_alpha);
     set("gamma_i_multiplier", r.gamma_i_multiplier);
     set("delta", r.delta);
+    set("mht_method", r.mht_method);
     imageSelection.suffix = "none";
   };
 
@@ -799,8 +818,9 @@
     availableParams = hyperparams.filter((param) => columns.includes(param));
 
     if (gridPlotsMode && rows.length) {
-      imageMeta = rows.map(buildGridImageMetaFromRow).filter(Boolean);
-      syncGridImageDefaultsFromDataset(rows);
+      rebuildGridImageMetaFromDataset();
+      const exp0 = rows.filter((r) => Number(r.exp_id) === GRID_MAP_EXP_ID);
+      syncGridImageDefaultsFromDataset(exp0.length ? exp0 : rows);
     }
 
     if (!numericColumns.length || !availableParams.length) {
@@ -898,18 +918,17 @@
     const suffixKey = sel.suffix || "none";
 
     if (gridPlotsMode) {
-      const prefix = encodeGridScenarioPrefix(sel);
-      const resolvedSlug = resolveGridScenarioSlug(prefix);
-      if (!resolvedSlug) return [];
+      const prefix = encodeGridFolderPrefix(sel);
+      const resolvedFolder = resolveGridFolderSlug(prefix);
+      if (!resolvedFolder) return [];
       return imageMeta.filter((meta) => {
-        if (meta.params.scenario_slug !== resolvedSlug) return false;
+        if (meta.folderSlug !== resolvedFolder) return false;
         if (getSuffixKey(meta.suffix) !== suffixKey) return false;
         return Object.entries(sel).every(([key, value]) => {
           if (key === "suffix") return true;
           if (gridEncodedParamKeys.has(key)) return true;
           if (value === undefined || value === null || value === "") return true;
           if (key === "B_budget" || key === "C_budget" || key === "W_cap") return true;
-          if (key === "scenario_slug") return true;
           return paramMatches(key, meta.params[key], value);
         });
       });
@@ -965,13 +984,12 @@
     const excludedImageParams = new Set([
       "B_budget",
       "C_budget",
-      "W_cap",
-      "K_groups",
-      "mht_method"
+      "W_cap"
     ]);
     if (!gridPlotsMode) {
       excludedImageParams.add("alpha");
       excludedImageParams.add("gamma_i_multiplier");
+      excludedImageParams.add("mht_method");
     }
     if (gridPlotsMode) excludedImageParams.add("grouping_method");
     const imageParamSet = new Set();
@@ -1048,7 +1066,10 @@
         : uniqueValues.sort();
 
       let defaultValue = sortedValues[0];
-      if (param === "mht_method" && sortedValues.includes("Random_Bonferroni")) {
+      if (param === "mht_method" && gridPlotsMode && sortedValues.includes("bonferroni")) {
+        defaultValue = "bonferroni";
+      }
+      if (param === "mht_method" && !gridPlotsMode && sortedValues.includes("Random_Bonferroni")) {
         defaultValue = "Random_Bonferroni";
       }
       if (param === "C_budget_multiplier") {
@@ -1212,7 +1233,7 @@
     }
 
     if (!matches.length) {
-      if (gridPlotsMode && !resolveGridScenarioSlug(encodeGridScenarioPrefix(imageSelection))) {
+      if (gridPlotsMode && !resolveGridFolderSlug(encodeGridFolderPrefix(imageSelection))) {
         setStatus(
           imageStatus,
           "No plot folder for this combination of α, W, C, B, α_eff, γ, and δ.",
@@ -1247,9 +1268,7 @@
 
   const refreshImageMeta = async () => {
     if (gridPlotsMode) {
-      if (dataset.length) {
-        imageMeta = dataset.map(buildGridImageMetaFromRow).filter(Boolean);
-      }
+      rebuildGridImageMetaFromDataset();
       return;
     }
     const manifest = await fetchManifest();
