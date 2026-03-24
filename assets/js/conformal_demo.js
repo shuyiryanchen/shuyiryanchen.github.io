@@ -655,8 +655,7 @@ function PerConstraintView({ sim, width, large=false }) {
       <text x={padL+2} y={11} fill={C.ours} fontSize={fs(8.5, 9.5)} fontFamily="monospace">── Ours</text>
       <text x={padL+52} y={11} fill={C.bonf} fontSize={fs(8.5, 9.5)} fontFamily="monospace">╌╌ Bonferroni</text>
       <text x={padL+138} y={11} fill={C.mr} fontSize={fs(8.5, 9.5)} fontFamily="monospace">·· Max-Rank</text>
-      <text x={padL+220} y={11} fill={C.test} fontSize={fs(8.5, 9.5)} fontFamily="monospace">▌ test score</text>
-      <text x={padL+295} y={11} fill={C.bad} fontSize={fs(8.5, 9.5)} fontFamily="monospace">▲ fail</text>
+      <text x={padL+220} y={11} fill={C.bad} fontSize={fs(8.5, 9.5)} fontFamily="monospace">▼ fail</text>
     </svg>
   );
 }
