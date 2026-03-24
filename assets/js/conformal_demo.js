@@ -253,31 +253,35 @@ const C = {
   good:"#1a7f3c", bad:"#c0392b",
 };
 
-/** COVERED/MISSED — shared by CoverageStrip + HowItWorksDiagram (same pill as inner tabs ②–③) */
+/** COVERED/MISSED — CoverageStrip + Monte Carlo use default; HowItWorksDiagram (tab ①) uses compact */
 const COVERAGE_BADGE_FS = 12;
 const COVERAGE_BADGE_MIN_W = 88;
+const COVERAGE_BADGE_FS_COMPACT = 9;
+const COVERAGE_BADGE_MIN_W_COMPACT = 72;
 
-function coverageBadgeInlineStyle(cov) {
+function coverageBadgeInlineStyle(cov, { compact = false } = {}) {
+  const fs = compact ? COVERAGE_BADGE_FS_COMPACT : COVERAGE_BADGE_FS;
+  const mw = compact ? COVERAGE_BADGE_MIN_W_COMPACT : COVERAGE_BADGE_MIN_W;
   return {
-    fontSize: COVERAGE_BADGE_FS,
+    fontSize: fs,
     fontWeight: 700,
     fontFamily: "monospace",
-    minWidth: COVERAGE_BADGE_MIN_W,
+    minWidth: mw,
     textAlign: "center",
     display: "inline-block",
     boxSizing: "border-box",
     color: cov ? C.good : C.bad,
     background: cov ? `${C.good}15` : `${C.bad}12`,
-    padding: "2px 10px",
+    padding: compact ? "1px 7px" : "2px 10px",
     borderRadius: 4,
     border: `1px solid ${cov ? C.good : C.bad}44`,
     lineHeight: 1.25,
   };
 }
 
-function CoverageBadgePill({ cov }) {
+function CoverageBadgePill({ cov, compact = false }) {
   return (
-    <span style={coverageBadgeInlineStyle(cov)}>
+    <span style={coverageBadgeInlineStyle(cov, { compact })}>
       {cov ? "✓ COVERED" : "✗ MISSED"}
     </span>
   );
@@ -396,9 +400,9 @@ function HowItWorksDiagram({ sim, method }) {
   // Number-line bar spans nlAxisY±10; top of bar = nlAxisY-10
   // We need nlAxisY-10 = arrow2Tip + ARROW_GAP  →  nlAxisY = arrow2Tip + ARROW_GAP + 10
   const nlAxisY   = arrow2Tip + ARROW_GAP + 10;
-  /* foreignObject box in SVG user units — fits CoverageBadgePill (12px + padding) */
-  const covFoW = 102;
-  const covFoH = 26;
+  /* foreignObject box in SVG user units — fits compact CoverageBadgePill on tab ① */
+  const covFoW = 88;
+  const covFoH = 22;
   /* Pill sits below number-line / labels, horizontally centered */
   const covBadgeY = nlAxisY + 32;
   const SVG_H     = covBadgeY + covFoH + 14;
@@ -457,10 +461,9 @@ function HowItWorksDiagram({ sim, method }) {
         return null;
       })}
 
-      {/* Col labels */}
-      {Array.from({length:J},(_,j) => (
-        <text key={j} x={j*CW+CW/2} y={matH+10} textAnchor="middle" fill={C.muted} fontSize={7} fontFamily="monospace">{j}</text>
-      ))}
+      {/* Col labels — endpoints only, 1-based (columns 0…J−1 → labels 1…J) */}
+      <text x={0*CW+CW/2} y={matH+10} textAnchor="middle" fill={C.muted} fontSize={7} fontFamily="monospace">1</text>
+      <text x={(J-1)*CW+CW/2} y={matH+10} textAnchor="middle" fill={C.muted} fontSize={7} fontFamily="monospace">{J}</text>
 
       {/* Arrow 1: matrix → series — length = ARROW_LEN */}
       <line x1={W/2} y1={serTop-ARROW_LEN-5} x2={W/2} y2={serTop-5} stroke={color} strokeWidth={1} strokeDasharray="3,2" opacity={0.5}/>
@@ -564,7 +567,7 @@ function HowItWorksDiagram({ sim, method }) {
       })()}
       <foreignObject x={(W - covFoW) / 2} y={covBadgeY} width={covFoW} height={covFoH}>
         <div xmlns="http://www.w3.org/1999/xhtml" style={{ margin: 0, width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <CoverageBadgePill cov={covLocal} />
+          <CoverageBadgePill cov={covLocal} compact />
         </div>
       </foreignObject>
     </svg>
