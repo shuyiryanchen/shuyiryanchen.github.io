@@ -788,9 +788,9 @@ function App() {
   }, [rhoAR, gamma, alpha, mcReps]);
 
   const TABS = [
-    ["howit",   "① How Each Method Picks Its Boundary"],
-    ["compare", "② All Methods Side-by-Side"],
-    ["mc",      "③ Monte Carlo Coverage"],
+    ["howit",   "How It Works"],
+    ["compare", "Score Comparison"],
+    ["mc",      "Coverage Statistics"],
   ];
 
   // Shared styles
@@ -839,13 +839,14 @@ function App() {
   ];
 
   const tabSty = k => ({
-    padding:"9px 20px", border:"none", cursor:"pointer",
+    padding:"7px 18px", border:"none", cursor:"pointer",
     fontFamily:"system-ui,sans-serif", fontSize:13,
     fontWeight: tab===k ? 600 : 400,
-    background: "transparent",
-    color: tab===k ? C.ours : C.muted,
-    borderBottom: tab===k ? `2px solid ${C.ours}` : "2px solid transparent",
+    borderRadius: 999,
+    background: tab===k ? C.text : "transparent",
+    color: tab===k ? "#fff" : C.muted,
     transition:"all 0.15s",
+    letterSpacing: "0.01em",
   });
 
   return (
@@ -857,8 +858,8 @@ function App() {
         <strong>Max-Score (Ours)</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
       </p>
 
-      {/* Tabs — page title lives on the PSPS tab bar */}
-      <div style={{ display:"flex", gap:0, borderBottom:`1px solid ${C.border}`, marginBottom:24 }}>
+      {/* Tabs */}
+      <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:24 }}>
         {TABS.map(([k,lbl]) => (
           <button key={k} style={tabSty(k)} onClick={() => setTab(k)}>{lbl}</button>
         ))}

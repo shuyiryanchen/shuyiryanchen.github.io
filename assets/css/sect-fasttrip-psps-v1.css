@@ -1,0 +1,620 @@
+.sfps-page {
+  font-size: 0.92rem;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#sect-fasttrip-psps {
+  width: 100%;
+}
+
+.sfps-fullbleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: 1.75rem;
+  padding-right: 1.25rem;
+  box-sizing: border-box;
+}
+
+.sfps-page .page__title {
+  font-size: 1.6rem;
+}
+
+.sfps-page .sfps-section h2 {
+  font-size: 1.2rem;
+}
+
+.sfps-page .sfps-plot-title {
+  font-size: 1rem;
+}
+
+.sfps-section {
+  margin: 2rem 0;
+}
+
+.sfps-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  background: #f1f1f1;
+  border: 1px solid #e2e2e2;
+  align-self: flex-start;
+  max-width: 100%;
+}
+
+.sfps-tab-button {
+  border: none;
+  background: transparent;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.sfps-tab-button.is-active {
+  background: #1f77b4;
+  color: #fff;
+}
+
+.sfps-tab-panels {
+  margin-top: 0.6rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 0.35rem;
+}
+
+.sfps-tab-panel {
+  display: none;
+  width: 100%;
+}
+
+.sfps-tab-panel.is-active {
+  display: block;
+}
+
+.sfps-tab-panel[hidden] {
+  display: none;
+}
+
+/* Tab 4: React + Babel conformal demo — centered column, comfortable width + slightly larger UI */
+.sfps-tab-panel--conformal {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+  font-size: 1.0625rem; /* ~17px base; helps inherited text */
+}
+
+.sfps-conformal-root {
+  min-height: 60vh;
+  width: 100%;
+  max-width: min(1320px, 72vw);
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  /* Scales inline px fonts in the React demo uniformly */
+  zoom: 1.06;
+}
+
+/* Conformal demo: flat range sliders — no browser “filled” / shaded track to the left of the thumb (all inner tabs) */
+.sfps-conformal-root input[type="range"],
+.sfps-conformal-root input.sfps-conformal-range-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: transparent;
+  accent-color: transparent;
+  border: none;
+  box-shadow: none;
+  /* avoids a dark/inset line some engines draw on the host control */
+}
+
+.sfps-conformal-root input[type="range"]:focus-visible,
+.sfps-conformal-root input.sfps-conformal-range-input:focus-visible {
+  outline: 2px solid #1565c0;
+  outline-offset: 2px;
+}
+
+.sfps-conformal-root input[type="range"]::-webkit-slider-runnable-track,
+.sfps-conformal-root input.sfps-conformal-range-input::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  /* Solid fill only — border on track reads as a black/dark inner line in WebKit */
+  background: #eceff1;
+  border: none;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+.sfps-conformal-root input[type="range"]::-webkit-slider-thumb,
+.sfps-conformal-root input.sfps-conformal-range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -4px;
+  border: none;
+  border-radius: 50%;
+  background: var(--sfps-range-accent, #0a7c5c);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+.sfps-conformal-root input[type="range"]::-moz-range-track,
+.sfps-conformal-root input.sfps-conformal-range-input::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: #eceff1;
+  border: none;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+.sfps-conformal-root input[type="range"]::-moz-range-progress,
+.sfps-conformal-root input.sfps-conformal-range-input::-moz-range-progress {
+  background: transparent;
+}
+
+.sfps-conformal-root input[type="range"]::-moz-range-thumb,
+.sfps-conformal-root input.sfps-conformal-range-input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: var(--sfps-range-accent, #0a7c5c);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+/* Firefox: drop default outline ring on the range widget */
+.sfps-conformal-root input[type="range"]::-moz-focus-outer {
+  border: 0;
+}
+
+@media (max-width: 1100px) {
+  .sfps-conformal-root {
+    max-width: 100%;
+    zoom: 1.04;
+  }
+}
+
+.sfps-split {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.sfps-controls {
+  flex: 0 0 720px;
+  max-width: 720px;
+  width: 720px;
+  min-width: 720px;
+}
+
+.sfps-content {
+  flex: 2 1 auto;
+  min-width: 0;
+}
+
+.sfps-controls .sfps-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#filter-controls {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sfps-intro {
+  max-width: 1200px;
+  margin: 0 auto 1.5rem;
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* --- Understanding the key parameters (for CPUC / managers) --- */
+.sfps-params-section {
+  margin-bottom: 2rem;
+  box-sizing: border-box;
+}
+
+.sfps-params-heading {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+}
+
+.sfps-params-intro {
+  margin-bottom: 1.25rem;
+  color: #444;
+  line-height: 1.5;
+}
+
+.sfps-params-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.25rem;
+}
+
+.sfps-param-block {
+  background: #f9f9f9;
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sfps-param-block .sfps-param-title {
+  font-size: 1rem;
+  margin: 0 0 0.2rem;
+  color: #1f77b4;
+  font-weight: 600;
+}
+
+.sfps-param-block p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.sfps-param-meta {
+  font-size: 0.85rem !important;
+  color: #666 !important;
+  font-style: italic;
+}
+
+.sfps-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.sfps-panel {
+  flex: 1 1 320px;
+  min-width: 280px;
+  background: #f9f9f9;
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.sfps-panel.sfps-controls {
+  flex: 0 0 720px;
+  max-width: 720px;
+  width: 720px;
+  min-width: 720px;
+}
+
+.sfps-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.sfps-field label,
+.sfps-field small {
+  white-space: nowrap;
+}
+
+.sfps-field input,
+.sfps-field select {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.sfps-field input[type="range"] {
+  padding: 0;
+  height: 6px;
+  cursor: pointer;
+  border: none;
+  border-radius: 999px;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(#1f77b4, #1f77b4) 0/ var(--value, 0%) 100% no-repeat,
+    #d6d6d6;
+}
+
+.sfps-field input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  background: transparent;
+  border-radius: 999px;
+}
+
+.sfps-field input[type="range"]::-moz-range-track {
+  height: 6px;
+  background: #d6d6d6;
+  border-radius: 999px;
+}
+
+.sfps-field input[type="range"]::-moz-range-progress {
+  height: 6px;
+  background: #1f77b4;
+  border-radius: 999px;
+}
+
+.sfps-field input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #1f77b4;
+  border-radius: 50%;
+  margin-top: -5px;
+  cursor: grab;
+}
+
+.sfps-field input[type="range"]:active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+.sfps-field input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #1f77b4;
+  border-radius: 50%;
+  border: none;
+  cursor: grab;
+}
+
+.sfps-field input[type="range"]:active::-moz-range-thumb {
+  cursor: grabbing;
+}
+
+.sfps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+}
+
+#image-params {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+#image-params .sfps-field label {
+  white-space: normal;
+  line-height: 1.2;
+}
+
+.sfps-grid--two {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-bottom: 1rem;
+}
+
+#sfps-tab-sectionalization .sfps-grid--two {
+  grid-template-columns: 1fr;
+}
+
+.sfps-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #1f77b4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.sfps-button:hover {
+  background: #155d8a;
+}
+
+.sfps-status {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.4rem;
+}
+
+.sfps-slider-value {
+  white-space: nowrap;
+}
+
+.sfps-plot {
+  width: 100%;
+  min-height: 420px;
+}
+
+.sfps-plot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+}
+
+.sfps-plot-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+}
+
+#sfps-tab-optimization .sfps-plot-title {
+  text-align: center;
+}
+
+.sfps-image-wrap {
+  margin-top: 0.25rem;
+  text-align: left;
+  min-height: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.sfps-image-wrap img {
+  max-width: 85%;
+  height: auto;
+  max-height: 700px;
+  width: 85%;
+  object-fit: contain;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.sfps-historical-grid {
+  display: grid;
+  gap: 1rem;
+  align-items: start;
+}
+
+.sfps-historical-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sfps-historical-title {
+  font-size: 0.9rem;
+  text-align: center;
+  color: #444;
+}
+
+.sfps-historical-item img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.sfps-historical-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.sfps-historical-controls {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  align-self: flex-start;
+  display: block;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  flex: 0 0 auto;
+}
+
+/* Override .sfps-panel.sfps-controls in column context: 720px flex-basis was forcing 720px height */
+.sfps-panel.sfps-controls.sfps-historical-controls {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 720px;
+  min-width: 0;
+}
+
+.sfps-historical-controls .sfps-field {
+  width: 100%;
+  margin-bottom: 0;
+  gap: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+}
+
+.sfps-historical-controls label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.sfps-historical-controls input[type="range"] {
+  width: 100%;
+}
+
+.sfps-historical-controls .sfps-slider-value {
+  margin-left: 0.5rem;
+  white-space: nowrap;
+}
+
+.sfps-historical-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  margin-top: 0;
+}
+
+.sfps-historical-grid--rank {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sfps-historical-grid--summary {
+  grid-template-columns: 1fr;
+}
+
+.sfps-historical-grid--summary .sfps-historical-item img {
+  max-width: 95%;
+  max-height: 520px;
+}
+
+.sfps-historical-grid--summary .sfps-historical-item {
+  align-items: center;
+  text-align: center;
+}
+
+.sfps-historical-grid--rank .sfps-historical-item img {
+  max-height: 360px;
+  width: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 1400px) {
+  .sfps-historical-content {
+    grid-template-columns: 1fr;
+  }
+
+  .sfps-historical-grid--rank {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1200px) {
+  .sfps-split {
+    flex-direction: column;
+  }
+
+  .sfps-controls {
+    width: 100%;
+    max-width: none;
+  }
+
+  .sfps-panel.sfps-controls {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .sfps-controls .sfps-grid,
+  #filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .sfps-plot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sfps-historical-grid {
+    grid-template-columns: 1fr;
+  }
+}

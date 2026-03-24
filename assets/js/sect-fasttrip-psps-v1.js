@@ -416,21 +416,6 @@
   /** Maps always use experiment id 0: grid_plots/{folder}/exp_0_{method_slug}/map.png */
   const GRID_MAP_EXP_ID = 0;
 
-  /** Three-method comparison shown in Planning Tool (grid mode). */
-  const COMPARE_METHODS = [
-    { id: "ours",    slug: "group_conformal_fixed", name: "Max-Score", tag: "Ours" },
-    { id: "bonf",    slug: "bonferroni",             name: "Bonferroni" },
-    { id: "maxrank", slug: "maxrank",                name: "Max-Rank" },
-  ];
-
-  /** Key outcome metrics shown per method below each map. */
-  const COMPARE_METRICS = [
-    { key: "x_size",      sym: "|x|",  label: "Sectionalized" },
-    { key: "y_size",      sym: "|y|",  label: "Fast-Trip" },
-    { key: "z_star_size", sym: "|z*|", label: "Actual PSPS" },
-    { key: "z_size",      sym: "|z|",  label: "Planning PSPS" },
-  ];
-
   const buildGridImageMetaFromRow = (row) => {
     const folderSlug = row.scenario_slug;
     const methodSlug = row.method_slug;
@@ -1044,11 +1029,7 @@
       excludedImageParams.add("gamma_i_multiplier");
       excludedImageParams.add("mht_method");
     }
-    if (gridPlotsMode) {
-      excludedImageParams.add("grouping_method");
-      // Grid mode always renders all three methods; no per-method dropdown needed.
-      excludedImageParams.add("mht_method");
-    }
+    if (gridPlotsMode) excludedImageParams.add("grouping_method");
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
       Object.keys(meta.params || {}).forEach((key) => {
@@ -1278,78 +1259,15 @@
   };
 
   const renderImage = () => {
-    if (gridPlotsMode) {
-      // ── Grid mode: render three-method comparison ──────────────────
-      const prefix = encodeGridFolderPrefix(imageSelection);
-      const folder = resolveGridFolderSlug(prefix);
-
-      if (!folder) {
-        setStatus(
-          imageStatus,
-          "No plot folder for this combination of FWER, SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
-          true
-        );
-        COMPARE_METHODS.forEach((m) => {
-          const imgEl = document.getElementById(`decision-image-${m.id}`);
-          if (imgEl) imgEl.removeAttribute("src");
-          const metricsEl = document.getElementById(`metrics-${m.id}`);
-          if (metricsEl) metricsEl.innerHTML = "";
-        });
-        return;
-      }
-
-      setStatus(imageStatus, "", false);
-
-      COMPARE_METHODS.forEach((method) => {
-        const imgEl = document.getElementById(`decision-image-${method.id}`);
-        const metricsEl = document.getElementById(`metrics-${method.id}`);
-
-        if (imgEl) {
-          const imgPath = `grid_plots/${folder}/exp_${GRID_MAP_EXP_ID}_${method.slug}/map.png`;
-          imgEl.src = normalizeImagePath(imgPath);
-          imgEl.onerror = () =>
-            setStatus(imageStatus, `Image failed to load for ${method.name}.`, true);
-          imgEl.onload = () => setStatus(imageStatus, "", false);
-        }
-
-        if (metricsEl && dataset.length) {
-          const row = dataset.find(
-            (r) =>
-              r.scenario_slug === folder &&
-              r.mht_method === method.slug &&
-              Number(r.exp_id) === GRID_MAP_EXP_ID
-          );
-          if (row) {
-            metricsEl.innerHTML = COMPARE_METRICS.map((m) => {
-              const val = Number(row[m.key]);
-              const display = Number.isNaN(val) ? "—" : Math.round(val);
-              return `<div class="sfps-metric-card">
-                <span class="sfps-metric-sym">${m.sym}</span>
-                <span class="sfps-metric-value">${display}</span>
-                <span class="sfps-metric-label">${m.label}</span>
-              </div>`;
-            }).join("");
-          } else {
-            metricsEl.innerHTML = "";
-          }
-        }
-      });
-      return;
-    }
-
-    // ── Legacy single-image mode ────────────────────────────────────
     if (!imageMeta.length) {
       setStatus(imageStatus, "No plot images available.", true);
       return;
     }
 
-    const legacyImg = document.getElementById("decision-image");
-    if (!legacyImg) return;
-
     let matches = getStrictImageMeta();
     let fallbackMessage = "";
 
-    if (!matches.length && imageSelection.effective_alpha === "0.5") {
+    if (!matches.length && !gridPlotsMode && imageSelection.effective_alpha === "0.5") {
       matches = getStrictImageMeta({ ...imageSelection, effective_alpha: "0.7" });
       if (matches.length) {
         fallbackMessage = "No image for Effectiveness 0.5 for this combination; showing 0.7.";
@@ -1357,8 +1275,16 @@
     }
 
     if (!matches.length) {
-      setStatus(imageStatus, "Image not found.", true);
-      legacyImg.removeAttribute("src");
+      if (gridPlotsMode && !resolveGridFolderSlug(encodeGridFolderPrefix(imageSelection))) {
+        setStatus(
+          imageStatus,
+          "No plot folder for this combination of FWER, SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
+          true
+        );
+      } else {
+        setStatus(imageStatus, "Image not found.", true);
+      }
+      decisionImage.removeAttribute("src");
       return;
     }
 
@@ -1366,11 +1292,12 @@
     const selected = sortedMatches[0];
     if (!selected) {
       setStatus(imageStatus, "", false);
-      legacyImg.removeAttribute("src");
+      decisionImage.removeAttribute("src");
       return;
     }
 
-    legacyImg.src = normalizeImagePath(selected.path);
+    const imageUrl = normalizeImagePath(selected.path);
+    decisionImage.src = imageUrl;
     setStatus(imageStatus, fallbackMessage, !!fallbackMessage);
   };
 
@@ -1440,14 +1367,12 @@
     buildImageControls();
     renderImage();
   });
-  if (decisionImage) {
-    decisionImage.addEventListener("error", () => {
-      setStatus(imageStatus, "Image failed to load. Check the path.", true);
-    });
-    decisionImage.addEventListener("load", () => {
-      setStatus(imageStatus, "", false);
-    });
-  }
+  decisionImage.addEventListener("error", () => {
+    setStatus(imageStatus, "Image failed to load. Check the path.", true);
+  });
+  decisionImage.addEventListener("load", () => {
+    setStatus(imageStatus, "", false);
+  });
 
   init();
 })();

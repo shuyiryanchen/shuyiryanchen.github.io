@@ -7,21 +7,16 @@ disable_nav: true
 disable_site_title: true
 ---
 
-{% comment %}Live / editable page. Frozen snapshot: _pages/sect-fasttrip-psps-archive.html → /sect-fasttrip-psps/archive/{% endcomment %}
+{% comment %}Live page. Pre-overhaul snapshot: /sect-fasttrip-psps/pre-overhaul/ — Older archive: /sect-fasttrip-psps/archive/{% endcomment %}
 {% include base_path %}
 
 <style>
-  .page__title {
-    text-align: center;
-  }
-
-  .page__inner-wrap {
-    max-width: 3800px;
-    width: 100%;
-  }
+  .page__title { text-align: center; }
+  .page__inner-wrap { max-width: 3800px; width: 100%; }
 </style>
 
 <div id="sect-fasttrip-psps" class="sfps-page" data-base-path="{{ base_path }}">
+
   <p class="sfps-intro">
     Utility-caused wildfires pose severe risks, and operational interventions
     like PSPS and fast-trip settings reduce ignition likelihood at the cost of
@@ -32,230 +27,311 @@ disable_site_title: true
   </p>
 
   <div class="sfps-fullbleed">
-    <div class="sfps-tabs" role="tablist" aria-label="Sectionalization tabs">
+    <nav class="sfps-tabs" role="tablist" aria-label="Sectionalization tabs">
       <button
         id="sfps-tab-btn-sectionalization"
         class="sfps-tab-button is-active"
-        type="button"
-        role="tab"
-        aria-selected="true"
+        type="button" role="tab" aria-selected="true"
         aria-controls="sfps-tab-sectionalization"
         data-tab="sfps-tab-sectionalization"
-      >
-        Planning Tool
-      </button>
+      >Planning Tool</button>
       <button
         id="sfps-tab-btn-conformal"
         class="sfps-tab-button"
-        type="button"
-        role="tab"
-        aria-selected="false"
+        type="button" role="tab" aria-selected="false"
         aria-controls="sfps-tab-conformal"
         data-tab="sfps-tab-conformal"
-      >
-        Conformal Prediction Demo
-      </button>
+      >Conformal Prediction Demo</button>
       <button
         id="sfps-tab-btn-historical"
         class="sfps-tab-button"
-        type="button"
-        role="tab"
-        aria-selected="false"
+        type="button" role="tab" aria-selected="false"
         aria-controls="sfps-tab-historical"
         data-tab="sfps-tab-historical"
-      >
-        Historical Data Analysis
-      </button>
+      >Historical Data</button>
       <button
         id="sfps-tab-btn-optimization"
         class="sfps-tab-button"
-        type="button"
-        role="tab"
-        aria-selected="false"
+        type="button" role="tab" aria-selected="false"
         aria-controls="sfps-tab-optimization"
         data-tab="sfps-tab-optimization"
-      >
-        Optimization Results
-      </button>
-    </div>
+      >Optimization Results</button>
+    </nav>
 
     <div class="sfps-tab-panels">
-    <section
-      id="sfps-tab-sectionalization"
-      class="sfps-section sfps-tab-panel is-active"
-      role="tabpanel"
-      aria-labelledby="sfps-tab-btn-sectionalization"
-    >
-    <div class="sfps-split">
-      <div class="sfps-panel sfps-controls">
-        <div class="sfps-grid sfps-grid--two">
-          <div id="image-params" class="sfps-grid"></div>
-        </div>
-        <div id="image-status" class="sfps-status"></div>
-        <button id="reset-part2" class="sfps-button">Reset</button>
-      </div>
 
-      <div class="sfps-content">
-        <div class="sfps-image-wrap">
-          <img id="decision-image" alt="Decision plot preview" />
-        </div>
-      </div>
-    </div>
+      <!-- ═══════════════════════════════════════════════════════════════
+           TAB 1 · PLANNING TOOL
+           ═══════════════════════════════════════════════════════════════ -->
+      <section
+        id="sfps-tab-sectionalization"
+        class="sfps-section sfps-tab-panel is-active"
+        role="tabpanel"
+        aria-labelledby="sfps-tab-btn-sectionalization"
+      >
+        <div class="sfps-split">
 
-  <section class="sfps-fullbleed sfps-params-section" aria-labelledby="sfps-params-heading">
-    <h2 id="sfps-params-heading" class="sfps-params-heading">Understanding the key parameters</h2>
-    <p class="sfps-params-intro">
-      We do optimal planning under operation and physical constraints, with statistical control in prediction. Below is a short guide.
-    </p>
+          <!-- Controls panel -->
+          <div class="sfps-panel sfps-controls" id="planning-controls">
+            <div class="sfps-controls-header">
+              <span class="sfps-controls-title">Parameters</span>
+            </div>
+            <div id="image-params" class="sfps-params-grid-ctrl"></div>
+            <div id="image-status" class="sfps-status"></div>
+            <button id="reset-part2" class="sfps-button sfps-button--ghost">↺ Reset</button>
+          </div>
 
-    <div class="sfps-params-group">
-      <h3 class="sfps-params-group-title">Operation constraints</h3>
-      <p class="sfps-params-group-desc">Limits on how much of the system can use sectionalization, fast-trip, or affect customers.</p>
-      <div class="sfps-params-row">
-        <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Sectionalization (sect.) budget (% of circuits)</h4>
-          <p>
-            The maximum share of all circuits (as a percentage) that can be sectionalized—i.e., prepared so they can be shut off in segments during a PSPS event instead of all at once. It is expressed on a percentage scale of all circuits. A higher budget allows more granular shutoffs (fewer customers affected per event) but requires more upfront investment and coordination; setting this is a tradeoff between operational flexibility and cost.
+          <!-- Three-method map comparison -->
+          <div class="sfps-content">
+            <div class="sfps-method-compare" id="method-compare">
+
+              <div class="sfps-method-col sfps-method-col--ours">
+                <div class="sfps-method-header sfps-method-header--ours">
+                  <span class="sfps-method-name">Max-Score</span>
+                  <span class="sfps-method-tag">Ours</span>
+                </div>
+                <div class="sfps-image-wrap sfps-image-wrap--method">
+                  <img id="decision-image-ours" alt="Max-Score decision map" loading="lazy" />
+                </div>
+                <div class="sfps-metrics-row" id="metrics-ours">
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|x|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Sectionalized</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|y|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Fast-Trip</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z*|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Actual PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Planning PSPS</span></div>
+                </div>
+              </div>
+
+              <div class="sfps-method-col sfps-method-col--bonf">
+                <div class="sfps-method-header sfps-method-header--bonf">
+                  <span class="sfps-method-name">Bonferroni</span>
+                </div>
+                <div class="sfps-image-wrap sfps-image-wrap--method">
+                  <img id="decision-image-bonf" alt="Bonferroni decision map" loading="lazy" />
+                </div>
+                <div class="sfps-metrics-row" id="metrics-bonf">
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|x|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Sectionalized</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|y|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Fast-Trip</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z*|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Actual PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Planning PSPS</span></div>
+                </div>
+              </div>
+
+              <div class="sfps-method-col sfps-method-col--maxrank">
+                <div class="sfps-method-header sfps-method-header--maxrank">
+                  <span class="sfps-method-name">Max-Rank</span>
+                </div>
+                <div class="sfps-image-wrap sfps-image-wrap--method">
+                  <img id="decision-image-maxrank" alt="Max-Rank decision map" loading="lazy" />
+                </div>
+                <div class="sfps-metrics-row" id="metrics-maxrank">
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|x|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Sectionalized</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|y|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Fast-Trip</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z*|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Actual PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Planning PSPS</span></div>
+                </div>
+              </div>
+
+            </div><!-- /method-compare -->
+
+            <!-- Metrics legend -->
+            <div class="sfps-metrics-legend">
+              <span class="sfps-metrics-legend-item"><code>|x|</code> sectionalized circuits</span>
+              <span class="sfps-metrics-legend-sep">·</span>
+              <span class="sfps-metrics-legend-item"><code>|y|</code> fast-trip circuits</span>
+              <span class="sfps-metrics-legend-sep">·</span>
+              <span class="sfps-metrics-legend-item"><code>|z*|</code> actual PSPS enacted</span>
+              <span class="sfps-metrics-legend-sep">·</span>
+              <span class="sfps-metrics-legend-item"><code>|z|</code> planning PSPS circuits</span>
+            </div>
+
+          </div><!-- /sfps-content -->
+        </div><!-- /sfps-split -->
+
+        <!-- Understanding parameters section -->
+        <section class="sfps-fullbleed sfps-params-section" aria-labelledby="sfps-params-heading">
+          <h2 id="sfps-params-heading" class="sfps-params-heading">Understanding the key parameters</h2>
+          <p class="sfps-params-intro">
+            We do optimal planning under operation and physical constraints, with statistical control in prediction. Below is a short guide.
           </p>
-        </div>
-        <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Fast-trip budget (% of circuits)</h4>
-          <p>
-            The maximum share of all circuits (as a percentage) that can be assigned fast-trip settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions. It is expressed on a percentage scale of all circuits. More circuits with fast-trip can reduce ignition risk but may increase momentary outages and affect reliability; the budget caps how much of the system uses this mitigation.
-          </p>
-        </div>
-        <div class="sfps-param-block">
-          <h4 class="sfps-param-title">SAIFI reliability impact (customer-weighted)</h4>
-          <p>
-            A scaling factor that determines how much each circuit's fast-trip setting and PSPS actions count toward the system-wide SAIFI cap (average sustained interruptions per customer). Concretely, it maps (y<sub>i</sub>, z<sub>i</sub>) into a customer-weighted interruption frequency contribution.
-          </p>
-        </div>
-      </div>
-    </div>
 
-    <div class="sfps-params-group">
-      <h3 class="sfps-params-group-title">Physical constraints</h3>
-      <p class="sfps-params-group-desc">Parameters that link mitigation choices to the reliability cap and protect customer exposure.</p>
-      <div class="sfps-params-row">
-        <div class="sfps-param-block">
-          <h4 class="sfps-param-title">Effectiveness of fast-trip (% of mitigation)</h4>
-          <p>
-            A parameter expressed as the percentage of mitigation—how effective fast-trip (EPSS) is at controlling ignition risk, i.e., the degree to which enabling fast-trip on a circuit reduces its ignition risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever, which can shift the tradeoff between fast-trip, sectionalization, and PSPS when staying within reliability and budget limits.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="sfps-params-group">
-      <h3 class="sfps-params-group-title">Hierarchical uncertainty set and coverage guarantee</h3>
-      <p>
-        For a given planning window, we build a <strong>hierarchical polyhedral uncertainty set</strong> that encodes plausible future circuit-level ignition counts. The set imposes bounds on each circuit and on the sum of counts within each group (e.g., districts or climate zones). Circuit-level bounds protect local reliability risk; group-sum bounds protect aggregate risk at operational and planning scales.
-      </p>
-      <p>
-        For a prescribed level α ∈ (0, 1), we construct the set so that the probability the realized outcome falls inside the set is at least 1 − α—i.e., we control the chance that the true outcome lies outside the predicted set to at most α. In practice, our method controls the error rate of the predicted uncertainty set for all circuits and groups to (at most) 0.5.
-      </p>
-    </div>
-
-    <div class="sfps-params-group">
-      <h3 class="sfps-params-group-title">Grid folder names (Planning Tool maps)</h3>
-      <p>
-        Decision maps for the Planning Tool are stored under <code>assets/website_plots/grid_plots/</code>.
-        Each run folder uses tokens separated by <code>__</code>, for example
-        <code>a0p4__C0p3__B0p4__W0p15__ae0p95__g0p9__d1__32a6911dbd</code>:
-        <code>a0p4</code> → prediction α = 0.4;
-        <code>C0p3</code> → sectionalization budget <code>C_budget</code> = 0.3;
-        <code>B0p4</code> → fast-trip budget <code>B_budget</code> = 0.4;
-        <code>W0p15</code> → reliability cap fraction <code>W_cap_fraction</code> = 0.15;
-        <code>ae0p95</code> → effectiveness <code>alpha_effective</code> = 0.95;
-        <code>g0p9</code> → γ = 0.9;
-        <code>d1</code> → δ = 1.0;
-        followed by a short hash. Maps live in <code>exp_0_{method}/map.png</code> within each folder (experiment id fixed at 0).
-      </p>
-    </div>
-
-  </section>
-
-    </section>
-    <section
-      id="sfps-tab-conformal"
-      class="sfps-section sfps-tab-panel sfps-tab-panel--conformal"
-      role="tabpanel"
-      aria-labelledby="sfps-tab-btn-conformal"
-      hidden
-    >
-      <div id="conformal-demo-root" class="sfps-conformal-root" aria-label="Conformal Prediction Demo"></div>
-    </section>
-    <section
-      id="sfps-tab-historical"
-      class="sfps-section sfps-tab-panel"
-      role="tabpanel"
-      aria-labelledby="sfps-tab-btn-historical"
-      hidden
-    >
-    <div class="sfps-historical-layout">
-      <div class="sfps-panel sfps-controls sfps-historical-controls">
-        <div class="sfps-field">
-          <label for="historical-year">Year</label>
-          <input id="historical-year" type="range" />
-          <div id="historical-year-value" class="sfps-status sfps-slider-value"></div>
-        </div>
-      </div>
-
-      <div class="sfps-historical-content">
-        <div id="historical-plots-rank" class="sfps-historical-grid sfps-historical-grid--rank"></div>
-        <div id="historical-plots-summary" class="sfps-historical-grid sfps-historical-grid--summary"></div>
-      </div>
-    </div>
-    </section>
-    <section
-      id="sfps-tab-optimization"
-      class="sfps-section sfps-tab-panel"
-      role="tabpanel"
-      aria-labelledby="sfps-tab-btn-optimization"
-      hidden
-    >
-    <div class="sfps-split">
-      <div class="sfps-panel sfps-controls">
-        <div class="sfps-grid sfps-grid--two">
-          <div>
-            <div class="sfps-field">
-              <label for="x-axis">X axis</label>
-              <select id="x-axis"></select>
+          <div class="sfps-params-group">
+            <h3 class="sfps-params-group-title">Operation constraints</h3>
+            <p class="sfps-params-group-desc">Limits on how much of the system can use sectionalization, fast-trip, or affect customers.</p>
+            <div class="sfps-params-row">
+              <div class="sfps-param-block">
+                <h4 class="sfps-param-title">Sectionalization (sect.) budget (% of circuits)</h4>
+                <p>The maximum share of all circuits (as a percentage) that can be sectionalized—i.e., prepared so they can be shut off in segments during a PSPS event instead of all at once. A higher budget allows more granular shutoffs (fewer customers affected per event) but requires more upfront investment and coordination.</p>
+              </div>
+              <div class="sfps-param-block">
+                <h4 class="sfps-param-title">Fast-trip budget (% of circuits)</h4>
+                <p>The maximum share of all circuits (as a percentage) that can be assigned fast-trip settings—operational settings that reduce ignition risk by tripping more quickly under fault conditions. More circuits with fast-trip can reduce ignition risk but may increase momentary outages.</p>
+              </div>
+              <div class="sfps-param-block">
+                <h4 class="sfps-param-title">SAIFI reliability impact (customer-weighted)</h4>
+                <p>A scaling factor that determines how much each circuit's fast-trip setting and PSPS actions count toward the system-wide SAIFI cap (average sustained interruptions per customer). Concretely, it maps (y<sub>i</sub>, z<sub>i</sub>) into a customer-weighted interruption frequency contribution.</p>
+              </div>
             </div>
           </div>
-          <div>
-            <div class="sfps-field">
-              <label for="y-axis-left">Left plot Y axis</label>
-              <select id="y-axis-left"></select>
+
+          <div class="sfps-params-group">
+            <h3 class="sfps-params-group-title">Physical constraints</h3>
+            <p class="sfps-params-group-desc">Parameters that link mitigation choices to the reliability cap and protect customer exposure.</p>
+            <div class="sfps-params-row">
+              <div class="sfps-param-block">
+                <h4 class="sfps-param-title">Effectiveness of fast-trip (% of mitigation)</h4>
+                <p>A parameter expressed as the percentage of mitigation—how effective fast-trip (EPSS) is at controlling ignition risk, i.e., the degree to which enabling fast-trip on a circuit reduces its ignition risk. Higher effectiveness means the model treats fast-trip as a stronger mitigation lever.</p>
+              </div>
             </div>
-            <div class="sfps-field">
-              <label for="y-axis-right">Right plot Y axis</label>
-              <select id="y-axis-right"></select>
+          </div>
+
+          <div class="sfps-params-group">
+            <h3 class="sfps-params-group-title">Hierarchical uncertainty set and coverage guarantee</h3>
+            <p>For a given planning window, we build a <strong>hierarchical polyhedral uncertainty set</strong> that encodes plausible future circuit-level ignition counts. The set imposes bounds on each circuit and on the sum of counts within each group (e.g., districts or climate zones).</p>
+            <p>For a prescribed level α ∈ (0, 1), we construct the set so that the probability the realized outcome falls inside the set is at least 1 − α—i.e., we control the chance that the true outcome lies outside the predicted set to at most α. In practice, our method controls the error rate of the predicted uncertainty set for all circuits and groups to (at most) 0.5.</p>
+          </div>
+
+          <div class="sfps-params-group">
+            <h3 class="sfps-params-group-title">Grid folder names (Planning Tool maps)</h3>
+            <p>Decision maps for the Planning Tool are stored under <code>assets/website_plots/grid_plots/</code>.
+            Each run folder uses tokens separated by <code>__</code>, for example
+            <code>a0p4__C0p3__B0p4__W0p15__ae0p95__g0p9__d1__32a6911dbd</code>:
+            <code>a0p4</code> → prediction α = 0.4;
+            <code>C0p3</code> → sectionalization budget <code>C_budget</code> = 0.3;
+            <code>B0p4</code> → fast-trip budget <code>B_budget</code> = 0.4;
+            <code>W0p15</code> → reliability cap fraction <code>W_cap_fraction</code> = 0.15;
+            <code>ae0p95</code> → effectiveness <code>alpha_effective</code> = 0.95;
+            <code>g0p9</code> → γ = 0.9;
+            <code>d1</code> → δ = 1.0;
+            followed by a short hash. Maps live in <code>exp_0_{method}/map.png</code> within each folder.</p>
+          </div>
+        </section>
+
+      </section><!-- /tab-sectionalization -->
+
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           TAB 2 · CONFORMAL PREDICTION DEMO
+           ═══════════════════════════════════════════════════════════════ -->
+      <section
+        id="sfps-tab-conformal"
+        class="sfps-section sfps-tab-panel sfps-tab-panel--conformal"
+        role="tabpanel"
+        aria-labelledby="sfps-tab-btn-conformal"
+        hidden
+      >
+        <!-- Method identity strip -->
+        <div class="sfps-conf-method-strip">
+          <div class="sfps-conf-method-pill sfps-conf-method-pill--ours">
+            <span class="sfps-conf-method-dot"></span>
+            <div>
+              <span class="sfps-conf-method-pill-name">Max-Score</span>
+              <span class="sfps-conf-method-pill-tag">Ours</span>
+            </div>
+            <span class="sfps-conf-method-pill-desc">Single threshold over all circuit + group constraints (J = n + G)</span>
+          </div>
+          <div class="sfps-conf-method-pill sfps-conf-method-pill--bonf">
+            <span class="sfps-conf-method-dot"></span>
+            <div>
+              <span class="sfps-conf-method-pill-name">Bonferroni</span>
+            </div>
+            <span class="sfps-conf-method-pill-desc">Per-circuit threshold via union bound at level α/n — ignores group constraints</span>
+          </div>
+          <div class="sfps-conf-method-pill sfps-conf-method-pill--mr">
+            <span class="sfps-conf-method-dot"></span>
+            <div>
+              <span class="sfps-conf-method-pill-name">Max-Rank</span>
+            </div>
+            <span class="sfps-conf-method-pill-desc">Circuit-only rank correction (Timans 2025) — ignores group constraints</span>
+          </div>
+        </div>
+        <div id="conformal-demo-root" class="sfps-conformal-root" aria-label="Conformal Prediction Demo"></div>
+      </section>
+
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           TAB 3 · HISTORICAL DATA ANALYSIS
+           ═══════════════════════════════════════════════════════════════ -->
+      <section
+        id="sfps-tab-historical"
+        class="sfps-section sfps-tab-panel"
+        role="tabpanel"
+        aria-labelledby="sfps-tab-btn-historical"
+        hidden
+      >
+        <div class="sfps-historical-layout">
+          <div class="sfps-panel sfps-controls sfps-historical-controls">
+            <div class="sfps-field sfps-field--year">
+              <label for="historical-year" class="sfps-year-label">Year</label>
+              <input id="historical-year" type="range" />
+              <div id="historical-year-value" class="sfps-year-badge"></div>
+            </div>
+          </div>
+
+          <div class="sfps-historical-content">
+            <div id="historical-plots-rank" class="sfps-historical-grid sfps-historical-grid--rank"></div>
+            <div id="historical-plots-summary" class="sfps-historical-grid sfps-historical-grid--summary"></div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           TAB 4 · OPTIMIZATION RESULTS
+           ═══════════════════════════════════════════════════════════════ -->
+      <section
+        id="sfps-tab-optimization"
+        class="sfps-section sfps-tab-panel"
+        role="tabpanel"
+        aria-labelledby="sfps-tab-btn-optimization"
+        hidden
+      >
+        <div class="sfps-split">
+          <div class="sfps-panel sfps-controls">
+            <div class="sfps-controls-header">
+              <span class="sfps-controls-title">Chart Settings</span>
+            </div>
+            <div class="sfps-grid sfps-grid--two">
+              <div>
+                <div class="sfps-field">
+                  <label for="x-axis">X axis</label>
+                  <select id="x-axis"></select>
+                </div>
+              </div>
+              <div>
+                <div class="sfps-field">
+                  <label for="y-axis-left">Left plot Y axis</label>
+                  <select id="y-axis-left"></select>
+                </div>
+                <div class="sfps-field">
+                  <label for="y-axis-right">Right plot Y axis</label>
+                  <select id="y-axis-right"></select>
+                </div>
+              </div>
+            </div>
+            <div class="sfps-controls-section-label">Filters</div>
+            <div id="filter-controls" class="sfps-grid"></div>
+            <button id="reset-part1" class="sfps-button sfps-button--ghost">↺ Reset</button>
+          </div>
+
+          <div class="sfps-content">
+            <div class="sfps-plot-grid">
+              <div class="sfps-plot-card">
+                <h3 class="sfps-plot-title" id="plot-title-left">Optimization Results</h3>
+                <div id="trend-plot-opt" class="sfps-plot"></div>
+              </div>
+              <div class="sfps-plot-card">
+                <h3 class="sfps-plot-title" id="plot-title-right">Evaluation</h3>
+                <div id="trend-plot-true" class="sfps-plot"></div>
+              </div>
             </div>
           </div>
         </div>
-        <div id="filter-controls" class="sfps-grid"></div>
-        <button id="reset-part1" class="sfps-button">Reset</button>
-      </div>
+      </section>
 
-      <div class="sfps-content">
-        <div class="sfps-plot-grid">
-          <div>
-            <h3 class="sfps-plot-title" id="plot-title-left">Optimization Results</h3>
-            <div id="trend-plot-opt" class="sfps-plot"></div>
-          </div>
-          <div>
-            <h3 class="sfps-plot-title" id="plot-title-right">Evaluation</h3>
-            <div id="trend-plot-true" class="sfps-plot"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </section>
-    </div>
-  </div>
+    </div><!-- /sfps-tab-panels -->
+  </div><!-- /sfps-fullbleed -->
 
-</div>
+</div><!-- /sect-fasttrip-psps -->
 
 <link rel="stylesheet" href="{{ base_path }}/assets/css/sect-fasttrip-psps.css">
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
