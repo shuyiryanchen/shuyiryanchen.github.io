@@ -57,13 +57,13 @@
     mht_method: "Decluster + MHT method"
   };
 
-  /** Short labels for Planning Tool (grid) sliders — maps to folder tokens a, C, B, W, ae, g, d. */
+  /** Labels for Planning Tool (grid) sliders — folder names still encode a, C, B, W, ae, g, d. */
   const gridShortLabels = {
-    W_cap_multiplier: "W",
-    C_budget_multiplier: "C",
-    B_budget_multiplier: "B",
-    effective_alpha: "α_eff",
-    alpha: "α",
+    W_cap_multiplier: "SAIFI",
+    C_budget_multiplier: "Sect. budget (% of circuits)",
+    B_budget_multiplier: "Fast-trip budget (% of circuits)",
+    effective_alpha: "Effectiveness of fast-trip (% of successful mitigation)",
+    alpha: "FWER",
     gamma_i_multiplier: "γ",
     delta: "δ",
     mht_method: "Method"
@@ -1278,7 +1278,7 @@
       if (gridPlotsMode && !resolveGridFolderSlug(encodeGridFolderPrefix(imageSelection))) {
         setStatus(
           imageStatus,
-          "No plot folder for this combination of α, W, C, B, α_eff, γ, and δ.",
+          "No plot folder for this combination of FWER, SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
           true
         );
       } else {
