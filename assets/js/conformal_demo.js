@@ -160,6 +160,11 @@ function simulate({ rhoAR, gamma, n, G, m, alpha, seed }) {
   const volMS = Math.pow(tauMSp, J);
   const volBonf = tauBonf.reduce((a, t) => a * Math.max(t, 0), 1);
   const volMR = tauMR.reduce((a, t) => a * Math.max(t, 0), 1);
+  // Volume-equivalent side length in each method’s native score space (fair cross-method comparison).
+  // Max-Score: 𝒰 ⊂ ℝ^J_+ orthotope [0,τ]^J  →  Vol^{1/J} = τ.  Baselines: 𝒰 ⊂ ℝ^n_+  →  Vol^{1/n} = (∏ τ_j)^{1/n}.
+  const widthEquivMS = volMS > 0 ? Math.pow(volMS, 1 / J) : 0;
+  const widthEquivBonf = volBonf > 0 ? Math.pow(volBonf, 1 / n) : 0;
+  const widthEquivMR = volMR > 0 ? Math.pow(volMR, 1 / n) : 0;
 
   return {
     S_cal, S_test, E_cal, E_cal_sorted, tauMS, tauBonf, tauMR,
@@ -171,6 +176,7 @@ function simulate({ rhoAR, gamma, n, G, m, alpha, seed }) {
     widthMS:   tauMS,
     widthBonf: tauBonf.reduce((a, b) => a + b, 0) / n,
     widthMR:   tauMR.reduce((a, b) => a + b, 0) / n,
+    widthEquivMS, widthEquivBonf, widthEquivMR,
     volMS, volBonf, volMR,
     n, G, J, m, alpha, groups,
   };
@@ -179,6 +185,7 @@ function simulate({ rhoAR, gamma, n, G, m, alpha, seed }) {
 function runMC(rhoAR, gamma, n, G, m, alpha, reps) {
   let ms = 0, bonf = 0, mr = 0;
   let wMS = 0, wBonf = 0, wMR = 0;
+  let wEqMS = 0, wEqBonf = 0, wEqMR = 0;
   let vMS = 0, vBonf = 0, vMR = 0;
   for (let s = 0; s < reps; s++) {
     const r = simulate({ rhoAR, gamma, n, G, m, alpha, seed: s * 13 + 3 });
@@ -188,6 +195,9 @@ function runMC(rhoAR, gamma, n, G, m, alpha, reps) {
     wMS   += r.widthMS;
     wBonf += r.widthBonf;
     wMR   += r.widthMR;
+    wEqMS += r.widthEquivMS;
+    wEqBonf += r.widthEquivBonf;
+    wEqMR += r.widthEquivMR;
     vMS   += r.volMS;
     vBonf += r.volBonf;
     vMR   += r.volMR;
@@ -195,6 +205,7 @@ function runMC(rhoAR, gamma, n, G, m, alpha, reps) {
   return {
     ms: ms / reps, bonf: bonf / reps, mr: mr / reps,
     widthMS: wMS / reps, widthBonf: wBonf / reps, widthMR: wMR / reps,
+    widthEquivMS: wEqMS / reps, widthEquivBonf: wEqBonf / reps, widthEquivMR: wEqMR / reps,
     volMS: vMS / reps, volBonf: vBonf / reps, volMR: vMR / reps,
   };
 }
@@ -462,9 +473,34 @@ function PerConstraintView({ sim, width }) {
   const ticks = [0,maxV*0.25,maxV*0.5,maxV*0.75,maxV].map(v=>({v,y:sy(v),label:v.toFixed(1)}));
   return (
     <svg width={width} height={svgH} style={{display:"block"}}>
-      {/* section background bands */}
-      <rect x={padL} y={padT} width={n*colW} height={H} fill="#e8f4ff" opacity={0.4}/>
-      <rect x={padL+n*colW} y={padT} width={G*colW} height={H} fill="#fff3e8" opacity={0.5}/>
+      {/* ℝ^J score space projected onto constraint index j; one column per dimension (n circuits + G group sums) */}
+      <rect x={padL} y={padT} width={width - padL} height={H} fill="#ffffff" stroke="#e8eaed" strokeWidth={0.6}/>
+      {Array.from({ length: J }, (_, j) => {
+        const isGrp = j >= n;
+        return (
+          <rect
+            key={`tint-${j}`}
+            x={padL + j * colW + 0.5}
+            y={padT + 0.5}
+            width={colW - 1}
+            height={H - 1}
+            fill={isGrp ? "rgba(255, 243, 232, 0.45)" : "rgba(232, 244, 255, 0.45)"}
+            pointerEvents="none"
+          />
+        );
+      })}
+      {Array.from({ length: J + 1 }, (_, k) => (
+        <line
+          key={`cut-${k}`}
+          x1={padL + k * colW}
+          y1={padT}
+          x2={padL + k * colW}
+          y2={padT + H}
+          stroke={k === n ? C.text : "#e5e7eb"}
+          strokeWidth={k === 0 || k === J ? 1 : k === n ? 1.35 : 0.4}
+          opacity={k === n ? 0.55 : 0.85}
+        />
+      ))}
 
       {ticks.map((tk,i)=>(
         <g key={i}>
@@ -479,7 +515,6 @@ function PerConstraintView({ sim, width }) {
         const isGrp = j >= n;
         return (
           <g key={j}>
-            <rect x={padL+j*colW} y={padT} width={colW} height={H} fill={j%2===0?"#00000008":"none"}/>
             <rect x={x-bw/2} y={sy(st)} width={bw} height={H-(sy(st)-padT)}
               fill={anyFail?"#ff000015":"#00000010"} stroke={anyFail?`${C.bad}88`:"#00000030"} strokeWidth={0.8} rx={1}/>
             <line x1={padL+j*colW+1} x2={padL+(j+1)*colW-1} y1={sy(tauMS)} y2={sy(tauMS)} stroke={C.ours} strokeWidth={2.5} opacity={0.9}/>
@@ -495,15 +530,12 @@ function PerConstraintView({ sim, width }) {
         );
       })}
 
-      {/* Divider between individual and group-sum */}
-      <line x1={padL+n*colW} y1={padT-8} x2={padL+n*colW} y2={padT+H} stroke={C.text} strokeWidth={1.5} opacity={0.4} strokeDasharray="4,3"/>
-
-      {/* Section headers */}
-      <text x={padL+n*colW/2} y={padT-2} textAnchor="middle" fill={C.muted} fontSize={8} fontFamily="monospace">circuit constraints (n={n})</text>
-      <text x={padL+n*colW+G*colW/2} y={padT-2} textAnchor="middle" fill="#8b5e2a" fontSize={8} fontFamily="monospace">group-sum constraints (G={G}, Max-Score only)</text>
+      {/* Section headers — j runs over full J dimensions; cut at n separates circuit vs group-sum coordinates */}
+      <text x={padL+n*colW/2} y={padT-2} textAnchor="middle" fill={C.muted} fontSize={8} fontFamily="monospace">circuit scores (n={n})</text>
+      <text x={padL+n*colW+G*colW/2} y={padT-2} textAnchor="middle" fill="#8b5e2a" fontSize={8} fontFamily="monospace">group-sum scores (G={G}, Max-Score only)</text>
 
       <line x1={padL} y1={padT} x2={padL} y2={padT+H} stroke={C.border} strokeWidth={1}/>
-      <text x={padL+(width-padL)/2} y={svgH} textAnchor="middle" fill={C.muted} fontSize={9} fontFamily="monospace">constraint index j  (0–{n-1}: circuits for all methods · g0–g{G-1}: group-sum for Max-Score only)</text>
+      <text x={padL+(width-padL)/2} y={svgH} textAnchor="middle" fill={C.muted} fontSize={9} fontFamily="monospace">{`constraint index j in 0..J-1 (R^${J}; first n circuits, then G group-sum cuts)`}</text>
       <text x={padL+2} y={11} fill={C.ours} fontSize={8.5} fontFamily="monospace">── Ours</text>
       <text x={padL+52} y={11} fill={C.bonf} fontSize={8.5} fontFamily="monospace">╌╌ Bonferroni</text>
       <text x={padL+138} y={11} fill={C.mr} fontSize={8.5} fontFamily="monospace">·· Max-Rank</text>
@@ -564,7 +596,7 @@ function MonteCarloControls({
         display:"grid",
         gridTemplateColumns:"repeat(4, minmax(0, 1fr))",
         gap:16,
-        marginTop:12,
+        marginTop:4,
         alignItems:"end",
       }}>
         <div style={{ minWidth:0 }}>
@@ -828,19 +860,23 @@ function App() {
             })}
           </div>
 
-          {/* Width ranking */}
+          {/* Width ranking — Vol^{1/d} in each method’s native ℝ^d (J for Max-Score, n for baselines) */}
           <div style={{ ...card(), ...sectionGap }}>
-            <div style={{ ...heading() }}>Threshold width ranking within each method's active constraint set</div>
+            <div style={{ ...heading() }}>Volume-equivalent threshold scale</div>
+            <p style={{ fontSize:11, color:C.muted, margin:"0 0 12px", lineHeight:1.55 }}>
+              Same units as score: <strong>Ours</strong> uses <Tex>{`\\mathrm{Vol}^{1/J}=\\hat{\\tau}`}</Tex> in <Tex>{`\\mathbb{R}^J`}</Tex> (one τ̂ for all J constraints including group cuts).
+              <strong> Bonferroni / Max-Rank</strong> use <Tex>{`\\mathrm{Vol}^{1/n}=(\\prod_{j=1}^n \\hat{\\tau}_j)^{1/n}`}</Tex> in <Tex>{`\\mathbb{R}^n`}</Tex> (circuits only).
+            </p>
             {[
-              { label:"Ours (Max-Score)", val:sim.widthMS, color:C.ours },
-              { label:"Bonferroni",       val:sim.widthBonf, color:C.bonf },
-              { label:"Max-Rank",         val:sim.widthMR,   color:C.mr  },
+              { label:"Ours (Max-Score)", val:sim.widthEquivMS, color:C.ours },
+              { label:"Bonferroni",       val:sim.widthEquivBonf, color:C.bonf },
+              { label:"Max-Rank",         val:sim.widthEquivMR,   color:C.mr  },
             ].sort((a,b)=>b.val-a.val).map((row,i)=>{
-              const mx = Math.max(sim.widthMS, sim.widthBonf, sim.widthMR);
+              const mx = Math.max(sim.widthEquivMS, sim.widthEquivBonf, sim.widthEquivMR, 1e-12);
               return (
                 <div key={row.label} style={{ marginBottom:12 }}>
                   <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
-                    <span style={{ color:C.muted, fontSize:13 }}>{i===0?"Widest":i===2?"Tightest":"Middle"}: {row.label}</span>
+                    <span style={{ color:C.muted, fontSize:13 }}>{i===0?"Largest":i===2?"Smallest":"Middle"}: {row.label}</span>
                     <span style={{ color:row.color, fontSize:13, fontWeight:700, fontFamily:"monospace" }}>{row.val.toFixed(3)}</span>
                   </div>
                   <div style={{ position:"relative", height:6, borderBottom:`1px solid ${C.border}` }}>
@@ -849,9 +885,9 @@ function App() {
                 </div>
               );
             })}
-            {sim.widthMS < sim.widthBonf && (
+            {sim.widthEquivMS < sim.widthEquivBonf && sim.widthEquivBonf > 1e-12 && (
               <p style={{ fontSize:12, color:C.ours, margin:"4px 0 0" }}>
-                Even while covering the extra group bounds, Max-Score is {((sim.widthBonf-sim.widthMS)/sim.widthBonf*100).toFixed(1)}% tighter than Bonferroni on this sample.
+                Even while covering the extra group bounds, Max-Score has a smaller volume-equivalent scale than Bonferroni on this sample ({((sim.widthEquivBonf-sim.widthEquivMS)/sim.widthEquivBonf*100).toFixed(1)}% lower).
               </p>
             )}
           </div>
@@ -976,19 +1012,21 @@ function App() {
           {mcRes ? (
             <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:8, padding:16, marginTop:20 }}>
               <div style={{ fontSize:13, fontWeight:600, color:C.text, fontFamily:"system-ui,sans-serif", marginBottom:4 }}>
-                Threshold width ranking — average over {mcReps} MC reps
+                Volume-equivalent threshold scale — average over {mcReps} MC reps
               </div>
-              <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>Average <Tex>{`\\hat{\\tau}`}</Tex> across the constraints each method actually uses. Max-Score uses J={J}; the baselines use n={n} circuits.</div>
+              <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
+                Same definition as tab ②: <Tex>{`\\mathrm{Vol}^{1/J}`}</Tex> for Max-Score in <Tex>{`\\mathbb{R}^J`}</Tex>; <Tex>{`\\mathrm{Vol}^{1/n}`}</Tex> for baselines in <Tex>{`\\mathbb{R}^n`}</Tex>.
+              </div>
               {[
-                { label:"Ours (Max-Score)", val: mcRes.widthMS,   color:C.ours },
-                { label:"Bonferroni",        val: mcRes.widthBonf, color:C.bonf },
-                { label:"Max-Rank",          val: mcRes.widthMR,   color:C.mr   },
+                { label:"Ours (Max-Score)", val: mcRes.widthEquivMS,   color:C.ours },
+                { label:"Bonferroni",        val: mcRes.widthEquivBonf, color:C.bonf },
+                { label:"Max-Rank",          val: mcRes.widthEquivMR,   color:C.mr   },
               ].sort((a,b)=>b.val-a.val).map((row,i)=>{
-                const mx = Math.max(mcRes.widthMS, mcRes.widthBonf, mcRes.widthMR);
+                const mx = Math.max(mcRes.widthEquivMS, mcRes.widthEquivBonf, mcRes.widthEquivMR, 1e-12);
                 return (
                   <div key={row.label} style={{ marginBottom:12 }}>
                     <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
-                      <span style={{ color:C.muted, fontSize:13 }}>{i===0?"Widest":i===2?"Tightest":"Middle"}: {row.label}</span>
+                      <span style={{ color:C.muted, fontSize:13 }}>{i===0?"Largest":i===2?"Smallest":"Middle"}: {row.label}</span>
                       <span style={{ color:row.color, fontSize:13, fontWeight:700, fontFamily:"monospace" }}>{row.val.toFixed(3)}</span>
                     </div>
                     <div style={{ position:"relative", height:6, borderBottom:`1px solid ${C.border}` }}>
@@ -997,9 +1035,9 @@ function App() {
                   </div>
                 );
               })}
-              {mcRes.widthMS < mcRes.widthBonf && (
+              {mcRes.widthEquivMS < mcRes.widthEquivBonf && mcRes.widthEquivBonf > 1e-12 && (
                 <p style={{ fontSize:12, color:C.ours, margin:"4px 0 0" }}>
-                  Even while covering the extra group bounds, Max-Score is {((mcRes.widthBonf - mcRes.widthMS) / mcRes.widthBonf * 100).toFixed(1)}% tighter than Bonferroni on average.
+                  Even while covering the extra group bounds, Max-Score has a smaller volume-equivalent scale than Bonferroni on average ({((mcRes.widthEquivBonf - mcRes.widthEquivMS) / mcRes.widthEquivBonf * 100).toFixed(1)}% lower).
                 </p>
               )}
             </div>

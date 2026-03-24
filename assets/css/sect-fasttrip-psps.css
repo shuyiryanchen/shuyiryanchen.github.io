@@ -127,9 +127,11 @@
 
 .sfps-conformal-root input[type="range"]::-webkit-slider-runnable-track,
 .sfps-conformal-root input.sfps-conformal-range-input::-webkit-slider-runnable-track {
-  height: 4px;
-  border-radius: 2px;
-  background: #d0d5dd;
+  height: 6px;
+  border-radius: 3px;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  box-sizing: border-box;
 }
 
 .sfps-conformal-root input[type="range"]::-webkit-slider-thumb,
@@ -138,7 +140,7 @@
   appearance: none;
   width: 14px;
   height: 14px;
-  margin-top: -5px;
+  margin-top: -4px;
   border: none;
   border-radius: 50%;
   background: var(--sfps-range-accent, #0a7c5c);
@@ -148,9 +150,11 @@
 
 .sfps-conformal-root input[type="range"]::-moz-range-track,
 .sfps-conformal-root input.sfps-conformal-range-input::-moz-range-track {
-  height: 4px;
-  border-radius: 2px;
-  background: #d0d5dd;
+  height: 6px;
+  border-radius: 3px;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  box-sizing: border-box;
 }
 
 .sfps-conformal-root input[type="range"]::-moz-range-progress,
