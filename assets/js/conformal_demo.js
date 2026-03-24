@@ -153,6 +153,14 @@ function simulate({ rhoAR, gamma, n, G, m, alpha, seed }) {
   const rIdx       = Math.min(Math.max(Math.round(rStar) - 1, 0), m - 1);
   const tauMR      = Array.from({ length: n }, (_, j) => colsSorted[j][rIdx]);
 
+  // Exact Lebesgue volumes (no Monte Carlo inside this): score-space sets in the positive orthant.
+  // Max-Score (polyhedron): 𝒰_MS = { s ∈ ℝ^J_+ : s_j ≤ τ ∀j } = [0,τ]^J  →  Vol = τ^J.
+  // Bonferroni / Max-Rank (axis-aligned box in ℝ^n): 𝒰 = ∏_{j=1}^n [0,τ_j]  →  Vol = ∏_j τ_j.
+  const tauMSp = Math.max(tauMS, 0);
+  const volMS = Math.pow(tauMSp, J);
+  const volBonf = tauBonf.reduce((a, t) => a * Math.max(t, 0), 1);
+  const volMR = tauMR.reduce((a, t) => a * Math.max(t, 0), 1);
+
   return {
     S_cal, S_test, E_cal, E_cal_sorted, tauMS, tauBonf, tauMR,
     rMaxVec, rMaxSorted, rStar, rIdx, colsSorted,
@@ -163,6 +171,7 @@ function simulate({ rhoAR, gamma, n, G, m, alpha, seed }) {
     widthMS:   tauMS,
     widthBonf: tauBonf.reduce((a, b) => a + b, 0) / n,
     widthMR:   tauMR.reduce((a, b) => a + b, 0) / n,
+    volMS, volBonf, volMR,
     n, G, J, m, alpha, groups,
   };
 }
@@ -170,6 +179,7 @@ function simulate({ rhoAR, gamma, n, G, m, alpha, seed }) {
 function runMC(rhoAR, gamma, n, G, m, alpha, reps) {
   let ms = 0, bonf = 0, mr = 0;
   let wMS = 0, wBonf = 0, wMR = 0;
+  let vMS = 0, vBonf = 0, vMR = 0;
   for (let s = 0; s < reps; s++) {
     const r = simulate({ rhoAR, gamma, n, G, m, alpha, seed: s * 13 + 3 });
     if (r.covMS)   ms++;
@@ -178,11 +188,25 @@ function runMC(rhoAR, gamma, n, G, m, alpha, reps) {
     wMS   += r.widthMS;
     wBonf += r.widthBonf;
     wMR   += r.widthMR;
+    vMS   += r.volMS;
+    vBonf += r.volBonf;
+    vMR   += r.volMR;
   }
   return {
     ms: ms / reps, bonf: bonf / reps, mr: mr / reps,
     widthMS: wMS / reps, widthBonf: wBonf / reps, widthMR: wMR / reps,
+    volMS: vMS / reps, volBonf: vBonf / reps, volMR: vMR / reps,
   };
+}
+
+/** Format exact volumes (can span many orders of magnitude in high-D). */
+function formatExactVolume(v) {
+  if (!Number.isFinite(v)) return "—";
+  if (v === 0) return "0";
+  const av = Math.abs(v);
+  if (av < 1e-300) return v.toExponential(3);
+  if (av >= 1e6 || av < 1e-4) return v.toExponential(6);
+  return v.toPrecision(8);
 }
 
 // ── Palette — light / clean ───────────────────────────────────────────────────
@@ -895,6 +919,40 @@ function App() {
           {!mcRes && (
             <div style={{ textAlign:"center", padding:"40px 0", color:C.muted, fontSize:13 }}>
               Click Run to estimate empirical coverage over {mcReps} replications.
+            </div>
+          )}
+
+          {mcRes && (
+            <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:8, padding:16, marginTop:20 }}>
+              <div style={{ fontSize:13, fontWeight:600, color:C.text, fontFamily:"system-ui,sans-serif", marginBottom:4 }}>
+                Uncertainty set volume — average over {mcReps} MC reps (exact)
+              </div>
+              <p style={{ fontSize:11, color:C.muted, margin:"0 0 12px", lineHeight:1.55 }}>
+                <strong style={{ color:C.text }}>Max-Score:</strong> polyhedral region in <Tex>{`\\mathbb{R}^J_+`}</Tex> given by
+                <Tex>{`\\;\\mathcal{U}_{\\mathrm{MS}}=\\{s: 0\\le s_j\\le \\hat{\\tau},\\; j=1,\\ldots,J\\}=[0,\\hat{\\tau}]^J`}</Tex>.
+                Lebesgue volume <Tex>{`\\mathrm{Vol}(\\mathcal{U}_{\\mathrm{MS}})=\\hat{\\tau}^{\\,J}`}</Tex> (orthotope; no approximation).
+                <br />
+                <strong style={{ color:C.text }}>Bonferroni &amp; Max-Rank:</strong> axis-aligned box in <Tex>{`\\mathbb{R}^n`}</Tex>,
+                <Tex>{`\\;\\mathcal{U}=\\prod_{j=1}^{n}[0,\\hat{\\tau}_j]`}</Tex>, volume <Tex>{`\\mathrm{Vol}=\\prod_{j=1}^{n}\\hat{\\tau}_j`}</Tex>.
+              </p>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(3,minmax(0,1fr))", gap:12 }}>
+                {[
+                  { label:"Ours (Max-Score)", v: mcRes.volMS, color:C.ours, dim: `J=${J}` },
+                  { label:"Bonferroni", v: mcRes.volBonf, color:C.bonf, dim: `n=${n}` },
+                  { label:"Max-Rank", v: mcRes.volMR, color:C.mr, dim: `n=${n}` },
+                ].map((row) => (
+                  <div key={row.label} style={{
+                    border:`1px solid ${C.border}`, borderRadius:6, padding:"10px 12px",
+                    borderTopWidth:3, borderTopColor: row.color,
+                  }}>
+                    <div style={{ fontSize:12, fontWeight:600, color:C.text, marginBottom:4 }}>{row.label}</div>
+                    <div style={{ fontSize:10, color:C.muted, marginBottom:6 }}>{row.dim}-dim score space</div>
+                    <div style={{ fontSize:13, fontWeight:700, fontFamily:"monospace", color:row.color, wordBreak:"break-all" }}>
+                      {formatExactVolume(row.v)}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
