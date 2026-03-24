@@ -849,7 +849,7 @@ function App() {
   });
 
   return (
-    <div style={{ background:C.bg, minHeight:"100vh", color:C.text, fontFamily:"system-ui,sans-serif", padding:"24px 28px", boxSizing:"border-box", maxWidth:"100%", overflowX:"hidden" }}>
+    <div style={{ background:C.bg, minHeight:"100vh", color:C.text, fontFamily:"system-ui,sans-serif", padding:"8px 28px 24px", boxSizing:"border-box", maxWidth:"100%", overflowX:"hidden" }}>
 
       <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
         The demo shows one shared <Tex size="12px">{`m \\times J`}</Tex> score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
