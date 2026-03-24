@@ -69,6 +69,23 @@
     mht_method: "Method"
   };
 
+  /** Slugs excluded from Planning Tool (grid) method dropdown and map image list. */
+  const GRID_MHT_EXCLUDED_SLUGS = new Set(["group_conformal_oracle"]);
+
+  /** Display labels for grid mode — internal CSV slugs unchanged for paths. */
+  const gridMethodLabels = {
+    group_conformal_fixed: "Ours (fix groups)",
+    group_conformal_random: "Ours (random)",
+    maxrank: "Max-Rank",
+    ci: "C.I.",
+    bonferroni: "Bonferroni",
+    co_optimized: "Co-Optimized",
+    planning_only: "Planning-Only"
+  };
+
+  const filterGridMhtValues = (values) =>
+    values.filter((v) => !GRID_MHT_EXCLUDED_SLUGS.has(String(v)));
+
   const yMetricOptions = [
     { key: "opt_cost", label: "Worst Case Cost", type: "direct" },
     { key: "true_cost", label: "Evaluation cost", type: "direct" },
@@ -275,6 +292,13 @@
     gridPlotsMode && gridShortLabels[param] ? gridShortLabels[param] : paramLabels[param] || param;
   const getOptionLabel = (param, value) => {
     if (param === "mht_method") {
+      if (gridPlotsMode) {
+        const v = String(value);
+        if (Object.prototype.hasOwnProperty.call(gridMethodLabels, v)) {
+          return gridMethodLabels[v];
+        }
+        return v.replace(/_/g, " ");
+      }
       return String(value).replace(/_/g, " + ");
     }
     return value;
@@ -613,10 +637,14 @@
         if (param === "mht_method" && !gridPlotsMode) {
           values = values.filter((value) => allowedMhtMethods.has(String(value)));
         }
+        if (param === "mht_method" && gridPlotsMode) {
+          values = filterGridMhtValues(values);
+        }
         values.forEach((value) => {
           const option = document.createElement("option");
           option.value = value;
-          option.textContent = value;
+          option.textContent =
+            param === "mht_method" ? getOptionLabel(param, value) : value;
           select.appendChild(option);
         });
 
@@ -780,7 +808,11 @@
       imageMeta = [];
       return;
     }
-    const exp0 = dataset.filter((r) => Number(r.exp_id) === GRID_MAP_EXP_ID);
+    const exp0 = dataset.filter(
+      (r) =>
+        Number(r.exp_id) === GRID_MAP_EXP_ID &&
+        !GRID_MHT_EXCLUDED_SLUGS.has(String(r.mht_method))
+    );
     const seen = new Set();
     imageMeta = [];
     exp0.forEach((row) => {
@@ -796,7 +828,13 @@
   const syncGridImageDefaultsFromDataset = (rows) => {
     if (!gridPlotsMode || !rows.length) return;
     const r =
-      rows.find((row) => Number(row.exp_id) === GRID_MAP_EXP_ID) || rows[0];
+      rows.find(
+        (row) =>
+          Number(row.exp_id) === GRID_MAP_EXP_ID &&
+          !GRID_MHT_EXCLUDED_SLUGS.has(String(row.mht_method))
+      ) ||
+      rows.find((row) => Number(row.exp_id) === GRID_MAP_EXP_ID) ||
+      rows[0];
     const set = (k, v) => {
       if (v !== undefined && v !== null && v !== "") imageSelection[k] = String(v);
     };
@@ -1045,6 +1083,10 @@
         gridPlotsMode && gridEncodedParamKeys.has(param)
           ? getUniqueValues(dataset, param)
           : getImageValuesForSelection(param, selectionForFilter, userSelected);
+
+      if (param === "mht_method" && gridPlotsMode) {
+        values = filterGridMhtValues(values);
+      }
 
       if (param === "effective_alpha" && !gridPlotsMode) {
         const canonical = new Set();
