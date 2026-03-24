@@ -246,9 +246,9 @@ function CovBar({ value, color, label, target }) {
         <span style={{ color:C.muted, fontSize:12, fontFamily:"system-ui,sans-serif" }}>{label}</span>
         <span style={{ color:ok?color:C.bad, fontSize:13, fontWeight:700, fontFamily:"monospace" }}>{pct}%</span>
       </div>
-      <div style={{ position:"relative", background:C.surface2, borderRadius:4, height:10 }}>
-        <div style={{ width:`${pct}%`, height:"100%", borderRadius:4, background:ok?color:C.bad, transition:"width 0.5s ease" }} />
-        <div style={{ position:"absolute", top:-3, bottom:-3, left:`${tpct}%`, width:2, background:C.nominal, borderRadius:1 }} />
+      <div style={{ position:"relative", height:10, borderBottom:`1px solid ${C.border}` }}>
+        <div style={{ position:"absolute", bottom:0, left:0, width:`${pct}%`, height:4, background:ok?color:C.bad, transition:"width 0.5s ease", borderRadius:1 }} />
+        <div style={{ position:"absolute", bottom:-1, left:`${tpct}%`, width:2, height:10, background:C.nominal, borderRadius:1 }} />
       </div>
     </div>
   );
@@ -533,43 +533,47 @@ function Controls({ rhoAR, setRhoAR, gamma, setGamma, alpha, setAlpha, seed, set
   );
 }
 
-/** Monte Carlo tab: same 4 sliders as Controls, then Replications (1 col width) + Run MC + New sample (matched size). */
+/** Monte Carlo tab: same 4 sliders as Controls, then one row: Replications (flex) + Run MC + New sample (aligned). */
 function MonteCarloControls({
   rhoAR, setRhoAR, gamma, setGamma, alpha, setAlpha, seed, setSeed,
   mcReps, setMcReps, doMC, mcBusy,
 }) {
   const card = { background:C.surface, border:`1px solid ${C.border}`, borderRadius:8, padding:16 };
   return (
-    <div style={{ ...card, display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:16, marginTop:0, marginBottom:24 }}>
-      <Slider label="ρ_AR — temporal dependence" value={rhoAR} min={0} max={0.95} step={0.05} onChange={setRhoAR} color={C.bonf}/>
-      <Slider label="γ — within-group noise corr." value={gamma} min={0} max={0.95} step={0.05} onChange={setGamma} color={C.nominal}/>
-      <Slider label="α — miscoverage target" value={alpha} min={0.03} max={0.30} step={0.01} onChange={setAlpha} color={C.text}/>
-      <Slider label="Seed" value={seed} min={1} max={200} step={1} onChange={setSeed} color={C.muted} fmt={v => String(Math.round(v))}/>
+    <div style={{ ...card, marginTop:0, marginBottom:24 }}>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:16 }}>
+        <Slider label="ρ_AR — temporal dependence" value={rhoAR} min={0} max={0.95} step={0.05} onChange={setRhoAR} color={C.bonf}/>
+        <Slider label="γ — within-group noise corr." value={gamma} min={0} max={0.95} step={0.05} onChange={setGamma} color={C.nominal}/>
+        <Slider label="α — miscoverage target" value={alpha} min={0.03} max={0.30} step={0.01} onChange={setAlpha} color={C.text}/>
+        <Slider label="Seed" value={seed} min={1} max={200} step={1} onChange={setSeed} color={C.muted} fmt={v => String(Math.round(v))}/>
+      </div>
 
-      <div style={{ gridColumn:"1 / 2" }}>
-        <Slider label="Replications" value={mcReps} min={100} max={2000} step={100}
-          onChange={v => { setMcReps(Math.round(v)); }}
-          color={C.nominal} fmt={v => String(Math.round(v))}/>
-      </div>
-      <div style={{ gridColumn:"2 / 3", display:"flex", flexDirection:"column", justifyContent:"flex-end", paddingBottom:2 }}>
-        <button type="button" onClick={doMC} disabled={mcBusy} style={{
-          ...MC_BTN,
-          cursor: mcBusy ? "default" : "pointer",
-          background: mcBusy ? C.surface2 : "white",
-          border: `1.5px solid ${mcBusy ? C.border : C.ours}`,
-          color: mcBusy ? C.muted : C.ours,
-          transition: "color 0.2s, border-color 0.2s, background 0.2s",
-        }}>
-          {mcBusy ? `⟳  Running…` : `▶  Run Monte Carlo`}
-        </button>
-      </div>
-      <div style={{ gridColumn:"3 / 4", display:"flex", flexDirection:"column", justifyContent:"flex-end", paddingBottom:2 }}>
-        <button type="button" onClick={() => setSeed(s => (s % 200) + 1)} style={{
-          ...MC_BTN,
-          background: "white",
-          border: `1.5px solid ${C.border}`,
-          color: C.muted,
-        }}>↺ New sample</button>
+      <div style={{
+        display:"flex", flexDirection:"row", flexWrap:"wrap", alignItems:"center", gap:16, marginTop:12,
+      }}>
+        <div style={{ flex:"1 1 240px", minWidth:0 }}>
+          <Slider label="Replications" value={mcReps} min={100} max={2000} step={100}
+            onChange={v => { setMcReps(Math.round(v)); }}
+            color={C.nominal} fmt={v => String(Math.round(v))}/>
+        </div>
+        <div style={{ display:"flex", flexDirection:"row", gap:12, flexShrink:0, alignItems:"stretch" }}>
+          <button type="button" onClick={doMC} disabled={mcBusy} style={{
+            ...MC_BTN,
+            cursor: mcBusy ? "default" : "pointer",
+            background: mcBusy ? C.surface2 : "white",
+            border: `1.5px solid ${mcBusy ? C.border : C.ours}`,
+            color: mcBusy ? C.muted : C.ours,
+            transition: "color 0.2s, border-color 0.2s, background 0.2s",
+          }}>
+            {mcBusy ? `⟳  Running…` : `▶  Run Monte Carlo`}
+          </button>
+          <button type="button" onClick={() => setSeed(s => (s % 200) + 1)} style={{
+            ...MC_BTN,
+            background: "white",
+            border: `1.5px solid ${C.border}`,
+            color: C.muted,
+          }}>↺ New sample</button>
+        </div>
       </div>
     </div>
   );
@@ -827,8 +831,8 @@ function App() {
                     <span style={{ color:C.muted, fontSize:13 }}>{i===0?"Widest":i===2?"Tightest":"Middle"}: {row.label}</span>
                     <span style={{ color:row.color, fontSize:13, fontWeight:700, fontFamily:"monospace" }}>{row.val.toFixed(3)}</span>
                   </div>
-                  <div style={{ background:C.surface2, borderRadius:4, height:8 }}>
-                    <div style={{ width:`${(row.val/mx)*100}%`, height:"100%", borderRadius:4, background:row.color, transition:"width 0.4s" }}/>
+                  <div style={{ position:"relative", height:6, borderBottom:`1px solid ${C.border}` }}>
+                    <div style={{ position:"absolute", bottom:0, left:0, width:`${(row.val/mx)*100}%`, height:4, background:row.color, transition:"width 0.4s", borderRadius:1 }} />
                   </div>
                 </div>
               );
@@ -975,8 +979,8 @@ function App() {
                       <span style={{ color:C.muted, fontSize:13 }}>{i===0?"Widest":i===2?"Tightest":"Middle"}: {row.label}</span>
                       <span style={{ color:row.color, fontSize:13, fontWeight:700, fontFamily:"monospace" }}>{row.val.toFixed(3)}</span>
                     </div>
-                    <div style={{ background:C.surface2, borderRadius:4, height:8 }}>
-                      <div style={{ width:`${(row.val/mx)*100}%`, height:"100%", borderRadius:4, background:row.color, transition:"width 0.4s" }}/>
+                    <div style={{ position:"relative", height:6, borderBottom:`1px solid ${C.border}` }}>
+                      <div style={{ position:"absolute", bottom:0, left:0, width:`${(row.val/mx)*100}%`, height:4, background:row.color, transition:"width 0.4s", borderRadius:1 }} />
                     </div>
                   </div>
                 );
