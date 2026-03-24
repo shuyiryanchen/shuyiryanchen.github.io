@@ -3,6 +3,8 @@
   if (!root) return;
 
   const basePath = root.dataset.basePath || "";
+  /** Archived snapshot page (`/sect-fasttrip-psps/archive/`): short slider tokens W, C, B, α like the original UI; same assets & logic as the live page. */
+  const archiveMode = root.dataset.sfpsArchive === "true";
   const manifestUrl = `${basePath}/assets/website_plots/manifest.json`;
 
   const xAxisSelect = document.getElementById("x-axis");
@@ -49,7 +51,7 @@
     W_cap: "Reliability constraint (absolute)",
     W_cap_multiplier: "SAIFI",
     alpha: "FWER",
-    effective_alpha: "Effectiveness of fast-trip (% of successful mitigation)",
+    effective_alpha: "Effectiveness of fast-trip (% of mitigation)",
     gamma_i_multiplier: "Fast-trip average reliability impact",
     delta: "δ",
     grouping_method: "Declustering method",
@@ -62,8 +64,20 @@
     W_cap_multiplier: "SAIFI",
     C_budget_multiplier: "Sect. budget (% of circuits)",
     B_budget_multiplier: "Fast-trip budget (% of circuits)",
-    effective_alpha: "Effectiveness of fast-trip (% of successful mitigation)",
+    effective_alpha: "Effectiveness of fast-trip (% of mitigation)",
     alpha: "FWER",
+    gamma_i_multiplier: "γ",
+    delta: "δ",
+    mht_method: "Method"
+  };
+
+  /** Original short labels for `/sect-fasttrip-psps/archive/` only (Planning Tool grid). */
+  const gridShortLabelsArchive = {
+    W_cap_multiplier: "W",
+    C_budget_multiplier: "C",
+    B_budget_multiplier: "B",
+    effective_alpha: "α_eff",
+    alpha: "α",
     gamma_i_multiplier: "γ",
     delta: "δ",
     mht_method: "Method"
@@ -288,12 +302,22 @@
     updateYear();
   };
 
-  const getLabel = (param) =>
-    gridPlotsMode && gridShortLabels[param] ? gridShortLabels[param] : paramLabels[param] || param;
+  const getLabel = (param) => {
+    if (gridPlotsMode && archiveMode && gridShortLabelsArchive[param]) {
+      return gridShortLabelsArchive[param];
+    }
+    if (gridPlotsMode && gridShortLabels[param]) {
+      return gridShortLabels[param];
+    }
+    return paramLabels[param] || param;
+  };
   const getOptionLabel = (param, value) => {
     if (param === "mht_method") {
       if (gridPlotsMode) {
         const v = String(value);
+        if (archiveMode) {
+          return v.replace(/_/g, " + ");
+        }
         if (Object.prototype.hasOwnProperty.call(gridMethodLabels, v)) {
           return gridMethodLabels[v];
         }
@@ -1278,7 +1302,9 @@
       if (gridPlotsMode && !resolveGridFolderSlug(encodeGridFolderPrefix(imageSelection))) {
         setStatus(
           imageStatus,
-          "No plot folder for this combination of FWER, SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
+          archiveMode
+            ? "No plot folder for this combination of α, W, C, B, α_eff, γ, and δ."
+            : "No plot folder for this combination of FWER, SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
           true
         );
       } else {
