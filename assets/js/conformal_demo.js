@@ -1,7 +1,7 @@
 /**
- * Hierarchical Conformal Prediction interactive demo (JSX, compiled in-browser by Babel).
+ * Conformal Prediction Demo (JSX, compiled in-browser by Babel).
  * Edit this file under assets/js/ — original lived at synthetic_experiment/conformal_demo.jsx.
- * Loaded on sect-fasttrip-psps tab "Hierarchical Conformal" via type="text/babel".
+ * Loaded on sect-fasttrip-psps tab "Conformal Prediction Demo" via type="text/babel".
  */
 /* global React, ReactDOM — loaded via UMD on the sect-fasttrip-psps page before Babel compiles this file */
 const { useState, useCallback, useEffect, useRef } = React;
@@ -694,7 +694,7 @@ function App() {
       {/* Header */}
       <div style={{ marginBottom:24 }}>
         <h1 style={{ margin:"0 0 4px", fontSize:20, fontWeight:700, color:C.text, fontFamily:"system-ui,sans-serif", letterSpacing:"-0.3px" }}>
-          Hierarchical Conformal Prediction
+          Conformal Prediction Demo
         </h1>
         <p style={{ color:C.muted, fontSize:13, margin:0 }}>
           How each method picks its boundary — n={n} circuit constraints + G={G} extra group bounds available (J={J} total) · only Max-Score uses all J
@@ -1003,7 +1003,7 @@ function App() {
       {/* Footer */}
       <div style={{ marginTop:32, paddingTop:16, borderTop:`1px solid ${C.border}`, display:"flex", justifyContent:"space-between" }}>
         <span style={{ fontSize:12, color:C.muted }}>n={n} circuits · G={G} group bounds · J={J} total available · m={m} · α={alpha.toFixed(2)} · ρ_AR={rhoAR.toFixed(2)} · γ={gamma.toFixed(2)} · seed={seed}</span>
-        <span style={{ fontSize:12, color:C.muted }}>Hierarchical Conformal Coverage</span>
+        <span style={{ fontSize:12, color:C.muted }}>Coverage methods comparison</span>
       </div>
     </div>
   );

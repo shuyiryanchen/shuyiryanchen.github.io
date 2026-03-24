@@ -48,6 +48,17 @@ disable_site_title: true
         Planning Tool
       </button>
       <button
+        id="sfps-tab-btn-conformal"
+        class="sfps-tab-button"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="sfps-tab-conformal"
+        data-tab="sfps-tab-conformal"
+      >
+        Conformal Prediction Demo
+      </button>
+      <button
         id="sfps-tab-btn-historical"
         class="sfps-tab-button"
         type="button"
@@ -68,17 +79,6 @@ disable_site_title: true
         data-tab="sfps-tab-optimization"
       >
         Optimization Results
-      </button>
-      <button
-        id="sfps-tab-btn-conformal"
-        class="sfps-tab-button"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        aria-controls="sfps-tab-conformal"
-        data-tab="sfps-tab-conformal"
-      >
-        Hierarchical Conformal
       </button>
     </div>
 
@@ -163,6 +163,15 @@ disable_site_title: true
 
     </section>
     <section
+      id="sfps-tab-conformal"
+      class="sfps-section sfps-tab-panel sfps-tab-panel--conformal"
+      role="tabpanel"
+      aria-labelledby="sfps-tab-btn-conformal"
+      hidden
+    >
+      <div id="conformal-demo-root" class="sfps-conformal-root" aria-label="Conformal Prediction Demo"></div>
+    </section>
+    <section
       id="sfps-tab-historical"
       class="sfps-section sfps-tab-panel"
       role="tabpanel"
@@ -228,15 +237,6 @@ disable_site_title: true
         </div>
       </div>
     </div>
-    </section>
-    <section
-      id="sfps-tab-conformal"
-      class="sfps-section sfps-tab-panel sfps-tab-panel--conformal"
-      role="tabpanel"
-      aria-labelledby="sfps-tab-btn-conformal"
-      hidden
-    >
-      <div id="conformal-demo-root" class="sfps-conformal-root" aria-label="Hierarchical conformal prediction demo"></div>
     </section>
     </div>
   </div>
