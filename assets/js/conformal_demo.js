@@ -738,8 +738,6 @@ function App() {
       step2:`Sort {E_t} and take the (1−α) = ${(1-alpha).toFixed(2)} quantile → τ̂ = ${sim.tauMS.toFixed(3)}. One value covers ALL constraints simultaneously.`,
       step3:`At test time: covered if all J test scores ≤ τ̂ (single flat threshold).`,
       why:`This is the only method here that gets to use the extra group-sum bounds. The envelope automatically blends circuit and group information into one threshold.`,
-      strength:"Multiscale: circuits + groups",
-      weakness:"Slightly wide when J is small and constraints are independent",
     },
     {
       key:"bonf", color:C.bonf, name:"Bonferroni", cov:sim.covBonf, tau:sim.widthBonf,
@@ -749,8 +747,6 @@ function App() {
       step2:`For each circuit j: sort its m=${m} scores, take the (1−α/n) = ${(1-alpha/n).toFixed(4)} quantile → τ̂_j. Example circuit 0: ${sim.tauBonf[0].toFixed(3)}.`,
       step3:`Covered if each circuit test score is ≤ τ̂_j. Group-sum constraints are ignored.`,
       why:`Classical union bound over circuit constraints only. It is simple, but it never gets the extra hierarchical information that Max-Score uses.`,
-      strength:"Simple circuit-level baseline",
-      weakness:"No group-level protection",
     },
     {
       key:"mr", color:C.mr, name:"Max-Rank (Timans 2025)", cov:sim.covMR, tau:sim.widthMR,
@@ -760,8 +756,6 @@ function App() {
       step2:`Take row-max-rank r_max[t] = max_j rank. Find the (1−α) = ${(1-alpha).toFixed(2)} quantile → r★ = ${Math.round(sim.rStar)} (out of m=${m}).`,
       step3:`τ̂_j = score at rank r★ in sorted circuit column j. Coverage is checked on circuits only; group-sum constraints are ignored.`,
       why:`This can be less conservative than Bonferroni on circuit scores, but it still does not enforce the extra group-level bounds, and temporal dependence can miscalibrate r★.`,
-      strength:"Less conservative circuit-only baseline",
-      weakness:"No group-level protection; fragile under AR dependence",
     },
   ];
 
@@ -826,10 +820,6 @@ function App() {
                 ))}
                 <div style={{ marginTop:10, padding:"6px 10px", borderLeft:`3px solid ${C.border}`, fontSize:12, color:C.muted, lineHeight:1.5 }}>
                   {mth.why}
-                </div>
-                <div style={{ marginTop:10, display:"flex", gap:6, flexWrap:"wrap" }}>
-                  <span style={{ fontSize:11, padding:"2px 8px", borderRadius:4, background:`${C.good}15`, color:C.good, border:`1px solid ${C.good}44` }}>✓ {mth.strength}</span>
-                  <span style={{ fontSize:11, padding:"2px 8px", borderRadius:4, background:`${C.bad}12`, color:C.bad, border:`1px solid ${C.bad}44` }}>✗ {mth.weakness}</span>
                 </div>
               </div>
             ))}
