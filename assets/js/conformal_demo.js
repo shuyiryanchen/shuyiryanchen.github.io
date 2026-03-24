@@ -372,7 +372,9 @@ function HowItWorksDiagram({ sim, method }) {
   /* foreignObject box in SVG user units — fits CoverageBadgePill (12px + padding) */
   const covFoW = 102;
   const covFoH = 26;
-  const SVG_H     = nlAxisY + 48;
+  /* Pill sits below number-line / labels, horizontally centered */
+  const covBadgeY = nlAxisY + 32;
+  const SVG_H     = covBadgeY + covFoH + 14;
 
   // Downsample series to ≤200 display points to keep SVG lightweight
   const MAX_PTS = 200;
@@ -474,11 +476,6 @@ function HowItWorksDiagram({ sim, method }) {
             <text x={Math.min(tauX,W-48)} y={nlAxisY-15} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">τ̂={finalTau.toFixed(2)}</text>
             <line x1={testX} y1={nlAxisY-10} x2={testX} y2={nlAxisY+10} stroke={C.test} strokeWidth={2} strokeDasharray="3,2"/>
             <text x={testX} y={nlAxisY+22} textAnchor="middle" fill={C.test} fontSize={8} fontFamily="monospace">{method==="ours" ? "max test" : "test j=0"}</text>
-            <foreignObject x={W - 2 - covFoW} y={nlAxisY - 11} width={covFoW} height={covFoH}>
-              <div xmlns="http://www.w3.org/1999/xhtml" style={{ margin: 0, width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <CoverageBadgePill cov={covLocal} />
-              </div>
-            </foreignObject>
           </g>
         );
       })()}
@@ -490,14 +487,14 @@ function HowItWorksDiagram({ sim, method }) {
             <line x1={rStarX} y1={nlAxisY-12} x2={rStarX} y2={nlAxisY+12} stroke={color} strokeWidth={2.5}/>
             <text x={Math.min(rStarX,W-52)} y={nlAxisY-15} textAnchor="middle" fill={color} fontSize={8} fontFamily="monospace" fontWeight="bold">r★={Math.round(rStar)}</text>
             <text x={0} y={nlAxisY+22} fill={C.muted} fontSize={8} fontFamily="monospace">score at rank {Math.round(rStar)} per col</text>
-            <foreignObject x={W - 2 - covFoW} y={nlAxisY - 11} width={covFoW} height={covFoH}>
-              <div xmlns="http://www.w3.org/1999/xhtml" style={{ margin: 0, width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <CoverageBadgePill cov={covLocal} />
-              </div>
-            </foreignObject>
           </g>
         );
       })()}
+      <foreignObject x={(W - covFoW) / 2} y={covBadgeY} width={covFoW} height={covFoH}>
+        <div xmlns="http://www.w3.org/1999/xhtml" style={{ margin: 0, width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <CoverageBadgePill cov={covLocal} />
+        </div>
+      </foreignObject>
     </svg>
   );
 }
