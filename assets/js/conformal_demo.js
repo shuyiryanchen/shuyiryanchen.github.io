@@ -772,17 +772,13 @@ function App() {
   return (
     <div style={{ background:C.bg, minHeight:"100vh", color:C.text, fontFamily:"system-ui,sans-serif", padding:"24px 28px", boxSizing:"border-box", maxWidth:"100%", overflowX:"hidden" }}>
 
-      {/* Header */}
-      <div style={{ marginBottom:24 }}>
-        <h1 style={{ margin:"0 0 4px", fontSize:20, fontWeight:700, color:C.text, fontFamily:"system-ui,sans-serif", letterSpacing:"-0.3px" }}>
-          Conformal Prediction Demo
-        </h1>
-        <p style={{ color:C.muted, fontSize:13, margin:0 }}>
-          How each method picks its boundary — n={n} circuit constraints + G={G} extra group bounds available (J={J} total) · only Max-Score uses all J
-        </p>
-      </div>
+      <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
+        The demo shows one shared m×J score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
+        {" "}
+        <strong>Max-Score</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
+      </p>
 
-      {/* Tabs */}
+      {/* Tabs — page title lives on the PSPS tab bar */}
       <div style={{ display:"flex", gap:0, borderBottom:`1px solid ${C.border}`, marginBottom:24 }}>
         {TABS.map(([k,lbl]) => (
           <button key={k} style={tabSty(k)} onClick={() => setTab(k)}>{lbl}</button>
@@ -792,11 +788,6 @@ function App() {
       {/* ── TAB 1 ── */}
       {tab === "howit" && (
         <div>
-          <p style={{ ...label(), margin:"0 0 20px", lineHeight:1.6 }}>
-            The demo shows one shared m×J score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
-            <strong>Max-Score</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
-          </p>
-
           {/* Coverage strip — above method cards */}
 
           {/* Text cards */}
