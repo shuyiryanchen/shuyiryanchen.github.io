@@ -457,7 +457,7 @@
   const COMPARE_METHODS = [
     { id: "ours",    slug: "group_conformal_fixed", name: "Ours", tag: "" },
     { id: "bonf",    slug: "co_optimized",          name: "Co-Optimized" },
-    { id: "maxrank", slug: "planning_only",         name: "Planning only" },
+    { id: "maxrank", slug: "planning_only",         name: "Planning-Only" },
   ];
 
   /** Key outcome metrics shown per method below each map. */
