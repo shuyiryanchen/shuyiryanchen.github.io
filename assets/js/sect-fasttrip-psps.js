@@ -66,8 +66,8 @@
     B_budget_multiplier: "Fast-trip budget (% of circuits)",
     effective_alpha: "Effectiveness of fast-trip (% of mitigation)",
     alpha: "FWER",
-    gamma_i_multiplier: "γ",
-    delta: "δ",
+    gamma_i_multiplier: "Reliability Impact of Fast-Trip",
+    delta: "Reliability Impact of PSPS",
     mht_method: "Method"
   };
 
