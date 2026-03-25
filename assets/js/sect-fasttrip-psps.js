@@ -86,6 +86,23 @@
   const filterGridMhtValues = (values) =>
     values.filter((v) => !GRID_MHT_EXCLUDED_SLUGS.has(String(v)));
 
+  /** Temporarily hide these grid slider values in the Planning Tool (numeric match). */
+  const GRID_HIDDEN_SLIDER_VALUES = {
+    W_cap_multiplier: [0.15],
+    effective_alpha: [0.95]
+  };
+
+  const filterGridHiddenSliderValues = (param, values) => {
+    if (!gridPlotsMode) return values;
+    const blocked = GRID_HIDDEN_SLIDER_VALUES[param];
+    if (!blocked?.length) return values;
+    return values.filter((v) => {
+      const n = Number(v);
+      if (Number.isNaN(n)) return true;
+      return !blocked.some((b) => b === n);
+    });
+  };
+
   const yMetricOptions = [
     { key: "opt_cost", label: "Worst Case Cost", type: "direct" },
     {
@@ -1168,6 +1185,10 @@
         gridPlotsMode && gridEncodedParamKeys.has(param)
           ? getUniqueValues(dataset, param)
           : getImageValuesForSelection(param, selectionForFilter, userSelected);
+
+      if (gridPlotsMode) {
+        values = filterGridHiddenSliderValues(param, values);
+      }
 
       if (param === "mht_method" && gridPlotsMode) {
         values = filterGridMhtValues(values);
