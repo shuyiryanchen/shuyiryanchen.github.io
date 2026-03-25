@@ -418,7 +418,7 @@
 
   /** Three-method comparison shown in Planning Tool (grid mode). */
   const COMPARE_METHODS = [
-    { id: "ours",    slug: "group_conformal_fixed", name: "Max-Score", tag: "Ours" },
+    { id: "ours",    slug: "group_conformal_fixed", name: "Ours", tag: "" },
     { id: "bonf",    slug: "bonferroni",             name: "Bonferroni" },
     { id: "maxrank", slug: "maxrank",                name: "Max-Rank" },
   ];

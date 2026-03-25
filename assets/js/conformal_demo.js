@@ -651,7 +651,7 @@ function PerConstraintView({ sim, width, large=false }) {
 
       {/* Section headers — j runs over full J dimensions; cut at n separates circuit vs group-sum coordinates */}
       <text x={padL+n*colW/2} y={padT-2} textAnchor="middle" fill={C.muted} fontSize={fs(8, 9)} fontFamily="monospace">circuit scores (n={n})</text>
-      <text x={padL+n*colW+G*colW/2} y={padT-2} textAnchor="middle" fill="#8b5e2a" fontSize={fs(8, 9)} fontFamily="monospace">group-sum scores (G={G}, Max-Score only)</text>
+      <text x={padL+n*colW+G*colW/2} y={padT-2} textAnchor="middle" fill="#8b5e2a" fontSize={fs(8, 9)} fontFamily="monospace">group-sum scores (G={G}, Ours only)</text>
 
       <line x1={padL} y1={padT} x2={padL} y2={padT+H} stroke={C.border} strokeWidth={1}/>
       <text x={padL+2} y={11} fill={C.ours} fontSize={fs(8.5, 9.5)} fontFamily="monospace">── Ours</text>
@@ -804,7 +804,7 @@ function App() {
 
   const methodsMeta = [
     {
-      key:"ours", color:C.ours, name:"Max-Score (Ours)", cov:sim.covMS, tau:sim.widthMS,
+      key:"ours", color:C.ours, name:"Ours", cov:sim.covMS, tau:sim.widthMS,
       texTagline:`\\text{One } \\hat{\\tau} \\text{ on the joint envelope of all } ${n}+${G} \\text{ constraints}`,
       formula:`\\hat{\\tau} = Q_{1-\\alpha}\\bigl(\\max_{j} S_{j,t}\\bigr), \\quad j \\in \\{1,\\ldots,J\\}`,
       texSteps:[
@@ -855,7 +855,7 @@ function App() {
       <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
         The demo shows one shared <Tex size="12px">{`m \\times J`}</Tex> score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
         {" "}
-        <strong>Max-Score (Ours)</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
+        <strong>Ours</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
       </p>
 
       {/* Tabs */}
@@ -935,7 +935,7 @@ function App() {
         <div style={{ fontSize: 14 }}>
           <p style={{ ...label(), fontSize: 13, margin:"0 0 20px", lineHeight:1.65 }}>
             Same data, all three methods overlaid. Each bar is the test score for constraint j.
-            Orange group-sum bars matter only for Max-Score (Ours); the two baselines calibrate and evaluate on the blue circuit bars only.
+            Orange group-sum bars matter only for Ours; the two baselines calibrate and evaluate on the blue circuit bars only.
           </p>
 
           <div style={{ ...card(), ...sectionGap, overflowX: "auto" }}>
@@ -972,7 +972,7 @@ function App() {
           <div style={{ ...card(), ...sectionGap }}>
             <div style={{ ...heading(), fontSize: 14 }}>Volume-equivalent threshold scale</div>
             {[
-              { label:"Ours (Max-Score)", val:sim.widthEquivMS, color:C.ours },
+              { label:"Ours", val:sim.widthEquivMS, color:C.ours },
               { label:"Bonferroni",       val:sim.widthEquivBonf, color:C.bonf },
               { label:"Max-Rank",         val:sim.widthEquivMR,   color:C.mr  },
             ].sort((a,b)=>b.val-a.val).map((row,i)=>{
@@ -991,7 +991,7 @@ function App() {
             })}
             {sim.widthEquivMS < sim.widthEquivBonf && sim.widthEquivBonf > 1e-12 && (
               <p style={{ fontSize:13, color:C.ours, margin:"4px 0 0" }}>
-                Even while covering the extra group bounds, Max-Score has a smaller volume-equivalent scale than Bonferroni on this sample ({((sim.widthEquivBonf-sim.widthEquivMS)/sim.widthEquivBonf*100).toFixed(1)}% lower).
+                Even while covering the extra group bounds, Ours has a smaller volume-equivalent scale than Bonferroni on this sample ({((sim.widthEquivBonf-sim.widthEquivMS)/sim.widthEquivBonf*100).toFixed(1)}% lower).
               </p>
             )}
           </div>
@@ -1005,7 +1005,7 @@ function App() {
         <div>
           <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
             {mcReps} independent replications with the current parameters (ρ_AR={rhoAR.toFixed(2)}, γ={gamma.toFixed(2)}, α={alpha.toFixed(2)}).
-            Coverage targets differ by method: <strong>Max-Score (Ours)</strong> must cover all J={J} circuit-plus-group constraints, while the two baselines are evaluated on the n={n} circuit constraints only.
+            Coverage targets differ by method: <strong>Ours</strong> must cover all J={J} circuit-plus-group constraints, while the two baselines are evaluated on the n={n} circuit constraints only.
             Each method still targets joint coverage <Tex>{`\\geq 1-\\alpha = ${((1-alpha)*100).toFixed(0)}\\%`}</Tex> for the constraint set it uses.
           </p>
 
@@ -1022,7 +1022,7 @@ function App() {
             <>
               <div style={{ ...card(), ...sectionGap }}>
                 <div style={{ ...heading() }}>Empirical joint coverage for each method's target event — blue tick = {((1-alpha)*100).toFixed(0)}%</div>
-                <CovBar value={mcRes.ms}   color={C.ours} label="Ours (Max-Score)" target={1-alpha}/>
+                <CovBar value={mcRes.ms}   color={C.ours} label="Ours" target={1-alpha}/>
                 <CovBar value={mcRes.bonf} color={mcRes.bonf >= 1-alpha ? C.ours : C.bonf} label="Bonferroni"       target={1-alpha}/>
                 <CovBar value={mcRes.mr}   color={mcRes.mr >= 1-alpha ? C.ours : C.mr}   label="Max-Rank"         target={1-alpha}/>
               </div>
@@ -1084,7 +1084,7 @@ function App() {
                 Uncertainty set volume — average over {mcReps} MC reps (exact)
               </div>
               <p style={{ fontSize:11, color:C.muted, margin:"0 0 12px", lineHeight:1.55 }}>
-                <strong style={{ color:C.text }}>Max-Score:</strong> polyhedral region in <Tex>{`\\mathbb{R}^J_+`}</Tex> given by
+                <strong style={{ color:C.text }}>Ours:</strong> polyhedral region in <Tex>{`\\mathbb{R}^J_+`}</Tex> given by
                 <Tex>{`\\;\\mathcal{U}_{\\mathrm{MS}}=\\{s: 0\\le s_j\\le \\hat{\\tau},\\; j=1,\\ldots,J\\}=[0,\\hat{\\tau}]^J`}</Tex>.
                 Lebesgue volume <Tex>{`\\mathrm{Vol}(\\mathcal{U}_{\\mathrm{MS}})=\\hat{\\tau}^{\\,J}`}</Tex> (orthotope; no approximation).
                 <br />
@@ -1093,7 +1093,7 @@ function App() {
               </p>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(3,minmax(0,1fr))", gap:12 }}>
                 {[
-                  { label:"Ours (Max-Score)", v: mcRes.volMS, color:C.ours, dim: `J=${J}` },
+                  { label:"Ours", v: mcRes.volMS, color:C.ours, dim: `J=${J}` },
                   { label:"Bonferroni", v: mcRes.volBonf, color:C.bonf, dim: `n=${n}` },
                   { label:"Max-Rank", v: mcRes.volMR, color:C.mr, dim: `n=${n}` },
                 ].map((row) => (
@@ -1122,7 +1122,7 @@ function App() {
                 <Tex>{`\\log\\mathrm{Vol}`}</Tex> is <Tex>{`J\\log\\hat{\\tau}`}</Tex> (Max-Score) or <Tex>{`\\sum_j\\log\\hat{\\tau}_j`}</Tex> (baselines); displayed scale is <Tex>{`\\exp((1/d)\\log\\mathrm{Vol})`}</Tex> (same as the notebook’s sum-of-logs volume for axis-aligned sets; this demo uses score-space orthotopes only).
               </div>
               {[
-                { label:"Ours (Max-Score)", val: mcRes.widthEquivMS,   color:C.ours },
+                { label:"Ours", val: mcRes.widthEquivMS,   color:C.ours },
                 { label:"Bonferroni",        val: mcRes.widthEquivBonf, color:C.bonf },
                 { label:"Max-Rank",          val: mcRes.widthEquivMR,   color:C.mr   },
               ].sort((a,b)=>b.val-a.val).map((row,i)=>{
@@ -1141,7 +1141,7 @@ function App() {
               })}
               {mcRes.widthEquivMS < mcRes.widthEquivBonf && mcRes.widthEquivBonf > 1e-12 && (
                 <p style={{ fontSize:12, color:C.ours, margin:"4px 0 0" }}>
-                  Even while covering the extra group bounds, Max-Score has a smaller volume-equivalent scale than Bonferroni on average ({((mcRes.widthEquivBonf - mcRes.widthEquivMS) / mcRes.widthEquivBonf * 100).toFixed(1)}% lower).
+                  Even while covering the extra group bounds, Ours has a smaller volume-equivalent scale than Bonferroni on average ({((mcRes.widthEquivBonf - mcRes.widthEquivMS) / mcRes.widthEquivBonf * 100).toFixed(1)}% lower).
                 </p>
               )}
             </div>
