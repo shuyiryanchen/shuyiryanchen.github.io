@@ -8,6 +8,9 @@ Usage:
   python3 scripts/sync_grid_plots_from_experiment.py \\
     --source /path/to/optimization_results_grid \\
     --dest   /path/to/assets/website_plots/grid_plots
+
+  # After editing grid_plots/ in place, refresh Planning Tool sliders only:
+  python3 scripts/sync_grid_plots_from_experiment.py --merge-only
 """
 from __future__ import annotations
 
@@ -222,13 +225,33 @@ def main() -> None:
             "grid_plots",
         ),
     )
+    ap.add_argument(
+        "--merge-only",
+        action="store_true",
+        help=(
+            "Only rebuild merged_planning_grid.csv from scenario folders already under --dest "
+            "(each subfolder with grid_setup.json + all_comparison.csv). Skips copy from --source."
+        ),
+    )
     args = ap.parse_args()
-    source_root = os.path.abspath(args.source)
     dest_root = os.path.abspath(args.dest)
+    os.makedirs(dest_root, exist_ok=True)
+
+    if args.merge_only:
+        rows = build_merged_rows(dest_root)
+        merged_path = os.path.join(dest_root, "merged_planning_grid.csv")
+        with open(merged_path, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=FIELDNAMES, extrasaction="ignore")
+            w.writeheader()
+            for row in rows:
+                w.writerow({k: row.get(k, "") for k in FIELDNAMES})
+        print(f"Wrote {len(rows)} rows -> {merged_path}", file=sys.stderr)
+        return
+
+    source_root = os.path.abspath(args.source)
     if not os.path.isdir(source_root):
         print(f"Missing source: {source_root}", file=sys.stderr)
         sys.exit(1)
-    os.makedirs(dest_root, exist_ok=True)
 
     rows = build_merged_rows(source_root)
     merged_path = os.path.join(dest_root, "merged_planning_grid.csv")
