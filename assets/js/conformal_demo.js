@@ -868,6 +868,7 @@ function App() {
     color: tab===k ? "#fff" : C.muted,
     transition:"all 0.15s",
     letterSpacing: "0.01em",
+    whiteSpace: "nowrap",
   });
 
   return (
@@ -923,8 +924,8 @@ function App() {
           )}
         </div>
 
-        {/* ── Right: Tab nav + content ── */}
-        <div style={{ flex:1, minWidth:0, padding:"0 0 24px", paddingTop:0 }}>
+        {/* ── Right: Tab nav + content (paddingTop matches left .sfps-panel 1.1rem so sub-tabs align with Parameters row, not above the card) ── */}
+        <div style={{ flex:1, minWidth:0, padding:"0 0 24px", paddingTop:"1.1rem" }}>
 
           {/* Sub-tabs */}
           <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:10 }}>
@@ -1078,7 +1079,7 @@ function App() {
 
       {/* ── TAB 3 ── */}
       {tab === "mc" && (
-        <div>
+        <div style={{ paddingTop: "4.75rem" }}>
           <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
             {mcReps} independent replications with the current parameters (ρ_AR={rhoAR.toFixed(2)}, γ={gamma.toFixed(2)}, α={alpha.toFixed(2)}).
             Coverage targets differ by method: <strong>Ours</strong> must cover all J={J} circuit-plus-group constraints, while the two baselines are evaluated on the n={n} circuit constraints only.
