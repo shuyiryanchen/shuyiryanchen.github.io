@@ -42,15 +42,41 @@
   font-size: 0.92rem;
   color: var(--sfps-text);
   width: 100%;
+  max-width: 100%;
   margin: 0;
+  box-sizing: border-box;
 }
 
-#sect-fasttrip-psps { width: 100%; }
+#sect-fasttrip-psps {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
 
-/* Title lives in layout <header>; intro is inside #sect-fasttrip-psps */
+/*
+ * Lock horizontal scroll: (1) 100vw is layout-viewport width and often exceeds the
+ * visible width when a vertical scrollbar exists; (2) nested full-bleed sections
+ * must not apply a second breakout.
+ */
+html:has(#sect-fasttrip-psps),
+body:has(#sect-fasttrip-psps) {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 #main:has(#sect-fasttrip-psps) {
   background: #fff;
+  overflow-x: hidden;
+  max-width: 100%;
 }
+
+article.page:has(#sect-fasttrip-psps) .page__inner-wrap {
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Title lives in layout <header>; intro is inside #sect-fasttrip-psps */
 
 /* Same horizontal rhythm as .sfps-fullbleed (viewport breakout + padding) so title lines up with tab strip */
 article.page:has(#sect-fasttrip-psps) header {
@@ -109,6 +135,16 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   padding-right: 1.25rem;
   box-sizing: border-box;
   text-align: left;
+}
+
+/* Second .sfps-fullbleed (e.g. params section) must not re-break to 100vw — that doubles overflow. */
+.sfps-fullbleed .sfps-fullbleed {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .sfps-intro {
@@ -839,9 +875,10 @@ article.page:has(#sect-fasttrip-psps) .page__content {
 
 .sfps-plot-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
   margin-top: 0.5rem;
+  min-width: 0;
 }
 
 .sfps-plot-card {
