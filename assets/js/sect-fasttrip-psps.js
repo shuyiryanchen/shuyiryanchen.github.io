@@ -441,6 +441,20 @@
     },
   ];
 
+  /**
+   * Grid mode: default FWER, budgets, SAIFI, effectiveness, γ, and δ (initial load + Reset).
+   * Must match a row in merged_planning_grid.csv (same scenario_slug for all methods).
+   */
+  const GRID_DEFAULT_HYPERPARAMS = {
+    alpha: 0.4,
+    B_budget_multiplier: 0.2,
+    C_budget_multiplier: 0.3,
+    W_cap_multiplier: 0.1,
+    effective_alpha: 0.9,
+    gamma_i_multiplier: 0.8,
+    delta: 1
+  };
+
   const buildGridImageMetaFromRow = (row) => {
     const folderSlug = row.scenario_slug;
     const methodSlug = row.method_slug;
@@ -854,7 +868,20 @@
 
   const syncGridImageDefaultsFromDataset = (rows) => {
     if (!gridPlotsMode || !rows.length) return;
-    const r =
+
+    const rowMatchesDefaultHyperparams = (row) => {
+      if (Number(row.exp_id) !== GRID_MAP_EXP_ID) return false;
+      return [...gridEncodedParamKeys].every((k) => {
+        const target = GRID_DEFAULT_HYPERPARAMS[k];
+        const rn = Number(row[k]);
+        const tn = Number(target);
+        if (!Number.isNaN(rn) && !Number.isNaN(tn)) return rn === tn;
+        return String(row[k]) === String(target);
+      });
+    };
+
+    const pick =
+      rows.find(rowMatchesDefaultHyperparams) ||
       rows.find(
         (row) =>
           Number(row.exp_id) === GRID_MAP_EXP_ID &&
@@ -862,17 +889,23 @@
       ) ||
       rows.find((row) => Number(row.exp_id) === GRID_MAP_EXP_ID) ||
       rows[0];
-    const set = (k, v) => {
-      if (v !== undefined && v !== null && v !== "") imageSelection[k] = String(v);
+
+    const canonGridParam = (k, rawVal) => {
+      if (rawVal === undefined || rawVal === null || rawVal === "") return;
+      const uniques = getUniqueValues(dataset, k);
+      const vn = Number(rawVal);
+      const hit = uniques.find((x) => {
+        const xn = Number(x);
+        if (!Number.isNaN(vn) && !Number.isNaN(xn)) return vn === xn;
+        return String(x) === String(rawVal);
+      });
+      imageSelection[k] = hit !== undefined ? String(hit) : String(rawVal);
     };
-    set("alpha", r.alpha);
-    set("B_budget_multiplier", r.B_budget_multiplier);
-    set("C_budget_multiplier", r.C_budget_multiplier);
-    set("W_cap_multiplier", r.W_cap_multiplier);
-    set("effective_alpha", r.effective_alpha);
-    set("gamma_i_multiplier", r.gamma_i_multiplier);
-    set("delta", r.delta);
-    set("mht_method", r.mht_method);
+
+    [...gridEncodedParamKeys].forEach((k) => canonGridParam(k, pick[k]));
+    if (pick.mht_method != null && pick.mht_method !== "") {
+      imageSelection.mht_method = String(pick.mht_method);
+    }
     imageSelection.suffix = "none";
   };
 
@@ -1080,7 +1113,7 @@
       excludedImageParams.add("mht_method");
       // FWER is fixed at 0.4 in all grid experiments — hide the control.
       excludedImageParams.add("alpha");
-      imageSelection.alpha = "0.4";
+      imageSelection.alpha = String(GRID_DEFAULT_HYPERPARAMS.alpha);
     }
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
@@ -1470,7 +1503,7 @@
     renderPlot();
   });
   resetPart2Button.addEventListener("click", async () => {
-    imageSelection = { suffix: gridPlotsMode ? "none" : "", ...(gridPlotsMode ? { alpha: "0.4" } : {}) };
+    imageSelection = { suffix: gridPlotsMode ? "none" : "" };
     userSelected.clear();
     applyFixedImageParams();
     try {
