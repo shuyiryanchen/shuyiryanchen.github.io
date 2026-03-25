@@ -88,7 +88,13 @@
 
   const yMetricOptions = [
     { key: "opt_cost", label: "Worst Case Cost", type: "direct" },
-    { key: "true_cost", label: "Evaluation cost", type: "direct" },
+    {
+      key: "true_cost",
+      label: "Evaluation cost (×10⁶)",
+      type: "direct",
+      /** CSV values are absolute cost; plot uses units of 10⁶. */
+      valueScale: 1e-6
+    },
     { key: "x_size", label: "Sect. circuits", type: "direct" },
     { key: "y_size", label: "Fast-trip config. circuits", type: "direct" },
     { key: "z_star_size", label: "PSPS enacted circuits", type: "direct" },
@@ -428,7 +434,11 @@
     { key: "y_size",      label: "Fast-Trip" },
     { key: "z_star_size", label: "Actual PSPS" },
     { key: "z_size",      label: "Planning PSPS" },
-    { key: "true_cost",   label: "Eval. Cost", fmt: (v) => v.toFixed(1) },
+    {
+      key: "true_cost",
+      label: "Eval. Cost (10⁶)",
+      fmt: (v) => (Number(v) * 1e-6).toFixed(2)
+    },
   ];
 
   const buildGridImageMetaFromRow = (row) => {
@@ -713,7 +723,9 @@
 
     const getMetricValue = (row, metric) => {
       if (metric.type === "direct") {
-        return Number(row[metric.key]);
+        const raw = Number(row[metric.key]);
+        if (Number.isNaN(raw)) return NaN;
+        return metric.valueScale != null ? raw * metric.valueScale : raw;
       }
       if (metric.type === "ratio") {
         const numerator = Number(row[metric.numerator]);
