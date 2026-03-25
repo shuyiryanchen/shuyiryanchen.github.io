@@ -671,9 +671,9 @@
       ? filterGridMhtValues(methodValues)
       : methodValues.filter((v) => allowedMhtMethods.has(String(v)));
     [
-      { sel: methodLeftSelect,  defaultIdx: 0 },
-      { sel: methodRightSelect, defaultIdx: Math.min(1, filteredMethodValues.length - 1) },
-    ].forEach(({ sel, defaultIdx }) => {
+      { sel: methodLeftSelect,  preferredSlug: "group_conformal_random" },
+      { sel: methodRightSelect, preferredSlug: "co_optimized" },
+    ].forEach(({ sel, preferredSlug }) => {
       if (!sel) return;
       const prev = sel.value;
       sel.innerHTML = "";
@@ -684,7 +684,9 @@
         sel.appendChild(opt);
       });
       if (prev && filteredMethodValues.includes(prev)) sel.value = prev;
-      else sel.value = filteredMethodValues[defaultIdx] || filteredMethodValues[0] || "";
+      else sel.value = filteredMethodValues.includes(preferredSlug)
+        ? preferredSlug
+        : filteredMethodValues[0] || "";
     });
   };
 
