@@ -425,10 +425,11 @@
 
   /** Key outcome metrics shown per method below each map. */
   const COMPARE_METRICS = [
-    { key: "x_size",      sym: "|x|",  label: "Sectionalized" },
-    { key: "y_size",      sym: "|y|",  label: "Fast-Trip" },
-    { key: "z_star_size", sym: "|z*|", label: "Actual PSPS" },
-    { key: "z_size",      sym: "|z|",  label: "Planning PSPS" },
+    { key: "x_size",      label: "Sectionalized" },
+    { key: "y_size",      label: "Fast-Trip" },
+    { key: "z_star_size", label: "Actual PSPS" },
+    { key: "z_size",      label: "Planning PSPS" },
+    { key: "true_cost",   label: "Eval. Cost", fmt: (v) => v.toFixed(1) },
   ];
 
   const buildGridImageMetaFromRow = (row) => {
@@ -1048,6 +1049,9 @@
       excludedImageParams.add("grouping_method");
       // Grid mode always renders all three methods; no per-method dropdown needed.
       excludedImageParams.add("mht_method");
+      // FWER is fixed at 0.4 in all grid experiments — hide the control.
+      excludedImageParams.add("alpha");
+      imageSelection.alpha = "0.4";
     }
     const imageParamSet = new Set();
     imageMeta.forEach((meta) => {
@@ -1286,7 +1290,7 @@
       if (!folder) {
         setStatus(
           imageStatus,
-          "No plot folder for this combination of FWER, SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
+          "No plot folder for this combination of SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
           true
         );
         COMPARE_METHODS.forEach((m) => {
@@ -1322,9 +1326,8 @@
           if (row) {
             metricsEl.innerHTML = COMPARE_METRICS.map((m) => {
               const val = Number(row[m.key]);
-              const display = Number.isNaN(val) ? "—" : Math.round(val);
+              const display = Number.isNaN(val) ? "—" : (m.fmt ? m.fmt(val) : Math.round(val));
               return `<div class="sfps-metric-card">
-                <span class="sfps-metric-sym">${m.sym}</span>
                 <span class="sfps-metric-value">${display}</span>
                 <span class="sfps-metric-label">${m.label}</span>
               </div>`;
@@ -1428,7 +1431,7 @@
     renderPlot();
   });
   resetPart2Button.addEventListener("click", async () => {
-    imageSelection = { suffix: gridPlotsMode ? "none" : "" };
+    imageSelection = { suffix: gridPlotsMode ? "none" : "", ...(gridPlotsMode ? { alpha: "0.4" } : {}) };
     userSelected.clear();
     applyFixedImageParams();
     try {

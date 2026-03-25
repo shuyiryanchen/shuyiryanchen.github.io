@@ -519,7 +519,7 @@ article.page:has(#sect-fasttrip-psps) .page__title {
 /* ── Metric cards ──────────────────────────────────────────────────── */
 .sfps-metrics-row {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.4rem;
   padding: 0.6rem;
   border-top: 1px solid var(--sfps-border);
@@ -561,7 +561,7 @@ article.page:has(#sect-fasttrip-psps) .page__title {
 
 .sfps-metric-label {
   font-size: 0.62rem;
-  color: var(--sfps-subtle);
+  color: var(--sfps-muted);
   line-height: 1.2;
   text-align: center;
 }
@@ -976,7 +976,7 @@ article.page:has(#sect-fasttrip-psps) .page__title {
     grid-template-columns: 1fr;
   }
   .sfps-metrics-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

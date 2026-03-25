@@ -96,10 +96,11 @@ disable_site_title: true
                   <img id="decision-image-ours" alt="Ours decision map" loading="lazy" />
                 </div>
                 <div class="sfps-metrics-row" id="metrics-ours">
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|x|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Sectionalized</span></div>
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|y|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Fast-Trip</span></div>
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z*|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Actual PSPS</span></div>
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Planning PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Sectionalized</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Fast-Trip</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Actual PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Planning PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Eval. Cost</span></div>
                 </div>
               </div>
 
@@ -111,10 +112,11 @@ disable_site_title: true
                   <img id="decision-image-bonf" alt="Bonferroni decision map" loading="lazy" />
                 </div>
                 <div class="sfps-metrics-row" id="metrics-bonf">
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|x|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Sectionalized</span></div>
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|y|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Fast-Trip</span></div>
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z*|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Actual PSPS</span></div>
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Planning PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Sectionalized</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Fast-Trip</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Actual PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Planning PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Eval. Cost</span></div>
                 </div>
               </div>
 
@@ -126,25 +128,16 @@ disable_site_title: true
                   <img id="decision-image-maxrank" alt="Planning only decision map" loading="lazy" />
                 </div>
                 <div class="sfps-metrics-row" id="metrics-maxrank">
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|x|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Sectionalized</span></div>
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|y|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Fast-Trip</span></div>
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z*|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Actual PSPS</span></div>
-                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-sym">|z|</span><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Planning PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Sectionalized</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Fast-Trip</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Actual PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Planning PSPS</span></div>
+                  <div class="sfps-metric-card sfps-metric-skeleton"><span class="sfps-metric-value">—</span><span class="sfps-metric-label">Eval. Cost</span></div>
                 </div>
               </div>
 
             </div><!-- /method-compare -->
 
-            <!-- Metrics legend -->
-            <div class="sfps-metrics-legend">
-              <span class="sfps-metrics-legend-item"><code>|x|</code> sectionalized circuits</span>
-              <span class="sfps-metrics-legend-sep">·</span>
-              <span class="sfps-metrics-legend-item"><code>|y|</code> fast-trip circuits</span>
-              <span class="sfps-metrics-legend-sep">·</span>
-              <span class="sfps-metrics-legend-item"><code>|z*|</code> actual PSPS enacted</span>
-              <span class="sfps-metrics-legend-sep">·</span>
-              <span class="sfps-metrics-legend-item"><code>|z|</code> planning PSPS circuits</span>
-            </div>
 
           </div><!-- /sfps-content -->
         </div><!-- /sfps-split -->
