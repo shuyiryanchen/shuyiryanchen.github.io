@@ -50,11 +50,14 @@
 /* Title lives in layout <header>; intro is inside #sect-fasttrip-psps */
 #main:has(#sect-fasttrip-psps) {
   background: #fff;
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Same horizontal rhythm as .sfps-fullbleed (viewport breakout + padding) so title lines up with tab strip */
 article.page:has(#sect-fasttrip-psps) header {
-  width: 100vw;
+  width: auto;
+  max-width: none;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   padding-left: 1.75rem;
@@ -70,6 +73,8 @@ article.page:has(#sect-fasttrip-psps) header {
 article.page:has(#sect-fasttrip-psps) {
   --sfps-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --sfps-font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 article.page:has(#sect-fasttrip-psps) .page__title {
@@ -102,7 +107,8 @@ article.page:has(#sect-fasttrip-psps) .page__content {
 }
 
 .sfps-fullbleed {
-  width: 100vw;
+  width: auto;
+  max-width: none;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   padding-left: 1.75rem;
