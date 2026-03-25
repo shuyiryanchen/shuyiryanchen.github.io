@@ -400,6 +400,47 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+/* Tab 4 · Optimization: axis row full-width, then L/R Y on one row; uniform select height + filter row alignment */
+#sfps-tab-optimization .sfps-opt-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    "opt-x opt-x"
+    "opt-yleft opt-yright";
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+#sfps-tab-optimization .sfps-opt-chart-grid .sfps-field {
+  margin-bottom: 0;
+}
+
+#sfps-tab-optimization .sfps-field--opt-x {
+  grid-area: opt-x;
+}
+
+#sfps-tab-optimization .sfps-field--opt-yleft {
+  grid-area: opt-yleft;
+}
+
+#sfps-tab-optimization .sfps-field--opt-yright {
+  grid-area: opt-yright;
+}
+
+#sfps-tab-optimization .sfps-panel select {
+  min-height: 2.35rem;
+  box-sizing: border-box;
+}
+
+#sfps-tab-optimization #filter-controls {
+  align-items: end;
+}
+
+#sfps-tab-optimization #filter-controls .sfps-field {
+  margin-bottom: 0;
+}
+
 /* ── Buttons ───────────────────────────────────────────────────────── */
 .sfps-button {
   display: inline-flex;
