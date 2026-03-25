@@ -294,7 +294,7 @@ function Slider({ label, value, min, max, step, onChange, color, fmt }) {
   return (
     <div style={{ marginBottom:10 }}>
       <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
-        <span style={{ fontSize:12, color:C.muted, fontFamily:"system-ui,sans-serif" }}>{label}</span>
+        <span style={{ fontSize:12, color:C.muted, fontFamily:"inherit" }}>{label}</span>
         <span style={{ fontSize:12, color:color||C.text, fontWeight:600, fontFamily:"monospace",
           minWidth:42, textAlign:"right", display:"inline-block" }}>
           {fmt ? fmt(value) : value.toFixed(2)}
