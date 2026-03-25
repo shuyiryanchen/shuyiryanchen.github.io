@@ -43,7 +43,6 @@
   color: var(--sfps-text);
   width: 100%;
   margin: 0;
-  background: var(--sfps-bg);
 }
 
 #sect-fasttrip-psps { width: 100%; }

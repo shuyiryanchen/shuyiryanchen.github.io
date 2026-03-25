@@ -419,8 +419,8 @@
   /** Three-method comparison shown in Planning Tool (grid mode). */
   const COMPARE_METHODS = [
     { id: "ours",    slug: "group_conformal_fixed", name: "Ours", tag: "" },
-    { id: "bonf",    slug: "bonferroni",             name: "Bonferroni" },
-    { id: "maxrank", slug: "maxrank",                name: "Max-Rank" },
+    { id: "bonf",    slug: "bonferroni",             name: "Co-Optimized" },
+    { id: "maxrank", slug: "maxrank",                name: "Planning only" },
   ];
 
   /** Key outcome metrics shown per method below each map. */

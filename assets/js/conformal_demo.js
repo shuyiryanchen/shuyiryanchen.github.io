@@ -250,8 +250,8 @@ function formatExactVolume(v) {
 const C = {
   ours:"#0a7c5c", bonf:"#c0440e", mr:"#8b2fa8",
   test:"#b07d00", nominal:"#1565c0",
-  bg:"#ffffff", surface:"#f8f9fa", surface2:"#eef0f2",
-  border:"#d0d5dd", text:"#1a1f2e", muted:"#6b7280",
+  bg:"#ffffff", surface:"#ffffff", surface2:"#f8fafc",
+  border:"#e2e8f0", text:"#1a1f2e", muted:"#6b7280",
   good:"#1a7f3c", bad:"#c0392b",
 };
 
@@ -908,18 +908,20 @@ function App() {
         {/* ── Right: Tab nav + content ── */}
         <div style={{ flex:1, minWidth:0, padding:"0 0 24px" }}>
 
-          <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
-            The demo shows one shared <Tex size="12px">{`m \\times J`}</Tex> score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
-            {" "}
-            <strong>Ours</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
-          </p>
-
           {/* Sub-tabs */}
-          <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:24 }}>
+          <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:16 }}>
             {TABS.map(([k,lbl]) => (
               <button key={k} style={tabSty(k)} onClick={() => setTab(k)}>{lbl}</button>
             ))}
           </div>
+
+          {tab !== "mc" && (
+            <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
+              The demo shows one shared <Tex size="12px">{`m \\times J`}</Tex> score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
+              {" "}
+              <strong>Ours</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
+            </p>
+          )}
 
       {/* ── TAB 1 ── */}
       {tab === "howit" && (
