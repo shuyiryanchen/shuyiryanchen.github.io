@@ -217,12 +217,11 @@
   ];
 
   const setStatus = (el, message, isError = false) => {
-    if (!isError) {
-      el.textContent = "";
-      return;
-    }
-    el.textContent = message;
-    el.style.color = "#a40000";
+    if (!el) return;
+    const showErr = isError && !!message;
+    el.textContent = message || "";
+    el.classList.toggle("sfps-status--error", showErr);
+    if (!showErr) el.style.color = "";
   };
 
   const applyFixedImageParams = () => {
@@ -930,6 +929,25 @@
     return String(metaValue) === String(selectedValue);
   };
 
+  /**
+   * Map slider tuple to scenario_slug using CSV rows (authoritative), not folder-name prefix encoding alone.
+   * Folder names may use a different α token (e.g. a0p5) than encodeGridFolderPrefix (a0p4) for the same optimization params.
+   */
+  const resolveGridFolderFromSelection = (sel) => {
+    const rows = dataset.filter((r) => {
+      if (Number(r.exp_id) !== GRID_MAP_EXP_ID) return false;
+      for (const k of gridEncodedParamKeys) {
+        if (!valuesMatch(r[k], sel[k])) return false;
+      }
+      return true;
+    });
+    const slugs = [...new Set(rows.map((r) => r.scenario_slug).filter(Boolean))];
+    if (slugs.length === 1) return slugs[0];
+    if (slugs.length > 1) return slugs.sort()[0];
+    const prefix = encodeGridFolderPrefix(sel);
+    return resolveGridFolderSlug(prefix);
+  };
+
   /** When user selects 0.7, match images with effective_alpha 0.70 or 0.90 (combine 0.7 and 0.9). */
   const effectiveAlphaMatches = (selectedValue, metaValue) => {
     const sel = Number(selectedValue);
@@ -972,8 +990,7 @@
     const suffixKey = sel.suffix || "none";
 
     if (gridPlotsMode) {
-      const prefix = encodeGridFolderPrefix(sel);
-      const resolvedFolder = resolveGridFolderSlug(prefix);
+      const resolvedFolder = resolveGridFolderFromSelection(sel);
       if (!resolvedFolder) return [];
       return imageMeta.filter((meta) => {
         if (meta.folderSlug !== resolvedFolder) return false;
@@ -1284,13 +1301,12 @@
   const renderImage = () => {
     if (gridPlotsMode) {
       // ── Grid mode: render three-method comparison ──────────────────
-      const prefix = encodeGridFolderPrefix(imageSelection);
-      const folder = resolveGridFolderSlug(prefix);
+      const folder = resolveGridFolderFromSelection(imageSelection);
 
       if (!folder) {
         setStatus(
           imageStatus,
-          "No plot folder for this combination of SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
+          "No plot folder for this combination of FWER, SAIFI, sect. budget, fast-trip budget, effectiveness, γ, and δ.",
           true
         );
         COMPARE_METHODS.forEach((m) => {
@@ -1304,16 +1320,27 @@
 
       setStatus(imageStatus, "", false);
 
+      let pendingLoads = 0;
+      let anyImageError = false;
       COMPARE_METHODS.forEach((method) => {
         const imgEl = document.getElementById(`decision-image-${method.id}`);
         const metricsEl = document.getElementById(`metrics-${method.id}`);
 
         if (imgEl) {
+          pendingLoads += 1;
           const imgPath = `grid_plots/${folder}/exp_${GRID_MAP_EXP_ID}_${method.slug}/map.png`;
-          imgEl.src = normalizeImagePath(imgPath);
-          imgEl.onerror = () =>
+          imgEl.onload = null;
+          imgEl.onerror = null;
+          imgEl.onload = () => {
+            pendingLoads -= 1;
+            if (pendingLoads === 0 && !anyImageError) setStatus(imageStatus, "", false);
+          };
+          imgEl.onerror = () => {
+            anyImageError = true;
             setStatus(imageStatus, `Image failed to load for ${method.name}.`, true);
-          imgEl.onload = () => setStatus(imageStatus, "", false);
+            pendingLoads -= 1;
+          };
+          imgEl.src = normalizeImagePath(imgPath);
         }
 
         if (metricsEl && dataset.length) {
