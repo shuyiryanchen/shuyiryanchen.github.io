@@ -56,6 +56,22 @@ body:has(#sect-fasttrip-psps) {
 
 #main:has(#sect-fasttrip-psps) {
   background: #fff;
+  /* Zero out theme padding so the fullbleed calc(50% - 50vw) resolves correctly. */
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+}
+
+/* Remove Susy grid span/suffix so .page fills full width of #main.
+   Without this, .page is ~83% wide with a right gutter, making 50% < 50vw
+   and causing .sfps-fullbleed to overflow and get clipped on the right. */
+article.page:has(#sect-fasttrip-psps) {
+  width: 100%;
+  float: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Same horizontal rhythm as .sfps-fullbleed (viewport breakout + padding) so title lines up with tab strip */
