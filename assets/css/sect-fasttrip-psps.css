@@ -52,7 +52,14 @@
   background: #fff;
 }
 
+/* Same horizontal rhythm as .sfps-fullbleed (viewport breakout + padding) so title lines up with tab strip */
 article.page:has(#sect-fasttrip-psps) header {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: 1.75rem;
+  padding-right: 1.25rem;
+  box-sizing: border-box;
   text-align: left;
   margin-bottom: 0.65rem;
   padding-bottom: 0;
@@ -106,7 +113,7 @@ article.page:has(#sect-fasttrip-psps) .page__content {
 
 .sfps-intro {
   font-family: var(--sfps-font);
-  max-width: 48rem;
+  max-width: none;
   margin: 0 0 1.25rem;
   padding: 0;
   text-align: left;
@@ -115,6 +122,12 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   line-height: 1.68;
   letter-spacing: 0.012em;
   color: var(--sfps-muted);
+}
+
+/* Intro is first child inside .sfps-fullbleed — spacing before tab bar */
+.sfps-fullbleed > .sfps-intro {
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 /* ── Tab navigation ────────────────────────────────────────────────── */
