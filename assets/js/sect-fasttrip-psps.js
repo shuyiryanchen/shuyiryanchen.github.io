@@ -92,8 +92,21 @@
     effective_alpha: [0.95]
   };
 
+  /** When set, Planning Tool (grid) only offers these numeric values for the param. */
+  const GRID_ALLOWED_SLIDER_VALUES = {
+    B_budget_multiplier: [0.2, 0.3]
+  };
+
   const filterGridHiddenSliderValues = (param, values) => {
     if (!gridPlotsMode) return values;
+    const allowed = GRID_ALLOWED_SLIDER_VALUES[param];
+    if (allowed?.length) {
+      return values.filter((v) => {
+        const n = Number(v);
+        if (Number.isNaN(n)) return false;
+        return allowed.some((a) => Math.abs(a - n) < 1e-9);
+      });
+    }
     const blocked = GRID_HIDDEN_SLIDER_VALUES[param];
     if (!blocked?.length) return values;
     return values.filter((v) => {
