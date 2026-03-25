@@ -539,10 +539,16 @@
     return `a${a}__C${C}__B${B}__W${W}__ae${ae}__g${g}__d${d}`;
   };
 
-  /** Match encoded slider tuple to a folder name on disk (CSV column scenario_slug is only the path segment). */
+  /**
+   * Match encoded slider tuple to a folder name on disk (CSV column scenario_slug is the path segment).
+   * Prefer scenario folders without legacy "__expid0__" duplicate segment when multiple names share the same prefix.
+   */
   const resolveGridFolderSlug = (prefix) => {
     const folders = [...new Set(dataset.map((r) => r.scenario_slug).filter(Boolean))];
-    return folders.find((s) => s === prefix || s.startsWith(`${prefix}__`)) || null;
+    const candidates = folders.filter((s) => s === prefix || s.startsWith(`${prefix}__`));
+    if (!candidates.length) return null;
+    const preferred = candidates.find((s) => !String(s).includes("expid0"));
+    return preferred || candidates[0];
   };
 
   const getSuffixLabel = (suffix) => {

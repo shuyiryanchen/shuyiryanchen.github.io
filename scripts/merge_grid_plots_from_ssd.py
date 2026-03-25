@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import csv
 import json
-import re
 import shutil
 import sys
 from pathlib import Path
@@ -24,13 +23,14 @@ GRID_DEST = REPO_ROOT / "assets/website_plots/grid_plots"
 MERGED_PATH = GRID_DEST / "merged_planning_grid.csv"
 
 
-def to_repo_slug(name: str) -> str:
+def canonical_grid_folder_name(name: str) -> str:
+    """
+    Destination folder name under grid_plots/. Legacy copies used an extra __expid0__
+    segment; canonical names omit it (same maps live under ...__<hash> only).
+    """
     if "__expid0__" in name:
-        return name
-    m = re.match(r"^(.*)__([a-f0-9]{8,12})$", name)
-    if not m:
-        return name
-    return f"{m.group(1)}__expid0__{m.group(2)}"
+        return name.replace("__expid0__", "")
+    return name
 
 
 def load_existing_tuples(path: Path) -> set[tuple[float, ...]]:
@@ -145,7 +145,7 @@ def main() -> int:
         if tup is None or tup in existing:
             continue
 
-        repo_slug = to_repo_slug(folder.name)
+        repo_slug = canonical_grid_folder_name(folder.name)
         dest = GRID_DEST / repo_slug
         if dest.exists():
             print(f"Skip copy (already on disk): {repo_slug}")
