@@ -853,8 +853,8 @@ function App() {
   });
 
   return (
-    <div style={{ background:C.bg, color:C.text, fontFamily:"inherit", boxSizing:"border-box", width:"100%", maxWidth:"100%", overflowX:"hidden" }}>
-      <div style={{ display:"flex", gap:"1.25rem", alignItems:"flex-start", width:"100%" }}>
+    <div style={{ background:C.bg, color:C.text, fontFamily:"inherit", boxSizing:"border-box", width:"100%", maxWidth:"100%", overflowX:"hidden", paddingTop:0, marginTop:0 }}>
+      <div style={{ display:"flex", gap:"1.25rem", alignItems:"flex-start", width:"100%", marginTop:0 }}>
 
         {/* ── Left: Controls panel ── */}
         <div style={{
@@ -906,10 +906,10 @@ function App() {
         </div>
 
         {/* ── Right: Tab nav + content ── */}
-        <div style={{ flex:1, minWidth:0, padding:"0 0 24px" }}>
+        <div style={{ flex:1, minWidth:0, padding:"0 0 24px", paddingTop:0 }}>
 
           {/* Sub-tabs */}
-          <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:16 }}>
+          <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:10 }}>
             {TABS.map(([k,lbl]) => (
               <button key={k} style={tabSty(k)} onClick={() => setTab(k)}>{lbl}</button>
             ))}
