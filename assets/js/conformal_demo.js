@@ -873,15 +873,15 @@ function App() {
 
   return (
     <div style={{ background:C.bg, color:C.text, fontFamily:"inherit", boxSizing:"border-box", width:"100%", maxWidth:"100%", overflowX:"hidden", paddingTop:0, marginTop:0 }}>
-      <div style={{ display:"flex", gap:"1.25rem", alignItems:"flex-start", width:"100%", marginTop:0 }}>
+      <div style={{ display:"flex", gap:"1.25rem", alignItems:"flex-start", width:"100%", marginTop:0, overflowAnchor:"none" }}>
 
-        {/* ── Left: Controls panel ── */}
+        {/* ── Left: Controls panel — not sticky: tab switches change row height; sticky + scroll anchoring made the panel jump upward on “Coverage Statistics”. */}
         <div style={{
           flex:"0 0 300px", width:300, minWidth:300,
           background:C.surface, border:`1px solid ${C.border}`, borderRadius:12,
           padding:"1.1rem 1rem", boxSizing:"border-box",
           boxShadow:"0 1px 3px rgba(0,0,0,.08)",
-          alignSelf:"flex-start", position:"sticky", top:16,
+          alignSelf:"flex-start",
         }}>
           <div style={{
             display:"flex", alignItems:"center",
