@@ -853,8 +853,8 @@ function App() {
   });
 
   return (
-    <div style={{ background:C.bg, color:C.text, fontFamily:"inherit", boxSizing:"border-box", maxWidth:"100%", overflowX:"hidden" }}>
-      <div style={{ display:"flex", gap:"1.25rem", alignItems:"flex-start" }}>
+    <div style={{ background:C.bg, color:C.text, fontFamily:"inherit", boxSizing:"border-box", width:"100%", maxWidth:"100%", overflowX:"hidden" }}>
+      <div style={{ display:"flex", gap:"1.25rem", alignItems:"flex-start", width:"100%" }}>
 
         {/* ── Left: Controls panel ── */}
         <div style={{
