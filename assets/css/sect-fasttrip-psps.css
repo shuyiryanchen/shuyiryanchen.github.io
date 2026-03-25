@@ -278,6 +278,8 @@ article.page:has(#sect-fasttrip-psps) .page__content {
 
 .sfps-field input,
 .sfps-field select {
+  width: 100%;
+  box-sizing: border-box;
   padding: 0.4rem 0.6rem;
   border: 1px solid var(--sfps-border-2);
   border-radius: 6px;

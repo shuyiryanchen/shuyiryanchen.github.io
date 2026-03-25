@@ -658,16 +658,12 @@
       xAxisSelect.value = displayParams[0];
     }
 
-    const leftDefault =
-      orderedMetricOptions.find((metric) => metric.key === "opt_cost") ||
-      orderedMetricOptions[0];
-    const rightDefault =
+    const evalCostDefault =
       orderedMetricOptions.find((metric) => metric.key === "true_cost") ||
-      orderedMetricOptions[1] ||
       orderedMetricOptions[0];
 
-    if (leftDefault) yAxisLeftSelect.value = leftDefault.key;
-    if (rightDefault) yAxisRightSelect.value = rightDefault.key;
+    if (evalCostDefault) yAxisLeftSelect.value = evalCostDefault.key;
+    if (evalCostDefault) yAxisRightSelect.value = evalCostDefault.key;
 
     // Populate per-plot method selects
     const methodValues = getUniqueValues(dataset, "mht_method");
