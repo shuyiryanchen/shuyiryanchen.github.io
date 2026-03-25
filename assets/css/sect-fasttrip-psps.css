@@ -897,18 +897,21 @@ article.page:has(#sect-fasttrip-psps) .page__title {
 }
 
 .sfps-params-heading {
+  font-family: var(--sfps-font);
   font-size: 1.15rem;
   font-weight: 700;
   margin-bottom: 0.4rem;
   color: var(--sfps-text);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em;
 }
 
 .sfps-params-intro {
+  font-family: var(--sfps-font);
   margin-bottom: 1.5rem;
   color: var(--sfps-muted);
-  line-height: 1.6;
-  font-size: 0.9rem;
+  line-height: 1.65;
+  font-size: 0.92rem;
+  letter-spacing: 0.01em;
 }
 
 .sfps-params-group {
@@ -916,19 +919,21 @@ article.page:has(#sect-fasttrip-psps) .page__title {
 }
 
 .sfps-params-group-title {
-  font-size: 0.88rem;
-  font-weight: 700;
+  font-family: var(--sfps-font);
+  font-size: 0.98rem;
+  font-weight: 600;
   color: var(--sfps-text);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin: 0 0 0.3rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.35rem;
 }
 
 .sfps-params-group-desc {
-  font-size: 0.85rem;
+  font-family: var(--sfps-font);
+  font-size: 0.88rem;
   color: var(--sfps-muted);
   margin: 0 0 0.85rem;
-  line-height: 1.5;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
 }
 
 .sfps-params-row {
@@ -951,24 +956,30 @@ article.page:has(#sect-fasttrip-psps) .page__title {
 .sfps-param-block:hover { box-shadow: var(--sfps-shadow); }
 
 .sfps-param-block .sfps-param-title {
-  font-size: 0.88rem;
+  font-family: var(--sfps-font);
+  font-size: 0.9rem;
   margin: 0 0 0.4rem;
   color: var(--sfps-blue);
   font-weight: 600;
+  letter-spacing: -0.015em;
 }
 
 .sfps-param-block p {
+  font-family: var(--sfps-font);
   margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.6;
+  font-size: 0.86rem;
+  line-height: 1.62;
   color: var(--sfps-muted);
+  letter-spacing: 0.01em;
 }
 
 .sfps-params-group > p {
-  font-size: 0.875rem;
+  font-family: var(--sfps-font);
+  font-size: 0.88rem;
   line-height: 1.65;
   color: var(--sfps-muted);
   margin: 0 0 0.75rem;
+  letter-spacing: 0.01em;
 }
 
 .sfps-params-group > p code {
