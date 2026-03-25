@@ -21,6 +21,7 @@
   const imageParams = document.getElementById("image-params");
   const decisionImage = document.getElementById("decision-image");
   const resetPart2Button = document.getElementById("reset-part2");
+  const downloadResultsButton = document.getElementById("download-results");
 
   const historicalYearInput = document.getElementById("historical-year");
   const historicalYearValue = document.getElementById("historical-year-value");
@@ -1588,6 +1589,26 @@
     buildImageControls();
     renderImage();
   });
+  if (downloadResultsButton) {
+    downloadResultsButton.addEventListener("click", () => {
+      const methodFileNames = {
+        ours:    "ours",
+        bonf:    "co_optimized",
+        maxrank: "planning_only",
+      };
+      COMPARE_METHODS.forEach((method) => {
+        const imgEl = document.getElementById(`decision-image-${method.id}`);
+        if (!imgEl || !imgEl.src) return;
+        const a = document.createElement("a");
+        a.href = imgEl.src;
+        a.download = `${methodFileNames[method.id]}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+    });
+  }
+
   if (decisionImage) {
     decisionImage.addEventListener("error", () => {
       setStatus(imageStatus, "Image failed to load. Check the path.", true);

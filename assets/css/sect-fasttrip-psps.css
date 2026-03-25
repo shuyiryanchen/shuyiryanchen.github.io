@@ -501,6 +501,12 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   box-shadow: var(--sfps-shadow-sm);
 }
 
+.sfps-button--download {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.5rem;
+}
+
 /* ── Status messages ───────────────────────────────────────────────── */
 .sfps-status {
   font-size: 0.82rem;
