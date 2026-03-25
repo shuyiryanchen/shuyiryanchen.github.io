@@ -326,7 +326,7 @@ function CovBar({ value, color, label, target }) {
   return (
     <div style={{ marginBottom:10 }}>
       <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
-        <span style={{ color:C.muted, fontSize:12, fontFamily:"system-ui,sans-serif" }}>{label}</span>
+        <span style={{ color:C.muted, fontSize:12, fontFamily:"inherit" }}>{label}</span>
         <span style={{ color:ok?color:C.bad, fontSize:13, fontWeight:700, fontFamily:"monospace" }}>{pct}%</span>
       </div>
       <div style={{ position:"relative", height:10, borderBottom:`1px solid ${C.border}` }}>
@@ -670,7 +670,7 @@ const MC_BTN = {
   borderRadius: 6,
   fontSize: 13,
   fontWeight: 600,
-  fontFamily: "system-ui,sans-serif",
+  fontFamily: "inherit",
   cursor: "pointer",
   boxSizing: "border-box",
 };
@@ -687,7 +687,7 @@ function Controls({ rhoAR, setRhoAR, gamma, setGamma, alpha, setAlpha, seed, set
         <button onClick={() => setSeed(s => (s%200)+1)} style={{
           width:"100%", padding:"5px 0", background:"white",
           border:`1px solid ${C.border}`, borderRadius:6,
-          color:C.muted, cursor:"pointer", fontSize:12, fontFamily:"system-ui,sans-serif",
+          color:C.muted, cursor:"pointer", fontSize:12, fontFamily:"inherit",
         }}>↺ New sample</button>
       </div>
     </div>
@@ -799,12 +799,13 @@ function App() {
     padding:16, ...extra,
   });
   const sectionGap = { marginBottom:20 };
-  const label = (extra={}) => ({ fontSize:12, color:C.muted, fontFamily:"system-ui,sans-serif", ...extra });
-  const heading = (extra={}) => ({ fontSize:13, fontWeight:600, color:C.text, fontFamily:"system-ui,sans-serif", marginBottom:8, ...extra });
+  const label = (extra={}) => ({ fontSize:12, color:C.muted, fontFamily:"inherit", ...extra });
+  const heading = (extra={}) => ({ fontSize:13, fontWeight:600, color:C.text, fontFamily:"inherit", marginBottom:8, ...extra });
 
   const methodsMeta = [
     {
       key:"ours", color:C.ours, name:"Ours", cov:sim.covMS, tau:sim.widthMS,
+      shortDesc:"Single threshold over all circuit + group constraints (J = n + G)",
       texTagline:`\\text{One } \\hat{\\tau} \\text{ on the joint envelope of all } ${n}+${G} \\text{ constraints}`,
       formula:`\\hat{\\tau} = Q_{1-\\alpha}\\bigl(\\max_{j} S_{j,t}\\bigr), \\quad j \\in \\{1,\\ldots,J\\}`,
       texSteps:[
@@ -816,6 +817,7 @@ function App() {
     },
     {
       key:"bonf", color:C.bonf, name:"Bonferroni", cov:sim.covBonf, tau:sim.widthBonf,
+      shortDesc:`Per-circuit threshold via union bound at level α/n — ignores group constraints`,
       texTagline:`\\text{Circuit-only union bound: } n=${n} \\text{ separate thresholds at level } \\alpha/n`,
       formula:`\\hat{\\tau}_j = Q_{1-\\alpha/n}\\bigl(S_{j,t}\\bigr), \\quad j \\in \\{1,\\ldots,n\\}, \\; \\alpha/n = ${(alpha/n).toFixed(4)}`,
       texSteps:[
@@ -827,6 +829,7 @@ function App() {
     },
     {
       key:"mr", color:C.mr, name:"Max-Rank (Timans 2025)", cov:sim.covMR, tau:sim.widthMR,
+      shortDesc:"Circuit-only rank correction (Timans 2025) — ignores group constraints",
       texTagline:`\\text{Circuit-only rank correction over the } n \\text{ circuit columns}`,
       formula:`r^\\star = Q_{1-\\alpha}\\bigl(\\max_{j \\le n} \\mathrm{rank}(S_{j,t})\\bigr) = ${Math.round(sim.rStar)}, \\quad \\hat{\\tau}_j = \\mathrm{col}_j[r^\\star]`,
       texSteps:[
@@ -840,7 +843,7 @@ function App() {
 
   const tabSty = k => ({
     padding:"7px 18px", border:"none", cursor:"pointer",
-    fontFamily:"system-ui,sans-serif", fontSize:13,
+    fontFamily:"inherit", fontSize:13,
     fontWeight: tab===k ? 600 : 400,
     borderRadius: 999,
     background: tab===k ? C.text : "transparent",
@@ -850,20 +853,73 @@ function App() {
   });
 
   return (
-    <div style={{ background:C.bg, minHeight:"100vh", color:C.text, fontFamily:"system-ui,sans-serif", padding:"8px 28px 24px", boxSizing:"border-box", maxWidth:"100%", overflowX:"hidden" }}>
+    <div style={{ background:C.bg, color:C.text, fontFamily:"inherit", boxSizing:"border-box", maxWidth:"100%", overflowX:"hidden" }}>
+      <div style={{ display:"flex", gap:"1.25rem", alignItems:"flex-start" }}>
 
-      <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
-        The demo shows one shared <Tex size="12px">{`m \\times J`}</Tex> score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
-        {" "}
-        <strong>Ours</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
-      </p>
+        {/* ── Left: Controls panel ── */}
+        <div style={{
+          flex:"0 0 300px", width:300, minWidth:300,
+          background:C.surface, border:`1px solid ${C.border}`, borderRadius:12,
+          padding:"1.1rem 1rem", boxSizing:"border-box",
+          boxShadow:"0 1px 3px rgba(0,0,0,.08)",
+          alignSelf:"flex-start", position:"sticky", top:16,
+        }}>
+          <div style={{
+            display:"flex", alignItems:"center",
+            marginBottom:"0.9rem", paddingBottom:"0.7rem", borderBottom:`1px solid ${C.border}`,
+          }}>
+            <span style={{ fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:C.muted, fontFamily:"inherit" }}>
+              Parameters
+            </span>
+          </div>
+          <Slider label="ρ_AR — temporal dependence" value={rhoAR} min={0} max={0.95} step={0.05} onChange={setP(setRhoAR)} color={C.bonf}/>
+          <Slider label="γ — within-group noise corr." value={gamma} min={0} max={0.95} step={0.05} onChange={setP(setGamma)} color={C.nominal}/>
+          <Slider label="α — miscoverage target" value={alpha} min={0.03} max={0.30} step={0.01} onChange={setP(setAlpha)} color={C.text}/>
+          <Slider label="Seed" value={seed} min={1} max={200} step={1} onChange={setP(setSeed)} color={C.muted} fmt={v => String(Math.round(v))}/>
+          <button onClick={() => setSeed(s => (s%200)+1)} style={{
+            width:"100%", padding:"6px 0", background:"white",
+            border:`1px solid ${C.border}`, borderRadius:6,
+            color:C.muted, cursor:"pointer", fontSize:12, fontFamily:"inherit", marginTop:4,
+          }}>↺ New sample</button>
+          {tab === "mc" && (
+            <>
+              <div style={{ fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:C.muted, fontFamily:"inherit", margin:"1.2rem 0 0.5rem" }}>
+                Monte Carlo
+              </div>
+              <Slider label="Replications" value={mcReps} min={100} max={2000} step={100}
+                onChange={v => { setMcReps(Math.round(v)); }}
+                color={C.nominal} fmt={v => String(Math.round(v))}/>
+              <button type="button" onClick={doMC} disabled={mcBusy} style={{
+                ...MC_BTN,
+                marginTop:8,
+                cursor: mcBusy ? "default" : "pointer",
+                background: mcBusy ? C.surface2 : "white",
+                border: `1.5px solid ${mcBusy ? C.border : C.ours}`,
+                color: mcBusy ? C.muted : C.ours,
+                fontFamily:"inherit",
+                transition: "color 0.2s, border-color 0.2s, background 0.2s",
+              }}>
+                {mcBusy ? `⟳  Running…` : `▶  Run Monte Carlo`}
+              </button>
+            </>
+          )}
+        </div>
 
-      {/* Tabs */}
-      <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:24 }}>
-        {TABS.map(([k,lbl]) => (
-          <button key={k} style={tabSty(k)} onClick={() => setTab(k)}>{lbl}</button>
-        ))}
-      </div>
+        {/* ── Right: Tab nav + content ── */}
+        <div style={{ flex:1, minWidth:0, padding:"0 0 24px" }}>
+
+          <p style={{ ...label(), margin:"0 0 16px", lineHeight:1.6 }}>
+            The demo shows one shared <Tex size="12px">{`m \\times J`}</Tex> score matrix with <strong>n={n} circuit</strong> scores (blue) and <strong>G={G} group-sum</strong> scores (orange).
+            {" "}
+            <strong>Ours</strong> calibrates on all J={J} columns, while <strong>Bonferroni</strong> and <strong>Max-Rank</strong> ignore the orange group columns and use only the n={n} circuit scores.
+          </p>
+
+          {/* Sub-tabs */}
+          <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:24 }}>
+            {TABS.map(([k,lbl]) => (
+              <button key={k} style={tabSty(k)} onClick={() => setTab(k)}>{lbl}</button>
+            ))}
+          </div>
 
       {/* ── TAB 1 ── */}
       {tab === "howit" && (
@@ -874,8 +930,11 @@ function App() {
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,minmax(0,1fr))", gap:16, alignItems:"start", ...sectionGap }}>
             {methodsMeta.map(mth => (
               <div key={mth.key} style={{ ...card(), borderTopWidth:3, borderTopColor:mth.color, minWidth:0, overflowX:"hidden" }}>
-                <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
                   <span style={{ fontSize:14, fontWeight:700, color:mth.color }}>{mth.name}</span>
+                </div>
+                <div style={{ fontSize:13, color:C.text, lineHeight:1.5, marginBottom:10, padding:"8px 10px", background:C.surface2, borderRadius:6, borderLeft:`3px solid ${mth.color}` }}>
+                  {mth.shortDesc}
                 </div>
                 <div style={{ ...label(), margin:"0 0 8px" }}>
                   <Tex size="12px">{mth.texTagline}</Tex>
@@ -908,9 +967,7 @@ function App() {
             ))}
           </div>
 
-          <Controls rhoAR={rhoAR} setRhoAR={setP(setRhoAR)} gamma={gamma} setGamma={setP(setGamma)} alpha={alpha} setAlpha={setP(setAlpha)} seed={seed} setSeed={setP(setSeed)}/>
-
-          {/* Hint — below sliders */}
+          {/* Hint */}
           <div style={{ ...card({ padding:"12px 16px" }), borderTopWidth:3, borderTopColor:C.nominal, marginTop:20, marginBottom:0 }}>
             <span style={{ fontWeight:600, color:C.nominal, fontSize:13 }}>💡 Try: </span>
             <span style={{ color:C.muted, fontSize:13 }}>
@@ -996,7 +1053,6 @@ function App() {
             )}
           </div>
 
-          <Controls rhoAR={rhoAR} setRhoAR={setP(setRhoAR)} gamma={gamma} setGamma={setP(setGamma)} alpha={alpha} setAlpha={setP(setAlpha)} seed={seed} setSeed={setP(setSeed)}/>
         </div>
       )}
 
@@ -1008,15 +1064,6 @@ function App() {
             Coverage targets differ by method: <strong>Ours</strong> must cover all J={J} circuit-plus-group constraints, while the two baselines are evaluated on the n={n} circuit constraints only.
             Each method still targets joint coverage <Tex>{`\\geq 1-\\alpha = ${((1-alpha)*100).toFixed(0)}\\%`}</Tex> for the constraint set it uses.
           </p>
-
-          <MonteCarloControls
-            rhoAR={rhoAR} setRhoAR={setP(setRhoAR)}
-            gamma={gamma} setGamma={setP(setGamma)}
-            alpha={alpha} setAlpha={setP(setAlpha)}
-            seed={seed} setSeed={setP(setSeed)}
-            mcReps={mcReps} setMcReps={setMcReps}
-            doMC={doMC} mcBusy={mcBusy}
-          />
 
           {mcRes && (
             <>
@@ -1080,7 +1127,7 @@ function App() {
 
           {mcRes && (
             <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:8, padding:16, marginTop:20 }}>
-              <div style={{ fontSize:13, fontWeight:600, color:C.text, fontFamily:"system-ui,sans-serif", marginBottom:4 }}>
+              <div style={{ fontSize:13, fontWeight:600, color:C.text, fontFamily:"inherit", marginBottom:4 }}>
                 Uncertainty set volume — average over {mcReps} MC reps (exact)
               </div>
               <p style={{ fontSize:11, color:C.muted, margin:"0 0 12px", lineHeight:1.55 }}>
@@ -1115,7 +1162,7 @@ function App() {
           {/* Width ranking — only after MC run */}
           {mcRes ? (
             <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:8, padding:16, marginTop:20 }}>
-              <div style={{ fontSize:13, fontWeight:600, color:C.text, fontFamily:"system-ui,sans-serif", marginBottom:4 }}>
+              <div style={{ fontSize:13, fontWeight:600, color:C.text, fontFamily:"inherit", marginBottom:4 }}>
                 Volume-equivalent threshold scale — average over {mcReps} MC reps
               </div>
               <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
@@ -1154,6 +1201,8 @@ function App() {
         </div>
       )}
 
+        </div>{/* /right panel */}
+      </div>{/* /split container */}
     </div>
   );
 }
