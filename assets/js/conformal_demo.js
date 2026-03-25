@@ -924,8 +924,8 @@ function App() {
           )}
         </div>
 
-        {/* ── Right: Tab nav + content (paddingTop matches left .sfps-panel 1.1rem so sub-tabs align with Parameters row, not above the card) ── */}
-        <div style={{ flex:1, minWidth:0, padding:"0 0 24px", paddingTop:"1.1rem" }}>
+        {/* ── Right: Tab nav + content — paddingTop < 1.1rem so the sub-tab bar (taller than the Parameters label row) lines up with the left control header without changing pill/button height ── */}
+        <div style={{ flex:1, minWidth:0, padding:"0 0 24px", paddingTop:"0.62rem" }}>
 
           {/* Sub-tabs */}
           <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:10 }}>
