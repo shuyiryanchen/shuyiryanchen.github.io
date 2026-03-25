@@ -217,16 +217,6 @@ article.page:has(#sect-fasttrip-psps) .page__content {
 
 .sfps-section { margin: 1.5rem 0; }
 
-/* Conformal tab: less gap below main tab strip so Parameters lines up with Planning Tool rhythm */
-.sfps-fullbleed:has(#sfps-tab-conformal.is-active) .sfps-tab-panels {
-  margin-top: 0.35rem;
-}
-
-.sfps-section.sfps-tab-panel--conformal {
-  margin-top: 0.35rem;
-  margin-bottom: 1.5rem;
-}
-
 /* ── Split layout (controls + content) ────────────────────────────── */
 .sfps-split {
   display: flex;
