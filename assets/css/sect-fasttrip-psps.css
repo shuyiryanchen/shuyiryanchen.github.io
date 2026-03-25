@@ -6,6 +6,7 @@
 /* ── Design tokens ─────────────────────────────────────────────────── */
 :root {
   --sfps-font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --sfps-font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 
   /* Neutral palette */
   --sfps-bg:        #f8fafc;
@@ -47,10 +48,29 @@
 
 #sect-fasttrip-psps { width: 100%; }
 
-.sfps-page .page__title {
-  font-size: 1.5rem;
+/* Title lives in layout <header>; intro is inside #sect-fasttrip-psps */
+article.page:has(#sect-fasttrip-psps) header {
+  text-align: center;
+  margin-bottom: 0.35rem;
+}
+
+article.page:has(#sect-fasttrip-psps) {
+  --sfps-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --sfps-font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+article.page:has(#sect-fasttrip-psps) .page__title {
+  font-family: var(--sfps-font-display);
+  font-size: clamp(1.35rem, 2.5vw, 1.95rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
+  color: var(--sfps-text);
+  max-width: 52rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+  font-feature-settings: "cv11" 1, "ss01" 1;
 }
 
 .sfps-fullbleed {
@@ -63,11 +83,15 @@
 }
 
 .sfps-intro {
-  max-width: 900px;
-  margin: 0 auto 1.75rem;
+  font-family: var(--sfps-font);
+  max-width: 40rem;
+  margin: 0 auto 1.5rem;
+  padding: 0 0.5rem;
   text-align: center;
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-size: clamp(0.875rem, 1.05vw, 0.98rem);
+  font-weight: 400;
+  line-height: 1.68;
+  letter-spacing: 0.012em;
   color: var(--sfps-muted);
 }
 
@@ -399,11 +423,15 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   width: 100%;
+  /* Avoid stretching short columns to the tallest map — removes empty “grey” band under images */
+  align-items: start;
 }
 
 .sfps-method-col {
   display: flex;
   flex-direction: column;
+  align-self: start;
+  width: 100%;
   background: var(--sfps-surface);
   border: 1px solid var(--sfps-border);
   border-radius: 12px;
@@ -454,13 +482,13 @@
 
 /* Map image area */
 .sfps-image-wrap--method {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   padding: 0.5rem;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   background: var(--sfps-surface);
-  min-height: 200px;
+  min-height: 0;
 }
 
 .sfps-image-wrap--method img {
