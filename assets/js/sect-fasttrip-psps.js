@@ -96,7 +96,8 @@
 
   /** When set, Planning Tool (grid) only offers these numeric values for the param. */
   const GRID_ALLOWED_SLIDER_VALUES = {
-    B_budget_multiplier: [0.2, 0.3]
+    B_budget_multiplier: [0.2],
+    C_budget_multiplier: [0.3],
   };
 
   const filterGridHiddenSliderValues = (param, values) => {
