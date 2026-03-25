@@ -64,7 +64,7 @@ article.page:has(#sect-fasttrip-psps) header {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   padding-left: 1.75rem;
-  padding-right: calc(1.25rem + (100vw - 100%));
+  padding-right: 1.25rem;
   box-sizing: border-box;
   text-align: left;
   margin-bottom: 0.65rem;
@@ -112,9 +112,7 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   padding-left: 1.75rem;
-  /* Add scrollbar-width compensation so the clip boundary doesn't eat the right edge.
-     100vw - 100% = scrollbar width on systems that have one; 0 when no scrollbar. */
-  padding-right: calc(1.25rem + (100vw - 100%));
+  padding-right: 1.25rem;
   box-sizing: border-box;
   text-align: left;
 }
