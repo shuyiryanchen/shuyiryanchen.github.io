@@ -80,9 +80,18 @@ article.page:has(#sect-fasttrip-psps) .page__title {
   font-feature-settings: "cv11" 1, "ss01" 1;
 }
 
+article.page:has(#sect-fasttrip-psps) .page__inner-wrap,
+article.page:has(#sect-fasttrip-psps) .page__content {
+  text-align: left;
+}
+
 article.page:has(#sect-fasttrip-psps) .page__content {
   background: transparent;
   padding-top: 0;
+}
+
+#sect-fasttrip-psps.sfps-page {
+  text-align: left;
 }
 
 .sfps-fullbleed {
@@ -92,6 +101,7 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   padding-left: 1.75rem;
   padding-right: 1.25rem;
   box-sizing: border-box;
+  text-align: left;
 }
 
 .sfps-intro {
@@ -643,6 +653,7 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   margin: 0;
   padding-top: 0;
   box-sizing: border-box;
+  text-align: left;
 }
 
 /* Conformal demo: flat range sliders */
@@ -773,7 +784,7 @@ article.page:has(#sect-fasttrip-psps) .page__content {
 .sfps-historical-title {
   font-size: 0.82rem;
   font-weight: 600;
-  text-align: center;
+  text-align: left;
   color: var(--sfps-muted);
   padding-bottom: 0.4rem;
   border-bottom: 1px solid var(--sfps-border);
@@ -833,7 +844,7 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--sfps-muted);
-  text-align: center;
+  text-align: left;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
