@@ -424,8 +424,8 @@
   /** Three-method comparison shown in Planning Tool (grid mode). */
   const COMPARE_METHODS = [
     { id: "ours",    slug: "group_conformal_fixed", name: "Ours", tag: "" },
-    { id: "bonf",    slug: "bonferroni",             name: "Co-Optimized" },
-    { id: "maxrank", slug: "maxrank",                name: "Planning only" },
+    { id: "bonf",    slug: "co_optimized",          name: "Co-Optimized" },
+    { id: "maxrank", slug: "planning_only",         name: "Planning only" },
   ];
 
   /** Key outcome metrics shown per method below each map. */
@@ -1160,8 +1160,8 @@
         : uniqueValues.sort();
 
       let defaultValue = sortedValues[0];
-      if (param === "mht_method" && gridPlotsMode && sortedValues.includes("bonferroni")) {
-        defaultValue = "bonferroni";
+      if (param === "mht_method" && gridPlotsMode && sortedValues.includes("co_optimized")) {
+        defaultValue = "co_optimized";
       }
       if (param === "mht_method" && !gridPlotsMode && sortedValues.includes("Random_Bonferroni")) {
         defaultValue = "Random_Bonferroni";
