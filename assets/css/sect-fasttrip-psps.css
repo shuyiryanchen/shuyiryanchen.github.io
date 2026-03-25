@@ -613,77 +613,6 @@ article.page:has(#sect-fasttrip-psps) .page__title {
   box-sizing: border-box;
 }
 
-/* Method identity strip above the React demo */
-.sfps-conf-method-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-  padding: 0 0.1rem;
-}
-
-.sfps-conf-method-pill {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.65rem;
-  padding: 0.75rem 0.85rem;
-  border-radius: 10px;
-  border: 1px solid var(--sfps-border);
-  background: var(--sfps-surface);
-  border-top-width: 3px;
-  box-shadow: var(--sfps-shadow-sm);
-}
-
-.sfps-conf-method-pill--ours   { border-top-color: var(--sfps-ours); }
-.sfps-conf-method-pill--bonf   { border-top-color: var(--sfps-bonf); }
-.sfps-conf-method-pill--mr     { border-top-color: var(--sfps-mr); }
-
-.sfps-conf-method-dot {
-  flex-shrink: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-top: 4px;
-}
-
-.sfps-conf-method-pill--ours   .sfps-conf-method-dot { background: var(--sfps-ours); }
-.sfps-conf-method-pill--bonf   .sfps-conf-method-dot { background: var(--sfps-bonf); }
-.sfps-conf-method-pill--mr     .sfps-conf-method-dot { background: var(--sfps-mr); }
-
-.sfps-conf-method-pill > div { display: flex; flex-direction: column; gap: 0.1rem; }
-
-.sfps-conf-method-pill-name {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--sfps-text);
-}
-
-.sfps-conf-method-pill--ours .sfps-conf-method-pill-name { color: var(--sfps-ours); }
-.sfps-conf-method-pill--bonf .sfps-conf-method-pill-name { color: var(--sfps-bonf); }
-.sfps-conf-method-pill--mr   .sfps-conf-method-pill-name { color: var(--sfps-mr); }
-
-.sfps-conf-method-pill-tag {
-  font-size: 0.66rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  padding: 0.05rem 0.4rem;
-  border-radius: 999px;
-  background: var(--sfps-ours-lt);
-  color: var(--sfps-ours);
-  border: 1px solid rgba(10,124,92,.2);
-  display: inline-block;
-  margin-top: 0.1rem;
-  width: fit-content;
-}
-
-.sfps-conf-method-pill-desc {
-  font-size: 0.78rem;
-  color: var(--sfps-muted);
-  line-height: 1.4;
-  margin-top: 0.25rem;
-}
-
 .sfps-conformal-root {
   min-height: 60vh;
   width: 100%;
@@ -1046,9 +975,6 @@ article.page:has(#sect-fasttrip-psps) .page__title {
 
 @media (max-width: 900px) {
   .sfps-method-compare {
-    grid-template-columns: 1fr;
-  }
-  .sfps-conf-method-strip {
     grid-template-columns: 1fr;
   }
   .sfps-metrics-row {

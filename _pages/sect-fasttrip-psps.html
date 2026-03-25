@@ -206,30 +206,6 @@ disable_site_title: true
         aria-labelledby="sfps-tab-btn-conformal"
         hidden
       >
-        <!-- Method identity strip -->
-        <div class="sfps-conf-method-strip">
-          <div class="sfps-conf-method-pill sfps-conf-method-pill--ours">
-            <span class="sfps-conf-method-dot"></span>
-            <div>
-              <span class="sfps-conf-method-pill-name">Ours</span>
-            </div>
-            <span class="sfps-conf-method-pill-desc">Single threshold over all circuit + group constraints (J = n + G)</span>
-          </div>
-          <div class="sfps-conf-method-pill sfps-conf-method-pill--bonf">
-            <span class="sfps-conf-method-dot"></span>
-            <div>
-              <span class="sfps-conf-method-pill-name">Bonferroni</span>
-            </div>
-            <span class="sfps-conf-method-pill-desc">Per-circuit threshold via union bound at level α/n — ignores group constraints</span>
-          </div>
-          <div class="sfps-conf-method-pill sfps-conf-method-pill--mr">
-            <span class="sfps-conf-method-dot"></span>
-            <div>
-              <span class="sfps-conf-method-pill-name">Max-Rank</span>
-            </div>
-            <span class="sfps-conf-method-pill-desc">Circuit-only rank correction (Timans 2025) — ignores group constraints</span>
-          </div>
-        </div>
         <div id="conformal-demo-root" class="sfps-conformal-root" aria-label="Conformal Prediction Demo"></div>
       </section>
 
