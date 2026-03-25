@@ -924,8 +924,8 @@ function App() {
           )}
         </div>
 
-        {/* ── Right: Tab nav + content — paddingTop slightly under panel 1.1rem so the taller sub-tab pill aligns visually with the left Parameters header (same flex row as .sfps-panel); pill height unchanged ── */}
-        <div style={{ flex:1, minWidth:0, padding:"0 0 24px", paddingTop:"0.78rem" }}>
+        {/* ── Right: Tab nav + content ── */}
+        <div style={{ flex:1, minWidth:0, padding:"0 0 24px", paddingTop:0 }}>
 
           {/* Sub-tabs */}
           <div style={{ display:"inline-flex", gap:4, padding:4, borderRadius:999, background:C.surface2, marginBottom:10 }}>
