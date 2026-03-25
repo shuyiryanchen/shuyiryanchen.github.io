@@ -241,19 +241,9 @@ disable_site_title: true
             <div class="sfps-controls-header">
               <span class="sfps-controls-title">Chart Settings</span>
             </div>
-            <div class="sfps-grid sfps-grid--two sfps-opt-chart-grid" aria-label="Chart axis controls">
-              <div class="sfps-field sfps-field--opt-x">
-                <label for="x-axis">X axis</label>
-                <select id="x-axis"></select>
-              </div>
-              <div class="sfps-field sfps-field--opt-yleft">
-                <label for="y-axis-left">Left plot Y axis</label>
-                <select id="y-axis-left"></select>
-              </div>
-              <div class="sfps-field sfps-field--opt-yright">
-                <label for="y-axis-right">Right plot Y axis</label>
-                <select id="y-axis-right"></select>
-              </div>
+            <div class="sfps-field">
+              <label for="x-axis">X axis</label>
+              <select id="x-axis"></select>
             </div>
             <div class="sfps-controls-section-label">Filters</div>
             <div id="filter-controls" class="sfps-grid"></div>
@@ -265,10 +255,30 @@ disable_site_title: true
               <div class="sfps-plot-card">
                 <h3 class="sfps-plot-title" id="plot-title-left">Optimization Results</h3>
                 <div id="trend-plot-opt" class="sfps-plot"></div>
+                <div class="sfps-plot-under-controls">
+                  <div class="sfps-field">
+                    <label for="y-axis-left">Y axis</label>
+                    <select id="y-axis-left"></select>
+                  </div>
+                  <div class="sfps-field">
+                    <label for="method-left">Method</label>
+                    <select id="method-left"></select>
+                  </div>
+                </div>
               </div>
               <div class="sfps-plot-card">
                 <h3 class="sfps-plot-title" id="plot-title-right">Evaluation</h3>
                 <div id="trend-plot-true" class="sfps-plot"></div>
+                <div class="sfps-plot-under-controls">
+                  <div class="sfps-field">
+                    <label for="y-axis-right">Y axis</label>
+                    <select id="y-axis-right"></select>
+                  </div>
+                  <div class="sfps-field">
+                    <label for="method-right">Method</label>
+                    <select id="method-right"></select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

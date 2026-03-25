@@ -8,6 +8,8 @@
   const xAxisSelect = document.getElementById("x-axis");
   const yAxisLeftSelect = document.getElementById("y-axis-left");
   const yAxisRightSelect = document.getElementById("y-axis-right");
+  const methodLeftSelect = document.getElementById("method-left");
+  const methodRightSelect = document.getElementById("method-right");
   const filterControls = document.getElementById("filter-controls");
   const trendPlotOpt = document.getElementById("trend-plot-opt");
   const trendPlotTrue = document.getElementById("trend-plot-true");
@@ -666,6 +668,28 @@
 
     if (leftDefault) yAxisLeftSelect.value = leftDefault.key;
     if (rightDefault) yAxisRightSelect.value = rightDefault.key;
+
+    // Populate per-plot method selects
+    const methodValues = getUniqueValues(dataset, "mht_method");
+    const filteredMethodValues = gridPlotsMode
+      ? filterGridMhtValues(methodValues)
+      : methodValues.filter((v) => allowedMhtMethods.has(String(v)));
+    [
+      { sel: methodLeftSelect,  defaultIdx: 0 },
+      { sel: methodRightSelect, defaultIdx: Math.min(1, filteredMethodValues.length - 1) },
+    ].forEach(({ sel, defaultIdx }) => {
+      if (!sel) return;
+      const prev = sel.value;
+      sel.innerHTML = "";
+      filteredMethodValues.forEach((v) => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = getOptionLabel("mht_method", v);
+        sel.appendChild(opt);
+      });
+      if (prev && filteredMethodValues.includes(prev)) sel.value = prev;
+      else sel.value = filteredMethodValues[defaultIdx] || filteredMethodValues[0] || "";
+    });
   };
 
   const getCurrentFilters = () => {
@@ -684,7 +708,7 @@
     const currentFilters = getCurrentFilters();
 
     getDisplayParams()
-      .filter((param) => param !== xAxis)
+      .filter((param) => param !== xAxis && param !== "mht_method")
       .forEach((param) => {
         const wrapper = document.createElement("div");
         wrapper.className = "sfps-field";
@@ -787,7 +811,7 @@
       return NaN;
     };
 
-    const renderMetricPlot = (targetEl, metricKey) => {
+    const renderMetricPlot = (targetEl, metricKey, methodFilter) => {
       const metric = getMetricConfig(metricKey);
       const yLabel = getMetricLabel(metricKey);
       if (!isMetricAvailable(metric)) {
@@ -795,8 +819,12 @@
         return;
       }
 
+      const plotRows = methodFilter
+        ? filteredRows.filter((r) => r.mht_method === methodFilter)
+        : filteredRows;
+
       const grouped = new Map();
-      filteredRows.forEach((row) => {
+      plotRows.forEach((row) => {
         const xValue = row[xAxis];
         if (xValue === undefined || xValue === null || xValue === "") return;
         if (!grouped.has(xValue)) grouped.set(xValue, []);
@@ -807,6 +835,11 @@
       const sortedXValues = xValues.every((val) => !Number.isNaN(Number(val)))
         ? xValues.sort((a, b) => Number(a) - Number(b))
         : xValues.sort();
+
+      // Map raw mht_method slugs to human-readable labels on the x-axis
+      const xDisplayValues = xAxis === "mht_method"
+        ? sortedXValues.map((v) => getOptionLabel("mht_method", v))
+        : sortedXValues;
 
       const means = [];
       const uppers = [];
@@ -820,7 +853,7 @@
       });
 
       const meanTrace = {
-        x: sortedXValues,
+        x: xDisplayValues,
         y: means,
         type: "scatter",
         mode: "lines+markers",
@@ -829,7 +862,7 @@
       };
 
       const upperTrace = {
-        x: sortedXValues,
+        x: xDisplayValues,
         y: uppers,
         type: "scatter",
         mode: "lines",
@@ -839,7 +872,7 @@
       };
 
       const lowerTrace = {
-        x: sortedXValues,
+        x: xDisplayValues,
         y: lowers,
         type: "scatter",
         mode: "lines",
@@ -873,8 +906,8 @@
       });
     };
 
-    renderMetricPlot(trendPlotOpt, leftMetric);
-    renderMetricPlot(trendPlotTrue, rightMetric);
+    renderMetricPlot(trendPlotOpt, leftMetric, methodLeftSelect ? methodLeftSelect.value : "");
+    renderMetricPlot(trendPlotTrue, rightMetric, methodRightSelect ? methodRightSelect.value : "");
     plotTitleLeft.textContent = getMetricLabel(leftMetric);
     plotTitleRight.textContent = getMetricLabel(rightMetric);
   };
@@ -1533,6 +1566,8 @@
   });
   yAxisLeftSelect.addEventListener("change", renderPlot);
   yAxisRightSelect.addEventListener("change", renderPlot);
+  if (methodLeftSelect) methodLeftSelect.addEventListener("change", renderPlot);
+  if (methodRightSelect) methodRightSelect.addEventListener("change", renderPlot);
   resetPart1Button.addEventListener("click", () => {
     buildAxisSelects();
     filterControls.querySelectorAll("select").forEach((select) => {

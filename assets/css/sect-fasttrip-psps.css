@@ -915,6 +915,15 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   letter-spacing: 0.06em;
 }
 
+.sfps-plot-under-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  padding: 0.65rem 0 0.25rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--sfps-border);
+}
+
 /* ── Understanding parameters section ──────────────────────────────── */
 .sfps-params-section {
   margin-top: 2.5rem;
