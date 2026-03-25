@@ -450,7 +450,6 @@
     { key: "x_size",      label: "Sectionalized" },
     { key: "y_size",      label: "Fast-Trip" },
     { key: "z_star_size", label: "Actual PSPS" },
-    { key: "z_size",      label: "Planning PSPS" },
     {
       key: "true_cost",
       label: "Eval. Cost (10⁶)",
