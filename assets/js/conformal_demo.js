@@ -289,14 +289,32 @@ function CoverageBadgePill({ cov, compact = false }) {
   );
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Helpers — typography aligned with Planning Tool (.sfps-field label / .sfps-slider-value) ─
+const CTRL_LABEL = {
+  fontSize: "0.82rem",
+  fontWeight: 500,
+  lineHeight: 1.3,
+  color: "var(--sfps-muted, #64748b)",
+  fontFamily: "inherit",
+};
+const CTRL_VALUE = {
+  fontSize: "0.82rem",
+  fontWeight: 600,
+  fontFamily: 'ui-monospace, SFMono-Regular, monospace',
+  minWidth: "2.5rem",
+  textAlign: "right",
+  display: "inline-block",
+};
+
 function Slider({ label, value, min, max, step, onChange, color, fmt }) {
   return (
-    <div style={{ marginBottom:10 }}>
+    <div style={{ marginBottom: "0.85rem" }}>
       <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
-        <span style={{ fontSize:12, color:C.muted, fontFamily:"inherit" }}>{label}</span>
-        <span style={{ fontSize:12, color:color||C.text, fontWeight:600, fontFamily:"monospace",
-          minWidth:42, textAlign:"right", display:"inline-block" }}>
+        <span style={CTRL_LABEL}>{label}</span>
+        <span style={{
+          ...CTRL_VALUE,
+          color: "var(--sfps-blue, #1d6fa5)",
+        }}>
           {fmt ? fmt(value) : value.toFixed(2)}
         </span>
       </div>
@@ -324,10 +342,10 @@ function CovBar({ value, color, label, target }) {
   const ok  = value >= target;
   const tpct = Math.round(target * 100);
   return (
-    <div style={{ marginBottom:10 }}>
+    <div style={{ marginBottom: "0.85rem" }}>
       <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
-        <span style={{ color:C.muted, fontSize:12, fontFamily:"inherit" }}>{label}</span>
-        <span style={{ color:ok?color:C.bad, fontSize:13, fontWeight:700, fontFamily:"monospace" }}>{pct}%</span>
+        <span style={CTRL_LABEL}>{label}</span>
+        <span style={{ color:ok?color:C.bad, fontSize:"0.82rem", fontWeight:700, fontFamily:'ui-monospace, SFMono-Regular, monospace' }}>{pct}%</span>
       </div>
       <div style={{ position:"relative", height:10, borderBottom:`1px solid ${C.border}` }}>
         <div style={{ position:"absolute", bottom:0, left:0, width:`${pct}%`, height:4, background:ok?color:C.bad, transition:"width 0.5s ease", borderRadius:1 }} />
@@ -668,7 +686,7 @@ const MC_BTN = {
   minHeight: 42,
   padding: "10px 12px",
   borderRadius: 6,
-  fontSize: 13,
+  fontSize: "0.88rem",
   fontWeight: 600,
   fontFamily: "inherit",
   cursor: "pointer",
@@ -868,7 +886,7 @@ function App() {
             display:"flex", alignItems:"center",
             marginBottom:"0.9rem", paddingBottom:"0.7rem", borderBottom:`1px solid ${C.border}`,
           }}>
-            <span style={{ fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:C.muted, fontFamily:"inherit" }}>
+            <span style={{ fontSize:"0.75rem", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:"var(--sfps-muted, #64748b)", fontFamily:"inherit" }}>
               Parameters
             </span>
           </div>
@@ -877,13 +895,13 @@ function App() {
           <Slider label="α — miscoverage target" value={alpha} min={0.03} max={0.30} step={0.01} onChange={setP(setAlpha)} color={C.text}/>
           <Slider label="Seed" value={seed} min={1} max={200} step={1} onChange={setP(setSeed)} color={C.muted} fmt={v => String(Math.round(v))}/>
           <button onClick={() => setSeed(s => (s%200)+1)} style={{
-            width:"100%", padding:"6px 0", background:"white",
+            width:"100%", padding:"0.4rem 0.6rem", background:"white",
             border:`1px solid ${C.border}`, borderRadius:6,
-            color:C.muted, cursor:"pointer", fontSize:12, fontFamily:"inherit", marginTop:4,
+            color:"var(--sfps-muted, #64748b)", cursor:"pointer", fontSize:"0.88rem", fontFamily:"inherit", fontWeight:500, marginTop:4,
           }}>↺ New sample</button>
           {tab === "mc" && (
             <>
-              <div style={{ fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:C.muted, fontFamily:"inherit", margin:"1.2rem 0 0.5rem" }}>
+              <div style={{ fontSize:"0.72rem", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:"var(--sfps-subtle, #94a3b8)", fontFamily:"inherit", margin:"1rem 0 0.5rem" }}>
                 Monte Carlo
               </div>
               <Slider label="Replications" value={mcReps} min={100} max={2000} step={100}
