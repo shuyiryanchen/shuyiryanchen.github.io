@@ -53,8 +53,8 @@
     W_cap_multiplier: "SAIFI",
     alpha: "FWER",
     effective_alpha: "Effectiveness of fast-trip (% of mitigation)",
-    gamma_i_multiplier: "Fast-trip average reliability impact",
-    delta: "δ",
+    gamma_i_multiplier: "Reliability Impact of Fast-Trip",
+    delta: "Reliability Impact of PSPS",
     grouping_method: "Declustering method",
     ignitions: "Ignitions",
     mht_method: "Decluster + MHT method"
