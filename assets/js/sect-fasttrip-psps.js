@@ -62,7 +62,7 @@
 
   /** Labels for Planning Tool (grid) sliders — folder names still encode a, C, B, W, ae, g, d. */
   const gridShortLabels = {
-    W_cap_multiplier: "SAIFI",
+    W_cap_multiplier: "SAIFI Cap",
     C_budget_multiplier: "Sect. budget (% of circuits)",
     B_budget_multiplier: "Fast-trip budget (% of circuits)",
     effective_alpha: "Effectiveness of fast-trip (% of mitigation)",
