@@ -185,8 +185,7 @@ disable_site_title: true
             <div class="sfps-params-row">
               <div class="sfps-param-block">
                 <h4 class="sfps-param-title">SAIFI Cap</h4>
-                <p>The reliability constraint is a cap on the average number of interruptions a customer should experience from PSPS and fast-trip actions combined—SAIFI cap by definition. For example, SAIFI Cap = 0.2 means an average California customer should not experience more than 0.2 wildfire-mitigation outages in the planning year.</p>
-                <p>By industry standard, annual system SAIFI target is around 1. Since our constraint only captures interruptions caused by wildfire mitigation actions, we consider SAIFI Cap in a range of [0.1, 0.3].</p>
+                <p>A cap on the average number of interruptions per customer from PSPS and fast-trip actions combined. For example, SAIFI Cap = 0.2 means a California customer should not experience more than 0.2 wildfire-mitigation outages in the planning year. Annual system SAIFI is ~1 by industry standard, so we consider a range of [0.1, 0.3] for mitigation-only interruptions.</p>
               </div>
               <div class="sfps-param-block">
                 <h4 class="sfps-param-title">Reliability Impact of PSPS</h4>
@@ -194,8 +193,7 @@ disable_site_title: true
               </div>
               <div class="sfps-param-block">
                 <h4 class="sfps-param-title">Reliability Impact of Fast-Trip</h4>
-                <p>Fast-trip installation contributes (<em>h<sub>i</sub></em> × expected fast-trips per circuit-year / total system customers) to SAIFI. Compared to a PSPS, a fast-trip is discounted by the expected number of activations per year, which is typically less than 1.</p>
-                <p>Based on 2024 PG&amp;E data, ~2,500 EPSS events occurred across ~3,000 circuits, suggesting ~0.83 interruption events per circuit-year. We therefore consider a range of [0.8, 0.9, 0.95].</p>
+                <p>Fast-trip contributes (<em>h<sub>i</sub></em> × expected activations per circuit-year / total customers) to SAIFI—discounted relative to PSPS because activations per year are typically less than 1. Based on 2024 PG&amp;E data (~2,500 EPSS events across ~3,000 circuits), this averages ~0.83 per circuit-year, so we use a range of [0.8, 0.9, 0.95].</p>
               </div>
             </div>
           </div>

@@ -985,7 +985,7 @@ article.page:has(#sect-fasttrip-psps) .page__content {
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .sfps-param-block {
