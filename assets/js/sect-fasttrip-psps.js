@@ -1590,7 +1590,17 @@
     renderImage();
   });
   if (downloadResultsButton) {
-    downloadResultsButton.addEventListener("click", () => {
+    downloadResultsButton.addEventListener("click", async () => {
+      const triggerDownload = (url, filename) => {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+
+      // Download the three visible method images directly from their <img> src
       const methodFileNames = {
         ours:    "ours",
         bonf:    "co_optimized",
@@ -1599,13 +1609,31 @@
       COMPARE_METHODS.forEach((method) => {
         const imgEl = document.getElementById(`decision-image-${method.id}`);
         if (!imgEl || !imgEl.src) return;
-        const a = document.createElement("a");
-        a.href = imgEl.src;
-        a.download = `${methodFileNames[method.id]}.png`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        triggerDownload(imgEl.src, `${methodFileNames[method.id]}.png`);
       });
+
+      // Also fetch and download the hidden methods for the current folder
+      const EXTRA_METHODS = [
+        { slug: "bonferroni", filename: "bonferroni" },
+        { slug: "ci",         filename: "ci" },
+        { slug: "maxrank",    filename: "maxrank" },
+      ];
+      const folder = resolveGridFolderFromSelection(imageSelection);
+      if (!folder) return;
+      for (const method of EXTRA_METHODS) {
+        const imgPath = `grid_plots/${folder}/exp_${GRID_MAP_EXP_ID}_${method.slug}/map.png`;
+        const url = normalizeImagePath(imgPath);
+        try {
+          const resp = await fetch(url);
+          if (!resp.ok) continue;
+          const blob = await resp.blob();
+          const objUrl = URL.createObjectURL(blob);
+          triggerDownload(objUrl, `${method.filename}.png`);
+          URL.revokeObjectURL(objUrl);
+        } catch (_) {
+          // skip if image not available
+        }
+      }
     });
   }
 
