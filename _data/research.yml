@@ -4,6 +4,8 @@
 # Edit only this file to keep both pages in sync.
 
 working_papers:
+ - |
+    **Shuyi Chen**, Wenbin Zhou, and Shixiang Zhu. Learning Polyhedral Conformal Sets for Robust Optimization. [[arXiv]](https://arxiv.org/abs/2605.08506)
   - |
     **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Large-Scale Resilience Planning for Wildfire-Prone Electricity Systems via Adaptive Robust Optimization. [[arXiv]](https://arxiv.org/abs/2604.01232)
   - |
