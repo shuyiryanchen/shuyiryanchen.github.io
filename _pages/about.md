@@ -18,6 +18,7 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 ## 📣 News<span id="news"></span>
 - **Sept 2026**: Attending HOPE Research Workshop hosted by [HOPE Lab](https://hopelab.nd.edu/). Thank you to all the organizers for the invitation and for hosting the workshop!
+- **Sept 2026**: Excited to release our [wildfire analytics website](https://woody-zhu-group.github.io/Wildfire-Platform/) that allows real-time data analysis, interactive QA chatbot, and data download. Feel free to try it out!
 - **Sept 2026**: Our [paper](https://arxiv.org/pdf/2605.08506) on conformal set modeling for contextual robust optimization has been accepted by NeurIPS 2026.
 - **May 2026**: Won the IISE DAIS Best Track Paper Competition with our [[paper]](https://arxiv.org/abs/2502.05468). I am grateful to my advisor Woody and Prof. Nando Fioretto and all of my amazing coauthors.
 - **Oct 2025**: Won the INFORMS ENRE Best Student Paper Award with our [[paper]](https://arxiv.org/pdf/2505.11627) on robust optimization for power system resilience. Grateful to Woody and Ramteen for their guidance!
