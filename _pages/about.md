@@ -11,7 +11,7 @@ redirect_from:
 
 Hi there! I'm Ryan, a third-year Ph.D. student at Heinz College, Carnegie Mellon University, advised by [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/). My research lies at the intersection of **Statistics** and **Operations Research (OR)**, with a focus on developing data-driven methods for real-world challenges. I hold a Master's degree in Information Systems Management from CMU and a B.B.A. in Supply Chain and Logistics Management from the Chinese University of Hong Kong (Shenzhen).
 
-Outside of research, I'm an film photography enthusiast, a casual boulderer, and a [table tennis](https://usatt.simplycompete.com/userAccount/up/187298?uai=187298&embedded=&max=20) player.
+Outside of research, I'm an film photography enthusiast, a casual boulderer, and a table tennis player.
 
 You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyNlVODXk-rQ7ylQpcxXj?usp=sharing).
 
