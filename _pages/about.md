@@ -16,9 +16,10 @@ Outside of research, I'm an film photography enthusiast, a casual boulderer, and
 You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyNlVODXk-rQ7ylQpcxXj?usp=sharing).
 
 
-<details class="news-fold" open markdown="1">
-<summary><h2 id="news">📣 News</h2></summary>
+## 📣 News<span id="news"></span>
 
+<!-- Only the 5 most recent items are shown; the rest are revealed by the "Show older news" toggle below the list. -->
+- **Oct 2026**: Participated in the Young Researchers Workshop at Cornell University. Thank you to the organizers for organizing such a wonderful workshop!
 - **Sept 2026**: Our paper on balancing planning myopia and forecast error has been selected as INFORMS DMDA Workshop 2026 Finalist (Applied Track).
 - **Sept 2026**: Presented our [paper](https://arxiv.org/pdf/2604.01232) on wildfire resilience planning at HOPE Research Workshop hosted by [HOPE Lab](https://hopelab.nd.edu/). Thank you to all the organizers for the invitation and for hosting the workshop!
 - **Sept 2026**: Excited to release our [wildfire analytics website](https://woody-zhu-group.github.io/Wildfire-Platform/) that allows real-time data analysis, interactive QA chatbot, and data download. Feel free to try it out!
@@ -28,17 +29,11 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 - **Sept 2025**: Co-chairing the [INFORMS DMDA workshop 2025 Data Challenge](https://sites.google.com/view/dmdaworkshop2025/data-challenge) on high-frequncy outage prediction.
 - **Aug 2025**: Attended KDD 2025 Toronto and presented our [[paper]](https://arxiv.org/pdf/2403.17852) on counterfactual fairness.
 - **May 2025**: Attended NSF Workshop on Uncertainty Quantification and Machine Learning for Complex Physical Systems, Chicago. Presented a poster for our [[paper]](https://arxiv.org/pdf/2505.11627).
+- **Oct 2024**: Presented two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
+- **Aug 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
 
-</details>
+<details class="news-more"><summary><span class="news-more__show">Show older news</span><span class="news-more__hide">Show less</span></summary></details>
 
 
 <!-- RESEARCH_FROM_DATA -->
 <!-- Publications and Working Papers sections are injected here from _data/research.yml (keeps Research tab in sync) -->
-
-<details class="news-fold" open markdown="1">
-<summary><h2 id="past-news">📖 Past News</h2></summary>
-
-- **October 2024**: Presented two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
-- **August 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
-
-</details>
