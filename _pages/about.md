@@ -19,7 +19,7 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 ## 📣 News<span id="news"></span>
 
 <!-- Only the 5 most recent items are shown; the rest are revealed by the "Show more" toggle below the list. -->
-- **Oct 2026**: Participated in the Young Researchers Workshop at Cornell University. Thank you to the organizers for organizing such a wonderful workshop!
+- **Oct 2026**: Participated in the Young Researchers Workshop at Cornell University. Thank you to the organizers for organizing such a wonderful event!
 - **Sept 2026**: Our paper on balancing planning myopia and forecast error has been selected as INFORMS DMDA Workshop 2026 Finalist (Applied Track).
 - **Sept 2026**: Presented our [paper](https://arxiv.org/pdf/2604.01232) on wildfire resilience planning at HOPE Research Workshop hosted by [HOPE Lab](https://hopelab.nd.edu/). Thank you to all the organizers for the invitation and for hosting the workshop!
 - **Sept 2026**: Excited to release our [wildfire analytics website](https://woody-zhu-group.github.io/Wildfire-Platform/) that allows real-time data analysis, interactive QA chatbot, and data download. Feel free to try it out!
