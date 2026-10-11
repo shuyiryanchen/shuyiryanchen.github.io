@@ -56,6 +56,42 @@
     border-bottom: 1px solid $border-color;
   }
 
+  /* foldable sections (News on the About page): click the heading to toggle */
+  details.news-fold {
+    > summary {
+      display: block;
+      list-style: none;
+      cursor: pointer;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      h2 {
+        display: flex;
+        align-items: center;
+
+        &::after {
+          content: "\f078"; /* fa-chevron-down */
+          font-family: "Font Awesome 5 Free";
+          font-weight: 900;
+          font-size: 0.6em;
+          margin-left: auto;
+          color: $gray;
+          transition: transform 0.2s ease-in-out;
+        }
+      }
+
+      &:hover h2::after {
+        color: $link-color;
+      }
+    }
+
+    &:not([open]) > summary h2::after {
+      transform: rotate(-90deg);
+    }
+  }
+
   p, li, dl {
     font-size: 1em;
   }
