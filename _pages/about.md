@@ -18,7 +18,7 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 
 ## 📣 News<span id="news"></span>
 
-<!-- Only the 5 most recent items are shown; the rest are revealed by the "Show older news" toggle below the list. -->
+<!-- Only the 5 most recent items are shown; the rest are revealed by the "Show more" toggle below the list. -->
 - **Oct 2026**: Participated in the Young Researchers Workshop at Cornell University. Thank you to the organizers for organizing such a wonderful workshop!
 - **Sept 2026**: Our paper on balancing planning myopia and forecast error has been selected as INFORMS DMDA Workshop 2026 Finalist (Applied Track).
 - **Sept 2026**: Presented our [paper](https://arxiv.org/pdf/2604.01232) on wildfire resilience planning at HOPE Research Workshop hosted by [HOPE Lab](https://hopelab.nd.edu/). Thank you to all the organizers for the invitation and for hosting the workshop!
@@ -32,7 +32,7 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 - **Oct 2024**: Presented two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
 - **Aug 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
 
-<details class="news-more"><summary><span class="news-more__show">Show older news</span><span class="news-more__hide">Show less</span></summary></details>
+<details class="news-more"><summary><span class="news-more__show">Show more</span><span class="news-more__hide">Show less</span></summary></details>
 
 
 <!-- RESEARCH_FROM_DATA -->
