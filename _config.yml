@@ -82,8 +82,8 @@ analytics:
 author:
   name             : "Shuyi (Ryan) Chen"
   avatar           : "profile.png"
-  bio              :
-  location         :
+  bio              : "PhD student at CMU"
+  location         : "Pittsburgh, PA, US"
   employer         :
   pubmed           :
   googlescholar    : "https://scholar.google.com/citations?user=culGbtkAAAAJ&hl=en"
@@ -96,7 +96,7 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "shuyiryanchen"
+  github           : "ryanmaomaomao/"
   google_plus      :
   keybase          :
   instagram        :
