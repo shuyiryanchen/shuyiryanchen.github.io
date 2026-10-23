@@ -9,17 +9,17 @@ redirect_from:
   - /about.html
 ---
 
-Hi there! I'm Ryan, a final-year Ph.D. student in Information Systems Management at Heinz College, Carnegie Mellon University, advised by [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/) and [Ramteen Sioshansi](https://www.cmu.edu/ceic/people/rsioshan/). **My research develops machine learning and optimization methods for decision-making under uncertainty, with applications to power-system resilience against wildfires and extreme weather.**
+Hi there! I'm Ryan, a final-year Ph.D. student in Information Systems Management at Heinz College, Carnegie Mellon University, advised by [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/) and [Ramteen Sioshansi](https://www.cmu.edu/ceic/people/rsioshan/). **My research focuses on power-system resilience to wildfires and extreme weather: I develop machine learning and optimization methods for planning and operating the grid under uncertainty.**
 
 <div class="notice--info" markdown="1">
 **I am on the 2026–2027 academic job market.** [CV (PDF)](/files/Shuyi_Chen_CV.pdf)
 </div>
 
-My work trains predictive models for the decisions they inform (*decision-focused learning*) and builds uncertainty sets with statistical guarantees into robust and chance-constrained optimization. Specifically:
+To do this, I train predictive models for the decisions they inform (*decision-focused learning*) and build uncertainty sets with statistical guarantees into robust and chance-constrained optimization. Specifically:
 
+- **Power-system resilience to wildfires and extreme weather**: planning and operating electric grids under rare, high-impact hazards, from grid hardening and sectionalization to Public Safety Power Shutoffs and outage response ([INFORMS ENRE Best Student Paper](https://arxiv.org/abs/2505.11627), [wildfire planning](https://arxiv.org/abs/2604.01232), [public platform](https://woody-zhu-group.github.io/Wildfire-Platform/)).
 - **Decision-focused learning**: generative and neural ODE models trained on decision quality rather than forecast accuracy ([ICLR 2026](https://arxiv.org/abs/2502.05468), [IEEE Trans. Smart Grid](https://arxiv.org/abs/2502.18321)).
 - **Robust optimization with conformal guarantees**: uncertainty sets that are statistically valid and shaped by the downstream decision ([NeurIPS 2026](https://arxiv.org/abs/2605.08506)).
-- **Wildfire and extreme-weather resilience**: planning and operating large power systems under rare, high-impact hazards ([INFORMS ENRE Best Student Paper](https://arxiv.org/abs/2505.11627), [wildfire planning](https://arxiv.org/abs/2604.01232), [public platform](https://woody-zhu-group.github.io/Wildfire-Platform/)).
 
 Before my Ph.D., I earned a Master's degree in Information Systems Management from CMU and a B.B.A. in Supply Chain and Logistics Management from the Chinese University of Hong Kong (Shenzhen), and worked as a data scientist at ByteDance.
 
