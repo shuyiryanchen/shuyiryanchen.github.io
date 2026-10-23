@@ -33,7 +33,7 @@ Before my Ph.D., I earned a Master's degree in Information Systems Management fr
 - **Sept 2026**: Our paper on balancing planning myopia and forecast error has been selected as INFORMS DMDA Workshop 2026 Finalist (Applied Track).
 - **Sept 2026**: Presented our [paper](https://arxiv.org/pdf/2604.01232) on wildfire resilience planning at HOPE Research Workshop hosted by [HOPE Lab](https://hopelab.nd.edu/). Thank you to all the organizers for the invitation and for hosting the workshop!
 - **Sept 2026**: Excited to release our [wildfire analytics website](https://woody-zhu-group.github.io/Wildfire-Platform/) that allows real-time data analysis, interactive QA chatbot, and data download. Feel free to try it out!
-- **Sept 2026**: Our [paper](https://arxiv.org/pdf/2605.08506) on conformal set modeling for contextual robust optimization has been accepted by NeurIPS 2026.
+- **Sept 2026**: Our [paper](https://arxiv.org/pdf/2605.08506) on conformal set modeling for robust optimization has been accepted by NeurIPS 2026.
 - **May 2026**: Won the IISE DAIS Best Track Paper Competition with our [[paper]](https://arxiv.org/abs/2502.05468). I am grateful to my advisor Woody and Prof. Nando Fioretto and all of my amazing coauthors.
 - **Oct 2025**: Won the INFORMS ENRE Best Student Paper Award with our [[paper]](https://arxiv.org/pdf/2505.11627) on robust optimization for power system resilience. Grateful to Woody and Ramteen for their guidance!
 - **Sept 2025**: Co-chairing the [INFORMS DMDA workshop 2025 Data Challenge](https://sites.google.com/view/dmdaworkshop2025/data-challenge) on high-frequency outage prediction.
