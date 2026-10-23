@@ -25,8 +25,6 @@ Before my Ph.D., I earned a Master's degree in Information Systems Management fr
 
 **Teaching:** Lecturer, *A/B Testing* (95-819), Heinz College, Carnegie Mellon University, 2026.
 
-Outside of research, I'm a film photography enthusiast, a cyclist, and a table tennis player ([more on the Trivia page](/trivia/)).
-
 
 ## 📣 News<span id="news"></span>
 
