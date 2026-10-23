@@ -17,7 +17,7 @@ Hi there! I'm Ryan, a final-year Ph.D. student in Information Systems Management
 
 To do this, I train predictive models for the decisions they inform (*decision-focused learning*) and build uncertainty sets with statistical guarantees into robust and chance-constrained optimization. Specifically:
 
-- **Power-system resilience to wildfires and extreme weather**: planning and operating electric grids under rare, high-impact hazards, from grid hardening and sectionalization to Public Safety Power Shutoffs and outage response ([INFORMS ENRE Best Student Paper](https://arxiv.org/abs/2505.11627), [wildfire planning](https://arxiv.org/abs/2604.01232), [public platform](https://woody-zhu-group.github.io/Wildfire-Platform/)).
+- **Power-system resilience to wildfires and extreme weather**: planning and operating electric grids under rare, high-impact hazards, from grid hardening and sectionalization to Public Safety Power Shutoffs and outage response ([public platform](https://woody-zhu-group.github.io/Wildfire-Platform/), [wildfire planning](https://arxiv.org/abs/2604.01232), [INFORMS ENRE Best Student Paper](https://arxiv.org/abs/2505.11627)).
 - **Decision-focused learning**: generative and neural ODE models trained on decision quality rather than forecast accuracy ([ICLR 2026](https://arxiv.org/abs/2502.05468), [IEEE Trans. Smart Grid](https://arxiv.org/abs/2502.18321)).
 - **Robust optimization with conformal guarantees**: uncertainty sets that are statistically valid and shaped by the downstream decision ([NeurIPS 2026](https://arxiv.org/abs/2605.08506)).
 
