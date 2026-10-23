@@ -1,53 +1,34 @@
 {% comment %}
-  Renders research entries from _data/research.yml (single source of truth).
+  Renders research entries from _data/research.yml (single source of truth), one section per status tier.
   order: "working_papers_first" (Research page) or "publications_first" (About page)
-  style: "about" for About page (emoji headings + span ids), omit for Research page
+  style: "about" for About page (emoji headings), omit for Research page
 {% endcomment %}
 {% assign research = site.data.research %}
 {% assign is_about = include.style | default: "" | downcase | strip %}
+{% if include.order == "working_papers_first" %}
+  {% assign sections = "working_papers,journal_publications,conference_proceedings" | split: "," %}
+{% else %}
+  {% assign sections = "journal_publications,conference_proceedings,working_papers" | split: "," %}
+{% endif %}
 
 <div class="research-list{% if is_about == 'about' %} research-list--about{% endif %}">
-  {% if include.order == "working_papers_first" %}
-    {% if is_about == "about" %}
-      <h2 id="working-papers-and-preprints">🔬 Working Papers and Preprints<span id="wip"></span></h2>
+  {% for key in sections %}
+    {% if key == "journal_publications" %}
+      {% assign title = "Journal Publications" %}{% assign emoji = "📄" %}{% assign anchor = "publications" %}
+    {% elsif key == "conference_proceedings" %}
+      {% assign title = "Peer-Reviewed Conference Proceedings" %}{% assign emoji = "📑" %}{% assign anchor = "conference-proceedings" %}
     {% else %}
-      <h2 class="research-list__section-title" id="working-papers-and-preprints">Working Papers and Preprints</h2>
+      {% assign title = "Working Papers" %}{% assign emoji = "🔬" %}{% assign anchor = "working-papers" %}
+    {% endif %}
+    {% if is_about == "about" %}
+      <h2 id="{{ anchor }}">{{ emoji }} {{ title }}</h2>
+    {% else %}
+      <h2 class="research-list__section-title" id="{{ anchor }}">{{ title }}</h2>
     {% endif %}
     <ul class="research-list__section">
-      {% for item in research.working_papers %}
+      {% for item in research[key] %}
         <li class="research-list__item">{{ item | markdownify }}</li>
       {% endfor %}
     </ul>
-    {% if is_about == "about" %}
-      <h2 id="publications">📄 Publications<span id="conferences-and-workshops"></span></h2>
-    {% else %}
-      <h2 class="research-list__section-title" id="publications">Publications</h2>
-    {% endif %}
-    <ul class="research-list__section">
-      {% for item in research.publications %}
-        <li class="research-list__item">{{ item | markdownify }}</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    {% if is_about == "about" %}
-      <h2 id="publications">📄 Publications<span id="conferences-and-workshops"></span></h2>
-    {% else %}
-      <h2 class="research-list__section-title" id="publications">Publications</h2>
-    {% endif %}
-    <ul class="research-list__section">
-      {% for item in research.publications %}
-        <li class="research-list__item">{{ item | markdownify }}</li>
-      {% endfor %}
-    </ul>
-    {% if is_about == "about" %}
-      <h2 id="working-papers-and-preprints">🔬 Working Papers and Preprints<span id="wip"></span></h2>
-    {% else %}
-      <h2 class="research-list__section-title" id="working-papers-and-preprints">Working Papers and Preprints</h2>
-    {% endif %}
-    <ul class="research-list__section">
-      {% for item in research.working_papers %}
-        <li class="research-list__item">{{ item | markdownify }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+  {% endfor %}
 </div>

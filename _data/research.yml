@@ -1,30 +1,35 @@
 # Single source of truth for Publications and Working Papers.
-# - Research tab: shows this list (Working Papers first, then Publications).
-# - About page: same list is injected via layout (Publications first, then Working Papers).
-# Edit only this file to keep both pages in sync.
+# - Research tab: Working Papers first, then Journal Publications and Conference Proceedings.
+# - About page: same lists injected via layout (Journal, Conference, then Working Papers).
+# Edit only this file to keep both pages in sync. Keep entries in step with the CV
+# (~/Downloads/faculty_applications_2026/_master/cv.tex). Gen-DFL has no equal-contribution marks.
 
 working_papers:
   - |
-    **Shuyi Chen**, Shuai Wang, and Shixiang Zhu. Balancing Planning Myopia and Forecast Error: Decision-Focused Sequential Learning.
+    **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Enhancing Electricity-System Resilience with Adaptive Robust Optimization and Conformal Uncertainty Characterization. *Minor revision at IEEE Open Access Journal of Power and Energy.* [[arXiv]](https://arxiv.org/abs/2505.11627) [[poster]](https://drive.google.com/file/d/1WF2iwiotymcNVmZvlpZG2MITM7gphiq8/view?usp=sharing) [[news]](https://www.heinz.cmu.edu/media/2025/September/new-framework-addresses-urgent-need-for-grid-planning-for-extreme-weather-events)
+    <br><span style="font-size:0.95em; color:inherit;">🏆 INFORMS ENRE Best Student Paper Award</span>
+  - |
+    **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Large-Scale Resilience Planning for Wildfire-Prone Electricity Systems via Adaptive Robust Optimization. *To be submitted to European Journal of Operational Research.* [[arXiv]](https://arxiv.org/abs/2604.01232) [[poster]](https://drive.google.com/file/d/1ccx0lpU7i34R_lPkbF26bchsqbeyk0af/view?usp=sharing) [[demo]](https://woody-zhu-group.github.io/Wildfire-Platform/)
+  - |
+    **Shuyi Chen**, Shuai Wang, and Shixiang Zhu. The Price of Looking Ahead: Decision-Focused Learning for Model Predictive Control in Energy Storage. *In preparation for conference submission.* Earlier version: "Balancing Planning Myopia and Forecast Error: Decision-Focused Sequential Learning."
     <br><span style="font-size:0.95em; color:inherit;">🏆 INFORMS DMDA Workshop Best Paper Finalist (Applied Track)</span>
   - |
-    **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Large-Scale Resilience Planning for Wildfire-Prone Electricity Systems via Adaptive Robust Optimization. In preparation. [[arXiv]](https://arxiv.org/abs/2604.01232) [[poster]](https://drive.google.com/file/d/1ccx0lpU7i34R_lPkbF26bchsqbeyk0af/view?usp=sharing) [[demo]](https://woody-zhu-group.github.io/Wildfire-Platform/)
-  - |
-    **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Enhancing Electricity-System Resilience with Adaptive Robust Optimization and Conformal Uncertainty Characterization. Minor revision at IEEE Open Access Journal of Power and Energy. [[arXiv]](https://arxiv.org/abs/2505.11627) [[poster]](https://drive.google.com/file/d/1WF2iwiotymcNVmZvlpZG2MITM7gphiq8/view?usp=sharing) [[news]](https://www.heinz.cmu.edu/media/2025/September/new-framework-addresses-urgent-need-for-grid-planning-for-extreme-weather-events)
-    <br><span style="font-size:0.95em; color:inherit;">🏆 INFORMS ENRE Best Student Paper Award</span>
+    **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Rare-Chance-Constrained Resilience Planning for Power Systems under Wildfires and Cascading Hazards. *In preparation for journal submission.*
 
-publications:
+journal_publications:
   - |
-    **Shuyi Chen**\*, Wenbin Zhou\*, and Shixiang Zhu. Learning Polyhedral Conformal Sets for Contextual Robust Optimization. The Fortieth Annual Conference on Neural Information Processing Systems (NeurIPS 2026). [[arXiv]](https://arxiv.org/abs/2605.08506)
+    **Shuyi Chen**, Ferdinando Fioretto, Feng Qiu, and Shixiang Zhu. Global-Decision-Focused Neural ODEs for Proactive Grid Resilience Management. *IEEE Transactions on Smart Grid.* [[arXiv]](https://arxiv.org/abs/2502.18321) [[poster]](https://drive.google.com/file/d/1LOsFhdVyQrI0-SNZwc_hedCdbJpejGpi/view?usp=sharing) [[code]](https://github.com/ryanmaomaomao/Global-Decision-Focused-NeuralODE/tree/main)
+
+conference_proceedings:
   - |
-    Prince Zizhuang Wang, **Shuyi Chen**, Jinhao Liang, Ferdinando Fioretto, and Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. The Fourteenth International Conference on Learning Representations (ICLR 2026). [[arXiv]](https://arxiv.org/abs/2502.05468)
+    **Shuyi Chen**\*, Wenbin Zhou\*, and Shixiang Zhu. Learning Polyhedral Conformal Sets for Contextual Robust Optimization. *Conference on Neural Information Processing Systems (NeurIPS), 2026.* [[arXiv]](https://arxiv.org/abs/2605.08506)
+  - |
+    Prince Zizhuang Wang, **Shuyi Chen**, Jinhao Liang, Ferdinando Fioretto, and Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. *International Conference on Learning Representations (ICLR), 2026.* [[arXiv]](https://arxiv.org/abs/2502.05468)
     <br><span style="font-size:0.95em; color:inherit;">🏆 IISE DAIS Track Best Paper Award</span>
   - |
-    **Shuyi Chen**, Ferdinando Fioretto, Feng Qiu, and Shixiang Zhu. Global-Decision-Focused Neural ODEs for Proactive Grid Resilience Management. IEEE Transactions on Smart Grid. [[arXiv]](https://arxiv.org/abs/2502.18321) [[poster]](https://drive.google.com/file/d/1LOsFhdVyQrI0-SNZwc_hedCdbJpejGpi/view?usp=sharing) [[code]](https://github.com/ryanmaomaomao/Global-Decision-Focused-NeuralODE/tree/main)
+    **Shuyi Chen** and Shixiang Zhu. Counterfactual Fairness through Transforming Data Orthogonal to Bias. *ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD), Research Track, 2025.* [[arXiv]](https://arxiv.org/abs/2403.17852) [[code]](https://github.com/ryanmaomaomao/orthogonal_fairness/tree/main)
   - |
-    **Shuyi Chen** and Shixiang Zhu. Counterfactual Fairness through Transforming Data Orthogonal to Bias. In Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD 2025, Research Track). [[arXiv]](https://arxiv.org/abs/2403.17852) [[code]](https://github.com/ryanmaomaomao/orthogonal_fairness/tree/main)
-  - |
-    **Shuyi Chen**, Kaize Ding, and Shixiang Zhu. Uncertainty-Aware Robust Learning on Noisy Graphs. In 2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP 2025). [[arXiv]](https://arxiv.org/abs/2306.08210) [[poster]](https://drive.google.com/file/d/15OXrauSFPqsDnMQuSWISGKLtXMnqOp67/view?usp=sharing) [[code]](https://github.com/ryanmaomaomao/drgnn)
+    **Shuyi Chen**, Kaize Ding, and Shixiang Zhu. Uncertainty-Aware Robust Learning on Noisy Graphs. *IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2025.* [[arXiv]](https://arxiv.org/abs/2306.08210) [[poster]](https://drive.google.com/file/d/15OXrauSFPqsDnMQuSWISGKLtXMnqOp67/view?usp=sharing) [[code]](https://github.com/ryanmaomaomao/drgnn)
     <br><span style="font-size:0.95em; color:inherit;">A short version was accepted by the New Frontiers in Graph Learning Workshop at NeurIPS 2023.</span>
   - |
-    Yihan Cao\*, **Shuyi Chen**\*, Ryan Liu\*, Zhiruo Wang, and Daniel Fried. API-Assisted Code Generation for Question Answering on Varied Table Structures. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP 2023). [[arXiv]](https://arxiv.org/abs/2310.14687)
+    Yihan Cao\*, **Shuyi Chen**\*, Ryan Liu\*, Zhiruo Wang, and Daniel Fried. API-Assisted Code Generation for Question Answering on Varied Table Structures. *Conference on Empirical Methods in Natural Language Processing (EMNLP), 2023.* [[arXiv]](https://arxiv.org/abs/2310.14687)

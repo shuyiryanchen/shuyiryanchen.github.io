@@ -9,11 +9,23 @@ redirect_from:
   - /about.html
 ---
 
-Hi there! I'm Ryan, a third-year Ph.D. student at Heinz College, Carnegie Mellon University, advised by [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/). My research lies at the intersection of **Statistics** and **Operations Research (OR)**, with a focus on developing data-driven methods for real-world challenges. I hold a Master's degree in Information Systems Management from CMU and a B.B.A. in Supply Chain and Logistics Management from the Chinese University of Hong Kong (Shenzhen).
+Hi there! I'm Ryan, a final-year Ph.D. student in Information Systems Management at Heinz College, Carnegie Mellon University, advised by [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/). **My research develops machine learning and optimization methods for decision-making under uncertainty, with applications to power-system resilience against wildfires and extreme weather.**
 
-Outside of research, I'm an film photography enthusiast, a casual boulderer, and a table tennis player.
+<div class="notice--info" markdown="1">
+**I am on the 2026–2027 academic job market.** [CV (PDF)](/files/Shuyi_Chen_CV.pdf)
+</div>
 
-You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyNlVODXk-rQ7ylQpcxXj?usp=sharing).
+My work trains predictive models for the decisions they inform (*decision-focused learning*) and builds uncertainty sets with statistical guarantees into robust and chance-constrained optimization. Specifically:
+
+- **Decision-focused learning**: generative and neural ODE models trained on decision quality rather than forecast accuracy ([ICLR 2026](https://arxiv.org/abs/2502.05468), [IEEE Trans. Smart Grid](https://arxiv.org/abs/2502.18321)).
+- **Robust optimization with conformal guarantees**: uncertainty sets that are statistically valid and shaped by the downstream decision ([NeurIPS 2026](https://arxiv.org/abs/2605.08506)).
+- **Wildfire and extreme-weather resilience**: planning and operating large power systems under rare, high-impact hazards ([INFORMS ENRE Best Student Paper](https://arxiv.org/abs/2505.11627), [wildfire planning](https://arxiv.org/abs/2604.01232), [public platform](https://woody-zhu-group.github.io/Wildfire-Platform/)).
+
+Before my Ph.D., I earned a Master's degree in Information Systems Management from CMU and a B.B.A. in Supply Chain and Logistics Management from the Chinese University of Hong Kong (Shenzhen), and worked as a data scientist at ByteDance.
+
+**Teaching:** Lecturer, *A/B Testing* (95-819), Heinz College, Carnegie Mellon University, 2026.
+
+Outside of research, I'm a film photography enthusiast, a casual boulderer, and a table tennis player ([more on the Trivia page](/trivia/)).
 
 
 ## 📣 News<span id="news"></span>
@@ -26,10 +38,10 @@ You can view my CV [here](https://drive.google.com/drive/folders/1Rqz1-s_Jgm0AyN
 - **Sept 2026**: Our [paper](https://arxiv.org/pdf/2605.08506) on conformal set modeling for contextual robust optimization has been accepted by NeurIPS 2026.
 - **May 2026**: Won the IISE DAIS Best Track Paper Competition with our [[paper]](https://arxiv.org/abs/2502.05468). I am grateful to my advisor Woody and Prof. Nando Fioretto and all of my amazing coauthors.
 - **Oct 2025**: Won the INFORMS ENRE Best Student Paper Award with our [[paper]](https://arxiv.org/pdf/2505.11627) on robust optimization for power system resilience. Grateful to Woody and Ramteen for their guidance!
-- **Sept 2025**: Co-chairing the [INFORMS DMDA workshop 2025 Data Challenge](https://sites.google.com/view/dmdaworkshop2025/data-challenge) on high-frequncy outage prediction.
+- **Sept 2025**: Co-chairing the [INFORMS DMDA workshop 2025 Data Challenge](https://sites.google.com/view/dmdaworkshop2025/data-challenge) on high-frequency outage prediction.
 - **Aug 2025**: Attended KDD 2025 Toronto and presented our [[paper]](https://arxiv.org/pdf/2403.17852) on counterfactual fairness.
 - **May 2025**: Attended NSF Workshop on Uncertainty Quantification and Machine Learning for Complex Physical Systems, Chicago. Presented a poster for our [[paper]](https://arxiv.org/pdf/2505.11627).
-- **Oct 2024**: Presented two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) at INFORMS Workshop on Data Science and Workshop on Data Mining and Design Analysis.
+- **Oct 2024**: Presented two working papers [[1]](https://arxiv.org/abs/2403.17852) [[2]](https://arxiv.org/abs/2502.18321) at INFORMS Workshop on Data Science and Workshop on Data Mining and Decision Analytics.
 - **Aug 2024**: Awarded the INFORMS Student Scholarship by the INFORMS Workshop on Data Science 2024 Program Committee.
 
 <details class="news-more"><summary><span class="news-more__show">Show more</span><span class="news-more__hide">Show less</span></summary></details>
