@@ -3,14 +3,9 @@ layout: single
 title: "Trivia"
 permalink: /trivia/
 author_profile: true
-# Photo galleries: put image files in /images/trivia/ and list them below, e.g.
-#   - image_path: trivia/roll-01.jpg
-#     alt: "Pittsburgh at dusk, Portra 400"
-# A section's gallery appears automatically once it has at least one photo.
-film_gallery: []
-climbing_gallery: []
-table_tennis_gallery: []
 ---
+
+<!-- Photos live in /images/trivia/. To add more, copy a line like the ones below and change the file name and alt text. -->
 
 A few things I enjoy outside of research.
 
@@ -19,18 +14,18 @@ A few things I enjoy outside of research.
 I'm a film photography enthusiast.
 <!-- Add a line or two: your cameras, favorite film stocks, where you like to shoot. -->
 
-{% if page.film_gallery.size > 0 %}{% include gallery id="film_gallery" %}{% endif %}
+![Pittsburgh campus buildings among fall foliage, seen from above](/images/trivia/photography.jpg){: width="360" }
 
-## 🧗 Bouldering
+## 🚴 Biking
 
-I'm a casual boulderer.
-<!-- Add your home gym or a favorite problem or trip. -->
+I enjoy biking.
+<!-- Add a favorite route or ride. -->
 
-{% if page.climbing_gallery.size > 0 %}{% include gallery id="climbing_gallery" %}{% endif %}
+![Ryan with his road bike on a mountain road, snow-capped peak behind](/images/trivia/biking.jpg){: width="360" }
 
 ## 🏓 Table tennis
 
 I play table tennis.
 <!-- Add where you play or how you got into it. -->
 
-{% if page.table_tennis_gallery.size > 0 %}{% include gallery id="table_tennis_gallery" %}{% endif %}
+![Ryan holding a trophy at a table tennis tournament](/images/trivia/table-tennis.jpg){: width="360" }

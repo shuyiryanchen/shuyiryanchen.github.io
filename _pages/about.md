@@ -9,7 +9,7 @@ redirect_from:
   - /about.html
 ---
 
-Hi there! I'm Ryan, a final-year Ph.D. student in Information Systems Management at Heinz College, Carnegie Mellon University, advised by [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/). **My research develops machine learning and optimization methods for decision-making under uncertainty, with applications to power-system resilience against wildfires and extreme weather.**
+Hi there! I'm Ryan, a final-year Ph.D. student in Information Systems Management at Heinz College, Carnegie Mellon University, advised by [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/) and [Ramteen Sioshansi](https://www.cmu.edu/ceic/people/rsioshan/). **My research develops machine learning and optimization methods for decision-making under uncertainty, with applications to power-system resilience against wildfires and extreme weather.**
 
 <div class="notice--info" markdown="1">
 **I am on the 2026–2027 academic job market.** [CV (PDF)](/files/Shuyi_Chen_CV.pdf)
@@ -25,7 +25,7 @@ Before my Ph.D., I earned a Master's degree in Information Systems Management fr
 
 **Teaching:** Lecturer, *A/B Testing* (95-819), Heinz College, Carnegie Mellon University, 2026.
 
-Outside of research, I'm a film photography enthusiast, a casual boulderer, and a table tennis player ([more on the Trivia page](/trivia/)).
+Outside of research, I'm a film photography enthusiast, a cyclist, and a table tennis player ([more on the Trivia page](/trivia/)).
 
 
 ## 📣 News<span id="news"></span>
