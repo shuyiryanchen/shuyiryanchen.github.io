@@ -9,7 +9,7 @@ redirect_from:
   - /about.html
 ---
 
-Hi there! I'm Ryan, a graduating Ph.D. student in Information Systems Management at Heinz College, Carnegie Mellon University, advised by Prof. [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/) and Prof. [Ramteen Sioshansi](https://www.cmu.edu/ceic/people/rsioshan/). **My research focuses on power-system resilience to wildfires and extreme weather: I develop machine learning and optimization methods for planning and operating the grid under uncertainty.**
+Hi there! I'm Ryan, a third-year Ph.D. student in Information Systems Management at Heinz College, Carnegie Mellon University, advised by Prof. [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/) and Prof. [Ramteen Sioshansi](https://www.cmu.edu/ceic/people/rsioshan/). **My research focuses on power-system resilience to wildfires and extreme weather: I develop machine learning and optimization methods for planning and operating the grid under uncertainty.**
 
 <div class="notice--info" markdown="1">
 **I am on the 2026–2027 academic job market.** [CV (PDF)](/files/Shuyi_Chen_CV.pdf)
