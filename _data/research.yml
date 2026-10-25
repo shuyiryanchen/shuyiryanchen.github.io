@@ -3,13 +3,14 @@
 # - About page: same lists injected via layout (Journal, Conference, then Working Papers).
 # Edit only this file to keep both pages in sync. Keep entries in step with the CV
 # (~/Downloads/faculty_applications_2026/_master/cv.tex). Gen-DFL has no equal-contribution marks.
+# The wildfire planning paper names no target journal here, unlike the CV (Ryan, 2026-10-24).
 
 working_papers:
   - |
     **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Enhancing Electricity-System Resilience with Adaptive Robust Optimization and Conformal Uncertainty Characterization. *Minor revision at IEEE Open Access Journal of Power and Energy.* [[arXiv]](https://arxiv.org/abs/2505.11627) [[poster]](https://drive.google.com/file/d/1WF2iwiotymcNVmZvlpZG2MITM7gphiq8/view?usp=sharing) [[news]](https://www.heinz.cmu.edu/media/2025/September/new-framework-addresses-urgent-need-for-grid-planning-for-extreme-weather-events)
     <br><span style="font-size:0.95em; color:inherit;">🏆 INFORMS ENRE Best Student Paper Award</span>
   - |
-    **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Large-Scale Resilience Planning for Wildfire-Prone Electricity Systems via Adaptive Robust Optimization. *To be submitted to European Journal of Operational Research.* [[arXiv]](https://arxiv.org/abs/2604.01232) [[poster]](https://drive.google.com/file/d/1ccx0lpU7i34R_lPkbF26bchsqbeyk0af/view?usp=sharing) [[demo]](https://woody-zhu-group.github.io/Wildfire-Platform/)
+    **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Large-Scale Resilience Planning for Wildfire-Prone Electricity Systems via Adaptive Robust Optimization. *To be submitted.* [[arXiv]](https://arxiv.org/abs/2604.01232) [[poster]](https://drive.google.com/file/d/1ccx0lpU7i34R_lPkbF26bchsqbeyk0af/view?usp=sharing) [[demo]](https://woody-zhu-group.github.io/Wildfire-Platform/)
   - |
     **Shuyi Chen**, Shuai Wang, and Shixiang Zhu. The Price of Looking Ahead: Decision-Focused Learning for Model Predictive Control in Energy Storage. *In preparation for conference submission.* Earlier version: "Balancing Planning Myopia and Forecast Error: Decision-Focused Sequential Learning."
     <br><span style="font-size:0.95em; color:inherit;">🏆 INFORMS DMDA Workshop Best Paper Finalist (Applied Track)</span>
