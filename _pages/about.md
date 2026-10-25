@@ -13,7 +13,7 @@ redirect_from:
 **I am on the 2026–2027 academic job market.** [CV (PDF)](/files/Shuyi_Chen_CV.pdf)
 </div>
 
-Hi there! I'm Ryan, a third-year Ph.D. student in Information Systems Management at Heinz College, Carnegie Mellon University, advised by Prof. [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/) and Prof. [Ramteen Sioshansi](https://www.cmu.edu/ceic/people/rsioshan/). **My research focuses on power-system resilience to wildfires and extreme weather.**
+Hi there! I'm Ryan, a third-year Ph.D. student in Information Systems Management at Heinz College, Carnegie Mellon University, advised by Prof. [Woody Zhu](https://www.andrew.cmu.edu/user/shixianz/) and Prof. [Ramteen Sioshansi](https://www.cmu.edu/ceic/people/rsioshan/). I am also a Visiting Scholar at the Public Advocates Office, California Public Utilities Commission, in San Francisco, CA. **My research focuses on power-system resilience to wildfires and extreme weather.**
 
 I develop machine learning and optimization methods for planning and operating the grid under uncertainty.
 
