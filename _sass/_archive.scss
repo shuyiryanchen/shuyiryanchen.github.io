@@ -292,6 +292,19 @@
       text-decoration: underline;
     }
   }
+
+  /* Gold badge for paper awards (🏆 lines in _data/research.yml) */
+  .research-list__award {
+    display: inline-block;
+    margin-top: 0.3em;
+    padding: 0.1em 0.65em;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #8a5a00;
+    background-color: #fff4d6;
+    border: 1px solid #f0cf73;
+    border-radius: 4px;
+  }
 }
 
 .research-page-intro {

@@ -8,12 +8,12 @@
 working_papers:
   - |
     **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Enhancing Electricity-System Resilience with Adaptive Robust Optimization and Conformal Uncertainty Characterization. *Minor revision at IEEE Open Access Journal of Power and Energy.* [[arXiv]](https://arxiv.org/abs/2505.11627) [[poster]](https://drive.google.com/file/d/1WF2iwiotymcNVmZvlpZG2MITM7gphiq8/view?usp=sharing) [[news]](https://www.heinz.cmu.edu/media/2025/September/new-framework-addresses-urgent-need-for-grid-planning-for-extreme-weather-events)
-    <br><span style="font-size:0.95em; color:inherit;">🏆 INFORMS ENRE Best Student Paper Award</span>
+    <br><span class="research-list__award">🏆 INFORMS ENRE Best Student Paper Award</span>
   - |
     **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Large-Scale Resilience Planning for Wildfire-Prone Electricity Systems via Adaptive Robust Optimization. *To be submitted.* [[arXiv]](https://arxiv.org/abs/2604.01232) [[poster]](https://drive.google.com/file/d/1ccx0lpU7i34R_lPkbF26bchsqbeyk0af/view?usp=sharing) [[demo]](https://woody-zhu-group.github.io/Wildfire-Platform/)
   - |
     **Shuyi Chen**, Shuai Wang, and Shixiang Zhu. The Price of Looking Ahead: Decision-Focused Learning for Model Predictive Control in Energy Storage. *In preparation for conference submission.* Earlier version: "Balancing Planning Myopia and Forecast Error: Decision-Focused Sequential Learning."
-    <br><span style="font-size:0.95em; color:inherit;">🏆 INFORMS DMDA Workshop Best Paper Finalist (Applied Track)</span>
+    <br><span class="research-list__award">🏆 INFORMS DMDA Workshop Best Paper Finalist (Applied Track)</span>
   - |
     **Shuyi Chen**, Shixiang Zhu, and Ramteen Sioshansi. Rare-Chance-Constrained Resilience Planning for Power Systems under Wildfires and Cascading Hazards. *In preparation for journal submission.*
 
@@ -26,7 +26,7 @@ conference_proceedings:
     **Shuyi Chen**\*, Wenbin Zhou\*, and Shixiang Zhu. Learning Polyhedral Conformal Sets for Robust Optimization. *Conference on Neural Information Processing Systems (NeurIPS), 2026.* [[arXiv]](https://arxiv.org/abs/2605.08506)
   - |
     Prince Zizhuang Wang, **Shuyi Chen**, Jinhao Liang, Ferdinando Fioretto, and Shixiang Zhu. Gen-DFL: Decision-Focused Generative Learning for Robust Decision Making. *International Conference on Learning Representations (ICLR), 2026.* [[arXiv]](https://arxiv.org/abs/2502.05468) [[code]](https://github.com/kingofspace0wzz/gen_dfl)
-    <br><span style="font-size:0.95em; color:inherit;">🏆 IISE DAIS Track Best Paper Award</span>
+    <br><span class="research-list__award">🏆 IISE DAIS Track Best Paper Award</span>
   - |
     **Shuyi Chen** and Shixiang Zhu. Counterfactual Fairness through Transforming Data Orthogonal to Bias. *ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD), Research Track, 2025.* [[arXiv]](https://arxiv.org/abs/2403.17852) [[code]](https://github.com/ryanmaomaomao/orthogonal_fairness/tree/main)
   - |
