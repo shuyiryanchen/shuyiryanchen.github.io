@@ -29,6 +29,7 @@ Before my Ph.D., I earned a Master's degree in Information Systems Management fr
 ## 📣 News<span id="news"></span>
 
 <!-- Only the 5 most recent items are shown; the rest are revealed by the "Show more" toggle below the list. -->
+- **Nov 2026**: Won the Best Student Paper Competition (Applied Track) with our paper The Price of Looking Ahead: Decision-Focused Learning for Model Predictive Control in Energy Storage at The 21st INFORMS Workshop Data Mining & Decision Analytics. Thanks to the judges and organizers!
 - **Oct 2026**: Presented our work on rare-chance-constrained resilience planning under wildfires and cascading hazards at the Young Researchers Workshop at Cornell University. Thank you to the organizers for organizing such a wonderful event!
 - **Sept 2026**: Our paper on balancing planning myopia and forecast error has been selected as INFORMS DMDA Workshop 2026 Finalist (Applied Track).
 - **Sept 2026**: Presented our [paper](https://arxiv.org/pdf/2604.01232) on wildfire resilience planning at HOPE Research Workshop hosted by [HOPE Lab](https://hopelab.nd.edu/). Thank you to all the organizers for the invitation and for hosting the workshop!
